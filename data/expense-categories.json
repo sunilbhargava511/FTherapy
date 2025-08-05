@@ -1,0 +1,257 @@
+{
+  "categories": [
+    {
+      "category": "Communications",
+      "icon": "📱",
+      "expenses": [
+        "Cable or satellite",
+        "Combined packages",
+        "Entertainment subscriptions",
+        "Internet",
+        "Telephone / Cell phone"
+      ]
+    },
+    {
+      "category": "Debt & Loans",
+      "icon": "💳",
+      "expenses": [
+        "Credit card",
+        "Line of credit",
+        "Personal loan",
+        "Student loan"
+      ]
+    },
+    {
+      "category": "Education & School",
+      "icon": "🎓",
+      "expenses": [
+        "Other school expenses (like books, supplies)",
+        "School trips",
+        "Student loan payment",
+        "Textbooks and school supplies",
+        "Tuition",
+        "Tuition payment"
+      ]
+    },
+    {
+      "category": "Family & Children",
+      "icon": "👨‍👩‍👧‍👦",
+      "expenses": [
+        "Adoption/Fertility Expenses",
+        "Babysitting",
+        "Child support payments",
+        "Child support you pay",
+        "Childbirth Medical Expenses",
+        "Childcare (like daycare, babysitting)",
+        "Childcare Costs",
+        "Childcare/Daycare/Nanny",
+        "Children's allowance",
+        "College Fund Contributions",
+        "College Tuition Payments",
+        "Daycare",
+        "Kids Activities Sports",
+        "Kids Summer Camps",
+        "Marriage/Wedding Expenses",
+        "Money you send to family",
+        "Private School Tuition",
+        "School Tuition (private)",
+        "Wedding Expenses"
+      ]
+    },
+    {
+      "category": "Food & Dining",
+      "icon": "🍽️",
+      "expenses": [
+        "Eating out/food delivery",
+        "Groceries",
+        "Groceries and household supplies",
+        "Other food expenses",
+        "Restaurant and take-out"
+      ]
+    },
+    {
+      "category": "Healthcare",
+      "icon": "🏥",
+      "expenses": [
+        "Assisted Living Costs",
+        "Co-pays for doctors' appointments",
+        "Dentist expenses",
+        "Doctor / medical expenses",
+        "Elder Care/Assisted Living",
+        "Health insurance",
+        "Medical Procedures",
+        "Other health expenses",
+        "Out-of-pocket Health Costs",
+        "Prescription Medications",
+        "Prescriptions",
+        "Specialists"
+      ]
+    },
+    {
+      "category": "Housing",
+      "icon": "🏠",
+      "expenses": [
+        "Condo fees",
+        "Electricity",
+        "Furniture and appliances",
+        "HOA Fees",
+        "Heating",
+        "Home Down Payment",
+        "Home Renovation/Improvements",
+        "Home equity line of credit",
+        "Home insurance",
+        "Home security system",
+        "Insurance (like renter's, homeowner's)",
+        "Internet and phone",
+        "Maintenance Repairs",
+        "Maintenance/Repairs",
+        "Mortgage Payment",
+        "Mortgage Payments",
+        "Mortgage payment",
+        "Moving Costs",
+        "Other housing expenses (like property taxes, condo fees)",
+        "Outdoor equipment and services",
+        "Property Taxes",
+        "Property taxes",
+        "Rent",
+        "Rent or mortgage",
+        "Second Home Down Payment",
+        "Second Home Mortgage",
+        "Tenant insurance",
+        "Utilities",
+        "Utilities (like electricity, gas, water)",
+        "Water and sewage"
+      ]
+    },
+    {
+      "category": "Insurance",
+      "icon": "🛡️",
+      "expenses": [
+        "Car Insurance",
+        "Dental Vision Insurance",
+        "Disability Insurance",
+        "Disability Insurance Premiums",
+        "Disability or accident",
+        "Health Insurance Premiums",
+        "Homeowners Insurance",
+        "Life Insurance Premiums",
+        "Life insurance",
+        "Long Term Care Insurance",
+        "Long-term Care Insurance",
+        "Medical and dental",
+        "Out of Pocket Health Costs"
+      ]
+    },
+    {
+      "category": "Lifestyle & Entertainment",
+      "icon": "🎬",
+      "expenses": [
+        "Accessories",
+        "Alcohol",
+        "Children's clothes",
+        "Children's toys and activities",
+        "Clothes",
+        "Clothing & Personal Care",
+        "Clothing Personal Care",
+        "Clothing and shoes",
+        "Club memberships",
+        "Cosmetics and skin care",
+        "Entertainment & Hobbies",
+        "Entertainment (like subscriptions, movies, concerts)",
+        "Entertainment Hobbies",
+        "Entertainment equipment",
+        "Food & Dining",
+        "Food Dining",
+        "Gifts & Charity",
+        "Gifts Charity",
+        "Gym Memberships",
+        "Gym or fitness membership",
+        "Hairdresser / barber",
+        "Other personal and family expenses (like donations, laundry, haircuts)",
+        "Pet Expenses",
+        "Pet food / supplies",
+        "Smoking supplies",
+        "Spa and beauty care",
+        "Sports gear and other activities",
+        "Tickets for events",
+        "Travel",
+        "Travel & Vacations",
+        "Travel Vacations",
+        "Travel and vacation",
+        "Veterinarian"
+      ]
+    },
+    {
+      "category": "Major Purchases & Events",
+      "icon": "🎉",
+      "expenses": [
+        "Major Family Event (e.g. Wedding for Children)",
+        "Major Home Appliance/Improvement",
+        "Second Home/Vacation Home"
+      ]
+    },
+    {
+      "category": "Miscellaneous",
+      "icon": "📋",
+      "expenses": [
+        "Bank account or credit card fees",
+        "Bank fees",
+        "Credit card fees",
+        "Credit card or other debt payments",
+        "Donations",
+        "Elder Care Parents",
+        "Funeral Expenses",
+        "Gifts",
+        "Home Office Setup",
+        "Large One-time Expense",
+        "Legal Estate Planning",
+        "Other expenses this month",
+        "Pet Expenses",
+        "Professional Development",
+        "Professional dues",
+        "Student Loan Payments"
+      ]
+    },
+    {
+      "category": "Savings & Investments",
+      "icon": "💰",
+      "expenses": [
+        "Emergency Fund Contribution",
+        "Emergency Fund Contributions",
+        "Investment Contributions",
+        "Investment contributions",
+        "Retirement Savings",
+        "Retirement Savings/IRA/401k",
+        "Savings deposits"
+      ]
+    },
+    {
+      "category": "Transportation",
+      "icon": "🚗",
+      "expenses": [
+        "Car Payment Lease",
+        "Car Payments/Lease",
+        "Car Purchase/Down Payment",
+        "Car Replacement Purchase",
+        "Car insurance",
+        "Car licensing and registration",
+        "Car loan / lease payments",
+        "Car maintenance (like oil changes)",
+        "Car payment",
+        "First Car Purchase",
+        "Gas",
+        "Gas & Maintenance",
+        "Gas Maintenance",
+        "Gas for car",
+        "Maintenance",
+        "Other transportation expenses",
+        "Parking",
+        "Parking and tolls",
+        "Public Transit",
+        "Public transportation",
+        "Ride services",
+        "Taxis/rideshares"
+      ]
+    }
+  ]
+}
