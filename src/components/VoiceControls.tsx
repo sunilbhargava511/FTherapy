@@ -109,7 +109,7 @@ export default function VoiceControls({
     parameter, 
     value 
   }: { 
-    parameter: keyof VoiceControlSettings;
+    parameter: keyof typeof PARAMETER_LABELS;
     value: number;
   }) => {
     const config = PARAMETER_LABELS[parameter];

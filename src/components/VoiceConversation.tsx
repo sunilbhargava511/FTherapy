@@ -94,7 +94,7 @@ export default function VoiceConversation({
     };
   }, []);
 
-  const transcribeWithElevenLabs = async (audioBlob: Blob): Promise<string> => {
+  const transcribeWithElevenLabs = useCallback(async (audioBlob: Blob): Promise<string> => {
     try {
       console.log('Transcribing with ElevenLabs:', {
         blobSize: audioBlob.size,
@@ -124,9 +124,9 @@ export default function VoiceConversation({
       console.error('ElevenLabs STT error:', error);
       throw error;
     }
-  };
+  }, []);
 
-  const cleanupText = async (rawText: string): Promise<string> => {
+  const cleanupText = useCallback(async (rawText: string): Promise<string> => {
     if (!enableTextCleanup) {
       return rawText;
     }
@@ -153,7 +153,7 @@ export default function VoiceConversation({
     } finally {
       setIsCleaningText(false);
     }
-  };
+  }, [enableTextCleanup]);
 
   const startRecording = useCallback(async () => {
     try {
