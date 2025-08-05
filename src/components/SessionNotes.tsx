@@ -41,7 +41,20 @@ export default function SessionNotes({ notes, therapist, userProfile }: SessionN
   
   // Track which lifestyle areas have been covered
   const getLifestyleProgress = () => {
-    if (!userProfile) return {};
+    const defaultProgress = {
+      housing: '○',
+      food: '○',
+      transport: '○',
+      fitness: '○',
+      entertainment: '○',
+      subscriptions: '○',
+      travel: '○',
+      basics: '○',
+      completed: 0,
+      total: 8
+    };
+    
+    if (!userProfile) return defaultProgress;
     
     const progress = {
       housing: userProfile.lifestyle?.housing?.preference ? '✓' : '○',
@@ -156,7 +169,7 @@ export default function SessionNotes({ notes, therapist, userProfile }: SessionN
 
           {/* Therapist's notebook indication */}
           <div className="absolute bottom-8 right-8 flex items-center gap-2 text-gray-600">
-            <span className="font-kalam text-sm italic">Therapist's Notes</span>
+            <span className="font-kalam text-sm italic">Therapist&apos;s Notes</span>
           </div>
         </div>
       </div>
@@ -242,7 +255,7 @@ export default function SessionNotes({ notes, therapist, userProfile }: SessionN
               <div className="flex justify-between items-center mb-2">
                 <span className="font-semibold">Lifestyle Cost Variables:</span>
                 <span className="bg-blue-100 px-2 py-1 rounded text-blue-800 font-bold">
-                  {progress.completed || 0}/{progress.total || 8}
+                  {progress.completed}/{progress.total}
                 </span>
               </div>
               

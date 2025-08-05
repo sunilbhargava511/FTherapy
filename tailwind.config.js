@@ -13,11 +13,11 @@ module.exports = {
       },
       colors: {
         'therapy': {
-          'mel': '#F97316',      // orange
+          'danielle': '#10B981',  // emerald green (for investing/growth)
           'aja': '#A855F7',      // purple  
           'ramit': '#3B82F6',    // blue
           'nora': '#EC4899',     // pink
-          'michelle': '#6366F1'  // indigo
+          'anita': '#FF6B35'     // warm saffron orange (culturally appropriate)
         }
       },
       animation: {

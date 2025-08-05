@@ -7,11 +7,11 @@ import { TherapistStyle } from '@/lib/types';
 
 const THERAPIST_STYLES: TherapistStyle[] = [
   {
-    id: 'mel-robbins',
-    name: 'Mel Robbins',
-    tagline: 'Direct motivation & action',
-    icon: '🔥',
-    color: 'therapy-mel'
+    id: 'danielle-town',
+    name: 'Danielle Town',
+    tagline: 'Smart investing & wealth building',
+    icon: '📈',
+    color: 'therapy-danielle'
   },
   {
     id: 'aja-evans',
@@ -35,16 +35,16 @@ const THERAPIST_STYLES: TherapistStyle[] = [
     color: 'therapy-nora'
   },
   {
-    id: 'michelle-obama',
-    name: 'Michelle Obama',
-    tagline: 'Values-based prosperity',
-    icon: '🌟',
-    color: 'therapy-michelle'
+    id: 'anita-bhargava',
+    name: 'Anita Bhargava',
+    tagline: 'Cultural financial wisdom & empowerment',
+    icon: '🪷',
+    color: 'therapy-anita'
   }
 ];
 
 export default function Home() {
-  const [selectedTherapist, setSelectedTherapist] = useState<string>('mel-robbins');
+  const [selectedTherapist, setSelectedTherapist] = useState<string>('danielle-town');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">

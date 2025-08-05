@@ -1,17 +1,18 @@
 'use client';
 
-import { Volume2, VolumeX, Pause, Play } from 'lucide-react';
+import { Volume2, VolumeX, Pause, Play, Loader2 } from 'lucide-react';
 import { ConversationMessage } from '@/lib/types';
-import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { useUnifiedTTS } from '@/hooks/useUnifiedTTS';
 
 interface ChatMessageProps {
   message: ConversationMessage;
   therapistId?: string;
+  useElevenLabs?: boolean;
 }
 
-export default function ChatMessage({ message, therapistId }: ChatMessageProps) {
+export default function ChatMessage({ message, therapistId, useElevenLabs = true }: ChatMessageProps) {
   const isUser = message.speaker === 'user';
-  const { speak, stop, pause, resume, isPlaying, isPaused, isSupported } = useTextToSpeech();
+  const { speak, stop, pause, resume, isPlaying, isPaused, isLoading, error, isSupported, provider } = useUnifiedTTS(useElevenLabs);
   
   const handleSpeechToggle = () => {
     if (isPlaying) {
@@ -40,21 +41,36 @@ export default function ChatMessage({ message, therapistId }: ChatMessageProps) 
             <div className="flex gap-1 ml-2 mt-1">
               <button
                 onClick={handleSpeechToggle}
-                className="text-gray-500 hover:text-blue-600 transition-colors p-1 rounded"
-                title={isPlaying ? (isPaused ? 'Resume' : 'Pause') : 'Play'}
+                disabled={isLoading}
+                className="text-gray-500 hover:text-blue-600 transition-colors p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                title={isLoading ? 'Generating speech...' : isPlaying ? (isPaused ? 'Resume' : 'Pause') : `Play with ${provider === 'elevenlabs' ? 'ElevenLabs' : 'Browser TTS'}`}
               >
-                {isPlaying ? (isPaused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />) : <Volume2 className="w-3 h-3" />}
+                {isLoading ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : isPlaying ? (
+                  isPaused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />
+                ) : (
+                  <Volume2 className="w-3 h-3" />
+                )}
               </button>
               
-              {isPlaying && (
+              {(isPlaying || isLoading) && (
                 <button
                   onClick={handleStop}
-                  className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded"
+                  disabled={isLoading}
+                  className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded disabled:opacity-50"
                   title="Stop"
                 >
                   <VolumeX className="w-3 h-3" />
                 </button>
               )}
+            </div>
+          )}
+          
+          {/* Error display */}
+          {error && !isUser && (
+            <div className="text-xs text-red-500 mt-1">
+              Voice unavailable
             </div>
           )}
         </div>

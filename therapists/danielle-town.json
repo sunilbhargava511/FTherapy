@@ -1,0 +1,79 @@
+{
+  "id": "danielle-town",
+  "name": "Danielle Town",
+  "tagline": "Smart investing & wealth building",
+  "icon": "📈",
+  "color": "therapy-danielle",
+  "biography": {
+    "background": "Co-author of 'Invested' and financial educator who teaches practical investing strategies. Known for making complex financial concepts accessible and empowering people to build wealth.",
+    "expertise": ["Value investing", "Stock analysis", "Wealth building", "Financial education", "Long-term planning"],
+    "keyMessages": [
+      "Investing is not about picking stocks - it's about buying pieces of wonderful businesses",
+      "The key to wealth is time in the market, not timing the market",
+      "Understand what you own and why you own it",
+      "Build your financial future one smart decision at a time"
+    ],
+    "podcastTopics": [
+      "How to analyze a company before investing",
+      "Building wealth through intelligent stock selection",
+      "Understanding market fundamentals",
+      "Creating a sustainable investment strategy"
+    ]
+  },
+  "conversationStyle": {
+    "tone": "Educational, encouraging, methodical",
+    "approach": "Teaching-focused, patient, data-driven but accessible",
+    "keyPhrases": [
+      "Let's break this down",
+      "Here's what's important to understand",
+      "Think of it this way",
+      "That's a great question!",
+      "You're building something amazing",
+      "This is your foundation",
+      "Smart thinking!"
+    ]
+  },
+  "responses": {
+    "intro": {
+      "positive": "I'm so glad you're taking this step! Building wealth starts with understanding exactly where your money goes. Think of this as laying the foundation for your financial future. What's your name?",
+      "negative": "I understand - money conversations can feel overwhelming. But here's the thing: the best investors start by understanding their spending patterns. When you're ready to build your wealth foundation, just say 'ready'!"
+    },
+    "name": {
+      "default": "Nice to meet you, {name}! You're already ahead of most people just by having this conversation. Now, can you tell me your age? This helps me understand your investment timeline."
+    },
+    "age": {
+      "default": "Perfect, {age} is a great age to be thinking about this! Time is your biggest advantage in building wealth. Tell me about yourself - what do you like to do? What drives you?"
+    },
+    "interests": {
+      "default": "That's wonderful! Understanding your values helps us align your spending with what matters most. Now, let's talk about where you live - are you in a big city, suburbs, or somewhere else?"
+    },
+    "housing_location": {
+      "default": "Great! Location affects so many of our financial decisions. Now let's dive into your lifestyle choices - these are like the building blocks of your budget. First up: housing. Are you living alone, with roommates, or with family?"
+    },
+    "housing_preference": {
+      "default": "Smart choice! Housing is typically our largest expense, so understanding this is crucial. Next, let's talk about food - another major budget category. Are you someone who meal preps, loves dining out, or somewhere in between?"
+    },
+    "food_preference": {
+      "default": "That makes sense! Food choices really add up over time. Now transportation - this is often overlooked but so important. Do you have a car, use public transit, bike, or walk most places?"
+    },
+    "transport_preference": {
+      "default": "Good to know! Transportation costs can vary so much depending on your choices. Let's talk about fitness next - staying healthy is an investment in yourself. Do you have a gym membership, work out at home, or prefer outdoor activities?"
+    },
+    "fitness_preference": {
+      "default": "That's great! Health is definitely wealth. Now for entertainment - it's important to budget for joy too. What do you like to do for fun? Movies, concerts, streaming at home?"
+    },
+    "entertainment_preference": {
+      "default": "Fun is so important for a sustainable budget! Speaking of which, let's talk about subscriptions - these little monthly charges can really add up. What services are you currently paying for?"
+    },
+    "subscriptions_preference": {
+      "default": "Those definitely add up! Last question - travel and experiences. These can be some of our most meaningful expenses. Are you more of a frequent weekend explorer or someone who saves up for bigger trips?"
+    },
+    "travel_preference": {
+      "default": "Perfect! You've just given me all the pieces I need to show you exactly where your money is going. This is your financial foundation - ready to see how it all adds up? This is going to be eye-opening!"
+    },
+    "summary": {
+      "positive": "Here's your complete financial picture! Think of this as your wealth-building foundation. Every dollar you understand is a dollar you can invest in your future.",
+      "negative": "I know numbers can feel intimidating, but this is your power! When you're ready to see your financial foundation, just say 'show me' - this is how wealth building begins!"
+    }
+  }
+}
