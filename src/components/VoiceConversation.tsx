@@ -12,6 +12,7 @@ interface VoiceConversationProps {
   onStartSession: () => void;
   hasStarted: boolean;
   therapistName: string;
+  sttProvider: 'elevenlabs' | 'browser';
 }
 
 export default function VoiceConversation({ 
@@ -22,13 +23,17 @@ export default function VoiceConversation({
   enableTextCleanup,
   onStartSession,
   hasStarted,
-  therapistName
+  therapistName,
+  sttProvider
 }: VoiceConversationProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
   const [isCleaningText, setIsCleaningText] = useState(false);
+  const [currentSTTMethod, setCurrentSTTMethod] = useState<'elevenlabs' | 'browser' | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -86,6 +91,38 @@ export default function VoiceConversation({
     };
   }, []);
 
+  const transcribeWithElevenLabs = async (audioBlob: Blob): Promise<string> => {
+    try {
+      console.log('Transcribing with ElevenLabs:', {
+        blobSize: audioBlob.size,
+        blobType: audioBlob.type
+      });
+
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recording.webm');
+
+      const response = await fetch('/api/elevenlabs-stt', {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('ElevenLabs STT response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('ElevenLabs STT API error:', response.status, errorData);
+        throw new Error(`ElevenLabs STT failed: ${response.status} - ${errorData.error || 'Unknown error'}`);
+      }
+
+      const result = await response.json();
+      console.log('ElevenLabs STT result:', result);
+      return result.transcript || '';
+    } catch (error) {
+      console.error('ElevenLabs STT error:', error);
+      throw error;
+    }
+  };
+
   const cleanupText = async (rawText: string): Promise<string> => {
     if (!enableTextCleanup) {
       return rawText;
@@ -130,44 +167,165 @@ export default function VoiceConversation({
         onInterruptTTS();
       }
 
-      // Start speech recognition
-      if (recognitionRef.current) {
-        recognitionRef.current.start();
-        setIsRecording(true);
+      if (sttProvider === 'elevenlabs') {
+        // Use ElevenLabs STT with MediaRecorder
+        try {
+          // Try different audio formats for better compatibility
+          let mimeType = 'audio/webm;codecs=opus';
+          if (!MediaRecorder.isTypeSupported(mimeType)) {
+            mimeType = 'audio/webm';
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+              mimeType = 'audio/mp4';
+              if (!MediaRecorder.isTypeSupported(mimeType)) {
+                mimeType = ''; // Let browser choose
+              }
+            }
+          }
+
+          console.log('Using MediaRecorder with mimeType:', mimeType);
+          
+          const recorder = mimeType 
+            ? new MediaRecorder(stream, { mimeType })
+            : new MediaRecorder(stream);
+          
+          const chunks: Blob[] = [];
+          
+          recorder.ondataavailable = (event) => {
+            console.log('Audio data available:', event.data.size, 'bytes, type:', event.data.type);
+            if (event.data.size > 0) {
+              chunks.push(event.data);
+            }
+          };
+          
+          recorder.onstart = () => {
+            console.log('MediaRecorder started');
+          };
+          
+          recorder.onerror = (event) => {
+            console.error('MediaRecorder error:', event);
+            setError('Recording failed. Please try again.');
+          };
+          
+          // Store references
+          setMediaRecorder(recorder);
+          setAudioChunks(chunks);
+          setCurrentSTTMethod('elevenlabs');
+          setIsRecording(true);
+          
+          // Start recording (collect data only when stopped)
+          recorder.start();
+          console.log('Started ElevenLabs recording with format:', mimeType);
+        } catch (error) {
+          console.error('Failed to create MediaRecorder:', error);
+          setError('Recording not supported. Using browser STT.');
+          // Fallback to browser STT
+          if (recognitionRef.current) {
+            recognitionRef.current.start();
+            setCurrentSTTMethod('browser');
+            setIsRecording(true);
+          }
+        }
+      } else {
+        // Use browser STT (fallback)
+        if (recognitionRef.current) {
+          recognitionRef.current.start();
+          setCurrentSTTMethod('browser');
+          setIsRecording(true);
+        }
       }
     } catch (error) {
       console.error('Error starting recording:', error);
       setHasPermission(false);
       setError('Microphone access denied. Please enable microphone permissions.');
     }
-  }, [isPlayingTTS, onInterruptTTS]);
+  }, [isPlayingTTS, onInterruptTTS, sttProvider]);
 
   const stopRecording = useCallback(async () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
+    setIsRecording(false);
+    
+    if (currentSTTMethod === 'elevenlabs' && mediaRecorder) {
+      // Handle ElevenLabs STT
+      try {
+        const chunks = audioChunks; // Capture chunks in closure
+        
+        mediaRecorder.onstop = async () => {
+          console.log('MediaRecorder stopped, chunks:', chunks.length);
+          
+          if (chunks.length === 0) {
+            console.error('No audio data recorded');
+            setError('No audio recorded. Please try again.');
+            return;
+          }
+          
+          const audioBlob = new Blob(chunks, { type: 'audio/webm' });
+          console.log('Created audio blob:', audioBlob.size, 'bytes');
+          
+          try {
+            const transcript = await transcribeWithElevenLabs(audioBlob);
+            
+            if (transcript.trim()) {
+              let finalTranscript = transcript.trim();
+              
+              // Clean up the text if enabled
+              if (enableTextCleanup) {
+                finalTranscript = await cleanupText(finalTranscript);
+              }
+
+              // Send to parent component
+              onVoiceInput(finalTranscript);
+            } else {
+              console.warn('Empty transcript received');
+              setError('No speech detected. Please try again.');
+            }
+          } catch (error) {
+            console.error('ElevenLabs transcription failed, falling back to browser STT:', error);
+            setError('ElevenLabs STT failed. Please try browser STT instead.');
+            
+            // Clear error after a few seconds
+            setTimeout(() => setError(null), 3000);
+          }
+          
+          // Cleanup
+          setMediaRecorder(null);
+          setAudioChunks([]);
+        };
+        
+        mediaRecorder.stop();
+        console.log('Stopping MediaRecorder...');
+      } catch (error) {
+        console.error('Error stopping ElevenLabs recording:', error);
+        setError('Recording failed. Please try again.');
+        setMediaRecorder(null);
+        setAudioChunks([]);
+      }
+    } else {
+      // Handle browser STT
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      
+      // Process the transcript if we have one from browser STT
+      if (transcript.trim()) {
+        let finalTranscript = transcript.trim();
+        
+        // Clean up the text if enabled
+        if (enableTextCleanup) {
+          finalTranscript = await cleanupText(finalTranscript);
+        }
+
+        // Send to parent component
+        onVoiceInput(finalTranscript);
+        setTranscript('');
+      }
     }
     
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-
-    setIsRecording(false);
-
-    // Process the transcript if we have one
-    if (transcript.trim()) {
-      let finalTranscript = transcript.trim();
-      
-      // Clean up the text if enabled
-      if (enableTextCleanup) {
-        finalTranscript = await cleanupText(finalTranscript);
-      }
-
-      // Send to parent component
-      onVoiceInput(finalTranscript);
-      setTranscript('');
-    }
-  }, [transcript, enableTextCleanup, onVoiceInput, cleanupText]);
+    
+    setCurrentSTTMethod(null);
+  }, [currentSTTMethod, mediaRecorder, audioChunks, transcript, enableTextCleanup, onVoiceInput, cleanupText, transcribeWithElevenLabs]);
 
   const handleButtonPress = useCallback(() => {
     if (!hasStarted) {
@@ -240,7 +398,7 @@ export default function VoiceConversation({
         {isProcessing ? (
           <div className="flex items-center gap-2 text-sm text-blue-600">
             <Loader2 className="w-4 h-4 animate-spin" />
-{therapistName} is thinking...
+            {therapistName} is thinking...
           </div>
         ) : isCleaningText ? (
           <div className="flex items-center gap-2 text-sm text-blue-600">
@@ -248,21 +406,38 @@ export default function VoiceConversation({
             Cleaning up your speech...
           </div>
         ) : !hasStarted ? (
-          <p className="text-sm text-blue-600 font-medium">
-            🎯 Click to start session with {therapistName}
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-blue-600 font-medium">
+              🎯 Click to start session with {therapistName}
+            </p>
+            {currentSTTMethod && (
+              <div className="text-xs text-gray-500">
+                Using {currentSTTMethod === 'elevenlabs' ? 'ElevenLabs' : 'Browser'} STT
+              </div>
+            )}
+          </div>
         ) : isRecording ? (
-          <p className="text-sm text-red-600 font-medium">
-            🎤 Recording... Click again to stop and send
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-red-600 font-medium">
+              🎤 Recording... Click again to stop and send
+            </p>
+            <div className="text-xs text-gray-500">
+              {currentSTTMethod === 'elevenlabs' ? '🔊 ElevenLabs STT' : '🌐 Browser STT'}
+            </div>
+          </div>
         ) : isPlayingTTS ? (
           <p className="text-sm text-yellow-600 font-medium">
             🔊 {therapistName} is speaking... Press to interrupt
           </p>
         ) : (
-          <p className="text-sm text-gray-600">
-            Press to start speaking
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-600">
+              Press to start speaking
+            </p>
+            <div className="text-xs text-gray-500">
+              {sttProvider === 'elevenlabs' ? 'ElevenLabs STT Ready' : 'Browser STT Ready'}
+            </div>
+          </div>
         )}
       </div>
 

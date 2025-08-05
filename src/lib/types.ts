@@ -93,3 +93,11 @@ export interface ResponsePattern {
   questions?: string[];
   followUp?: string;
 }
+
+export interface VoiceControlSettings {
+  responseLength: number; // 1-5: Very Brief to Very Detailed
+  speakingPace: number;   // 1-5: Very Slow to Very Fast
+  engagement: number;     // 1-5: Mostly Humor to Mostly Stories
+  style: number;          // 1-5: Always Asking to Always Telling
+  sttProvider: 'elevenlabs' | 'browser'; // STT provider preference
+}

@@ -11,7 +11,7 @@ const THERAPIST_VOICES: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, therapistId } = await request.json();
+    const { text, therapistId, speakingPace = 3 } = await request.json();
 
     if (!text || !therapistId) {
       return NextResponse.json(
@@ -30,6 +30,16 @@ export async function POST(request: NextRequest) {
 
     const voiceId = THERAPIST_VOICES[therapistId] || THERAPIST_VOICES['danielle-town'];
 
+    // Map speaking pace (1-5) to speed (0.25-2.0)
+    const speedMapping = {
+      1: 0.5,  // Very Slow
+      2: 0.75, // Slow
+      3: 1.0,  // Normal
+      4: 1.25, // Fast
+      5: 1.5   // Very Fast
+    };
+    const speed = speedMapping[speakingPace as keyof typeof speedMapping] || 1.0;
+
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: 'POST',
       headers: {
@@ -43,6 +53,7 @@ export async function POST(request: NextRequest) {
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.5,
+          speed: speed,
         },
       }),
     });

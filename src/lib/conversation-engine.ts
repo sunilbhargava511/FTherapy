@@ -227,7 +227,7 @@ export class ConversationEngine {
     return { ...this.userProfile };
   }
 
-  private buildConversationContext(): string {
+  public buildConversationContext(): string {
     const profile = this.userProfile;
     const context = [];
     
