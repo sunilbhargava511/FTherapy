@@ -171,8 +171,8 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
 
   if (showSummary && userProfile) {
     return (
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="flex gap-6">
+        <div className="flex-1 max-w-md">
           <FinancialSummary 
             userProfile={userProfile}
             therapist={therapist}
@@ -190,15 +190,15 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
             }}
           />
         </div>
-        <SessionNotes notes={notes} therapist={therapist} />
+        <SessionNotes notes={notes} therapist={therapist} userProfile={userProfile} />
       </div>
     );
   }
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-6">
       {/* Main Chat Area */}
-      <div className="flex-1">
+      <div className="flex-1 max-w-md">
         <div className="bg-white rounded-2xl shadow-xl p-6">
           {/* User Profile Info */}
           {userProfile && (userProfile.name || userProfile.age || userProfile.location) && (
@@ -215,7 +215,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
           {/* Chat Messages */}
           <div className="h-80 overflow-y-auto mb-6 p-4 bg-gray-50 rounded-lg">
             {messages.map((message) => (
-              <ChatMessage key={message.id} message={message} />
+              <ChatMessage key={message.id} message={message} therapistId={selectedTherapistId} />
             ))}
             {isTyping && <TypingIndicator />}
             <div ref={chatEndRef} />
@@ -288,7 +288,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       </div>
 
       {/* Session Notes Panel */}
-      <SessionNotes notes={notes} therapist={therapist} />
+      <SessionNotes notes={notes} therapist={therapist} userProfile={userProfile} />
     </div>
   );
 }

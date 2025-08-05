@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'caveat': ['var(--font-caveat)', 'cursive'],
+        'kalam': ['var(--font-kalam)', 'cursive'],
+      },
       colors: {
         'therapy': {
           'mel': '#F97316',      // orange
@@ -19,6 +23,11 @@ module.exports = {
       animation: {
         'typing': 'typing 1.5s infinite',
         'pulse-soft': 'pulse 2s infinite',
+      },
+      rotate: {
+        '0.5': '0.5deg',
+        '1.5': '1.5deg',
+        '2.5': '2.5deg',
       }
     },
   },
