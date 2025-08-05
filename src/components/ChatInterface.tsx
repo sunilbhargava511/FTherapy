@@ -411,6 +411,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
                 onStartSession={startVoiceSession}
                 hasStarted={voiceSessionStarted}
                 therapistName={getTherapist(selectedTherapistId).name}
+                therapist={getTherapist(selectedTherapistId)}
                 sttProvider={voiceControlSettings.sttProvider}
               />
             </div>

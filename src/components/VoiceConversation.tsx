@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, Square, Loader2, AlertCircle, Volume2, VolumeX } from 'lucide-react';
+import type { TherapistPersonality } from '@/lib/types';
 
 interface VoiceConversationProps {
   onVoiceInput: (transcript: string) => void;
@@ -12,6 +13,7 @@ interface VoiceConversationProps {
   onStartSession: () => void;
   hasStarted: boolean;
   therapistName: string;
+  therapist: TherapistPersonality;
   sttProvider: 'elevenlabs' | 'browser';
 }
 
@@ -24,6 +26,7 @@ export default function VoiceConversation({
   onStartSession,
   hasStarted,
   therapistName,
+  therapist,
   sttProvider
 }: VoiceConversationProps) {
   const [isRecording, setIsRecording] = useState(false);
@@ -343,131 +346,171 @@ export default function VoiceConversation({
   }, [hasStarted, isRecording, isPlayingTTS, startRecording, stopRecording, onInterruptTTS, onStartSession]);
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-gradient-to-br from-green-50 to-blue-50 rounded-lg">
-      {/* Status Message */}
-      <div className="text-center max-w-sm">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          Voice Conversation with {therapistName}
-        </h3>
-        <p className="text-sm text-gray-600 mb-2">
-          Click to start speaking, click again to stop and send
-        </p>
-        {hasPermission === false && (
-          <p className="text-xs text-orange-600 mb-2">
-            🎤 Microphone access required
+    <div className="relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 opacity-10 rounded-2xl" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 opacity-5 rounded-2xl animate-pulse" />
+      
+      {/* Main Content */}
+      <div className="relative flex flex-col items-center gap-6 p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20">
+        {/* Therapist Info */}
+        <div className="text-center max-w-lg">
+          <p className="text-2xl font-bold text-gray-800 mb-2">
+            {therapistName}
           </p>
-        )}
-      </div>
-
-      {/* Main Voice Button */}
-      <div className="relative">
-        <button
-          onClick={handleButtonPress}
-          disabled={isProcessing || isCleaningText}
-          className={`relative flex items-center justify-center w-20 h-20 rounded-full font-medium transition-all transform hover:scale-105 ${
-            !hasStarted
-              ? 'bg-blue-500 hover:bg-blue-600 text-white'
-              : isRecording
-                ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-                : isPlayingTTS
-                  ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                  : 'bg-green-500 hover:bg-green-600 text-white'
-          } ${(isProcessing || isCleaningText) ? 'opacity-75 cursor-not-allowed' : ''}`}
-        >
-          {!hasStarted ? (
-            <Volume2 className="w-8 h-8" />
-          ) : isRecording ? (
-            <Square className="w-8 h-8" />
-          ) : isPlayingTTS ? (
-            <VolumeX className="w-8 h-8" />
-          ) : (
-            <Mic className="w-8 h-8" />
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            {therapist.biography.background}
+          </p>
+          {hasPermission === false && (
+            <p className="text-xs text-orange-600 animate-pulse">
+              🎤 Microphone access required
+            </p>
           )}
-        </button>
+        </div>
 
-        {/* Recording indicator */}
-        {isRecording && (
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+        {/* Main Voice Button */}
+        <div className="relative">
+          {/* Outer Ring Animation */}
+          {isRecording && (
+            <>
+              <div className="absolute inset-0 w-32 h-32 rounded-full bg-red-400 opacity-20 animate-ping" />
+              <div className="absolute inset-0 w-32 h-32 rounded-full bg-red-400 opacity-10 animate-ping animation-delay-200" />
+            </>
+          )}
+          
+          {/* Shadow and Glow */}
+          <div className={`absolute inset-0 w-32 h-32 rounded-full ${
+            !hasStarted
+              ? 'shadow-lg shadow-blue-500/30'
+              : isRecording
+                ? 'shadow-xl shadow-red-500/40'
+                : isPlayingTTS
+                  ? 'shadow-lg shadow-yellow-500/30'
+                  : 'shadow-lg shadow-green-500/30'
+          }`} />
+          
+          {/* Main Button */}
+          <button
+            onClick={handleButtonPress}
+            disabled={isProcessing || isCleaningText}
+            className={`relative flex items-center justify-center w-32 h-32 rounded-full font-medium transition-all transform hover:scale-110 ${
+              !hasStarted
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white'
+                : isRecording
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white'
+                  : isPlayingTTS
+                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white'
+                    : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white'
+            } ${(isProcessing || isCleaningText) ? 'opacity-75 cursor-not-allowed' : ''} shadow-2xl`}
+            style={{
+              boxShadow: isRecording 
+                ? '0 0 40px rgba(239, 68, 68, 0.5)' 
+                : '0 10px 30px rgba(0, 0, 0, 0.2)'
+            }}
+          >
+            <div className="flex flex-col items-center">
+              {!hasStarted ? (
+                <Volume2 className="w-12 h-12" />
+              ) : isRecording ? (
+                <Square className="w-10 h-10" />
+              ) : isPlayingTTS ? (
+                <VolumeX className="w-12 h-12" />
+              ) : (
+                <Mic className="w-12 h-12" />
+              )}
+            </div>
+          </button>
+
+          {/* Recording indicator */}
+          {isRecording && (
+            <div className="absolute -top-3 -right-3 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="w-4 h-4 bg-white rounded-full animate-pulse"></div>
+            </div>
+          )}
+        </div>
+
+        {/* Status Pills */}
+        <div className="flex flex-col items-center gap-3">
+          {isProcessing ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium animate-pulse">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              {therapistName} is thinking...
+            </div>
+          ) : isCleaningText ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium animate-pulse">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Processing speech...
+            </div>
+          ) : isRecording ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+              Recording...
+            </div>
+          ) : isPlayingTTS ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
+              <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
+              {therapistName} is speaking
+            </div>
+          ) : null}
+          
+          {/* STT Provider Badge */}
+          {currentSTTMethod && (
+            <div className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+              {currentSTTMethod === 'elevenlabs' ? '⚡ ElevenLabs STT' : '🌐 Browser STT'}
+            </div>
+          )}
+        </div>
+
+        {/* Live Transcript */}
+        {transcript && (
+          <div className="w-full max-w-md bg-gray-50/80 backdrop-blur-sm p-4 rounded-xl border border-gray-200/50 shadow-sm">
+            <p className="text-xs text-gray-500 mb-2 font-medium uppercase tracking-wider">Live Transcript</p>
+            <p className="text-sm text-gray-700 leading-relaxed">{transcript}</p>
           </div>
         )}
-      </div>
 
-      {/* Status Text */}
-      <div className="text-center">
-        {isProcessing ? (
-          <div className="flex items-center gap-2 text-sm text-blue-600">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            {therapistName} is thinking...
-          </div>
-        ) : isCleaningText ? (
-          <div className="flex items-center gap-2 text-sm text-blue-600">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Cleaning up your speech...
-          </div>
-        ) : !hasStarted ? (
-          <div className="space-y-2">
-            <p className="text-sm text-blue-600 font-medium">
-              🎯 Click to start session with {therapistName}
-            </p>
-            {currentSTTMethod && (
-              <div className="text-xs text-gray-500">
-                Using {currentSTTMethod === 'elevenlabs' ? 'ElevenLabs' : 'Browser'} STT
-              </div>
-            )}
-          </div>
-        ) : isRecording ? (
-          <div className="space-y-2">
-            <p className="text-sm text-red-600 font-medium">
-              🎤 Recording... Click again to stop and send
-            </p>
-            <div className="text-xs text-gray-500">
-              {currentSTTMethod === 'elevenlabs' ? '🔊 ElevenLabs STT' : '🌐 Browser STT'}
-            </div>
-          </div>
-        ) : isPlayingTTS ? (
-          <p className="text-sm text-yellow-600 font-medium">
-            🔊 {therapistName} is speaking... Press to interrupt
-          </p>
-        ) : (
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600">
-              Press to start speaking
-            </p>
-            <div className="text-xs text-gray-500">
-              {sttProvider === 'elevenlabs' ? 'ElevenLabs STT Ready' : 'Browser STT Ready'}
-            </div>
+        {/* Error Display */}
+        {error && (
+          <div className="text-sm text-red-600 bg-red-50/80 backdrop-blur-sm px-4 py-3 rounded-xl flex items-center gap-2 max-w-sm border border-red-200/50">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{error}</span>
           </div>
         )}
+
+        {/* Instructions */}
+        <div className="text-xs text-gray-500 text-center max-w-xs">
+          {!hasStarted
+            ? `Tap the button to start your session with ${therapistName}`
+            : isRecording 
+              ? "Speak clearly, tap again when done"
+              : isPlayingTTS
+                ? "Tap to interrupt and respond"
+                : "Tap to speak your response"
+          }
+        </div>
       </div>
-
-      {/* Live Transcript */}
-      {transcript && (
-        <div className="bg-white p-3 rounded-lg border max-w-sm">
-          <p className="text-xs text-gray-500 mb-1">Live transcript:</p>
-          <p className="text-sm text-gray-800">{transcript}</p>
-        </div>
-      )}
-
-      {/* Error Display */}
-      {error && (
-        <div className="text-sm text-red-600 bg-red-50 px-4 py-2 rounded-lg flex items-center gap-2 max-w-sm">
-          <AlertCircle className="w-4 h-4" />
-          {error}
-        </div>
-      )}
-
-      {/* Instructions */}
-      <div className="text-xs text-gray-500 text-center max-w-xs">
-        {!hasStarted
-          ? `Click to begin your voice conversation with ${therapistName}. They'll greet you and start the session.`
-          : isRecording 
-            ? "Speak clearly, then click the button again to stop and send your message"
-            : isPlayingTTS
-              ? `${therapistName} is responding. Click the button to interrupt and speak.`
-              : `Your voice will be processed through ${therapistName}'s conversation engine`
+      
+      {/* Custom CSS for Animation Delay */}
+      <style jsx>{`
+        @keyframes ping {
+          0% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          75%, 100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
         }
-      </div>
+        
+        .animate-ping {
+          animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        
+        .animation-delay-200 {
+          animation-delay: 200ms;
+        }
+      `}</style>
     </div>
   );
 }
