@@ -43,7 +43,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
     style: 3,
     sttProvider: 'elevenlabs'
   });
-  const [showVoiceControls, setShowVoiceControls] = useState(false);
+  const [showVoiceControls, setShowVoiceControls] = useState(false); // Start collapsed to avoid interference
   const [showTranscript, setShowTranscript] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [isTranscoding, setIsTranscoding] = useState(false);
@@ -275,7 +275,34 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate speech');
+        // If ElevenLabs fails, fall back to browser TTS
+        console.warn('ElevenLabs TTS failed, falling back to browser TTS');
+        
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = voiceControlSettings.speakingPace / 3; // Convert 1-5 scale to 0.3-1.7
+          
+          utterance.onend = () => {
+            setIsPlayingTTS(false);
+            setIsTranscoding(false);
+          };
+          
+          utterance.onerror = () => {
+            setIsPlayingTTS(false);
+            setIsTranscoding(false);
+          };
+          
+          // Add message to chat
+          if (addToChat) {
+            addMessage('therapist', text);
+          }
+          
+          setIsTranscoding(false);
+          window.speechSynthesis.speak(utterance);
+          return;
+        } else {
+          throw new Error('No TTS available');
+        }
       }
 
       const audioBlob = await response.blob();
@@ -311,6 +338,11 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       setIsPlayingTTS(false);
       setCurrentTTSAudio(null);
       setIsTranscoding(false);
+      
+      // Still add the message to chat even if TTS fails
+      if (addToChat) {
+        addMessage('therapist', text);
+      }
     }
   };
 
@@ -407,14 +439,25 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
           )}
 
           {/* Voice Interface with Transcript Below */}
-          <div className="space-y-6">
+          <div className="space-y-4">
+            {/* Voice Controls Toggle */}
+            <button
+              onClick={() => setShowVoiceControls(!showVoiceControls)}
+              className="w-full flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors py-2"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Voice Settings</span>
+            </button>
+            
             {/* Voice Controls */}
-            <VoiceControls 
-              settings={voiceControlSettings}
-              onSettingsChange={setVoiceControlSettings}
-              isExpanded={showVoiceControls}
-              onToggle={() => setShowVoiceControls(!showVoiceControls)}
-            />
+            {showVoiceControls && (
+              <VoiceControls 
+                settings={voiceControlSettings}
+                onSettingsChange={setVoiceControlSettings}
+                isExpanded={true}
+                onToggle={() => setShowVoiceControls(!showVoiceControls)}
+              />
+            )}
             
             {/* Voice Conversation Interface */}
             <div className="flex items-center justify-center py-8">
