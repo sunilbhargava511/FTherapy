@@ -8,10 +8,13 @@ interface SessionNotesProps {
   notes: TherapistNote[];
   therapist: TherapistPersonality;
   userProfile: UserProfile | null;
+  financialReport?: any;
+  isGeneratingReport?: boolean;
 }
 
-export default function SessionNotes({ notes, therapist, userProfile }: SessionNotesProps) {
+export default function SessionNotes({ notes, therapist, userProfile, financialReport, isGeneratingReport }: SessionNotesProps) {
   const [showCover, setShowCover] = useState(true);
+  const [currentPage, setCurrentPage] = useState<'notes' | 'report-lifestyle' | 'report-budget'>('notes');
   
   // Get user name from profile or extract from notes as fallback
   const getUserName = () => {
@@ -205,45 +208,187 @@ export default function SessionNotes({ notes, therapist, userProfile }: SessionN
           ))}
         </div>
 
-        {/* Back to Cover Button */}
-        <button 
-          onClick={() => setShowCover(true)}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 font-kalam text-xs"
-        >
-          ← Cover
-        </button>
+        {/* Navigation Buttons */}
+        <div className="absolute top-4 right-4 flex gap-2">
+          <button 
+            onClick={() => setShowCover(true)}
+            className="text-gray-500 hover:text-gray-700 font-kalam text-xs"
+          >
+            ← Cover
+          </button>
+          {financialReport && (
+            <>
+              <button 
+                onClick={() => setCurrentPage('notes')}
+                className={`font-kalam text-xs px-2 py-1 rounded ${
+                  currentPage === 'notes' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Notes
+              </button>
+              <button 
+                onClick={() => setCurrentPage('report-lifestyle')}
+                className={`font-kalam text-xs px-2 py-1 rounded ${
+                  currentPage === 'report-lifestyle' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Report
+              </button>
+              <button 
+                onClick={() => setCurrentPage('report-budget')}
+                className={`font-kalam text-xs px-2 py-1 rounded ${
+                  currentPage === 'report-budget' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Budget
+              </button>
+            </>
+          )}
+        </div>
 
         {/* Page Header with User Name */}
         <div className="ml-10 mb-6">
           <h3 className="font-caveat text-2xl font-bold text-blue-900 transform -rotate-1">
-            Session Note for {userName || 'Client'}
+            {currentPage === 'notes' && `Session Note for ${userName || 'Client'}`}
+            {currentPage === 'report-lifestyle' && `${userName || 'Client'}'s Financial Profile`}
+            {currentPage === 'report-budget' && `${userName || 'Client'}'s Monthly Budget`}
           </h3>
           <div className="w-28 h-0.5 bg-blue-700 mt-2 transform -rotate-1"></div>
         </div>
-      
-        {/* Notes Content */}
-        <div className="space-y-3 max-h-[280px] overflow-y-auto ml-10">
-          {notes.length === 0 ? (
-            <p className="font-kalam text-lg text-gray-600 italic transform rotate-1">
-              Session notes will appear here...
-            </p>
-          ) : (
-            notes.map((note, index) => (
-              <div key={`${note.time}-${index}`} className="pb-3">
-                <p className="font-kalam text-sm text-blue-600 transform -rotate-1">
-                  {note.time}
-                </p>
-                <p className="font-kalam text-base text-blue-900 mt-1 leading-relaxed transform rotate-0.5" 
-                   style={{ 
-                     textShadow: '0.5px 0.5px 0px rgba(0,0,0,0.1)',
-                     marginLeft: `${Math.random() * 4}px` 
-                   }}>
-                  {note.note}
+
+        {/* Content based on current page */}
+        {currentPage === 'notes' && (
+          <div className="space-y-3 max-h-[280px] overflow-y-auto ml-10">
+            {notes.length === 0 ? (
+              <p className="font-kalam text-lg text-gray-600 italic transform rotate-1">
+                Session notes will appear here...
+              </p>
+            ) : (
+              notes.map((note, index) => (
+                <div key={`${note.time}-${index}`} className="pb-3">
+                  <p className="font-kalam text-sm text-blue-600 transform -rotate-1">
+                    {note.time}
+                  </p>
+                  <p className="font-kalam text-base text-blue-900 mt-1 leading-relaxed transform rotate-0.5" 
+                     style={{ 
+                       textShadow: '0.5px 0.5px 0px rgba(0,0,0,0.1)',
+                       marginLeft: `${Math.random() * 4}px` 
+                     }}>
+                    {note.note}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {currentPage === 'report-lifestyle' && financialReport && (
+          <div className="space-y-4 max-h-[380px] overflow-y-auto ml-10">
+            <div className="space-y-3">
+              <div>
+                <h4 className="font-caveat text-lg font-bold text-blue-800 mb-2">Summary</h4>
+                <p className="font-kalam text-sm text-blue-900 leading-relaxed">
+                  {financialReport.lifestyleAnalysis.summary}
                 </p>
               </div>
-            ))
-          )}
-        </div>
+
+              <div>
+                <h4 className="font-caveat text-lg font-bold text-blue-800 mb-2">Financial Personality</h4>
+                <p className="font-kalam text-sm text-blue-900 font-semibold">
+                  {financialReport.lifestyleAnalysis.personality}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-caveat text-lg font-bold text-blue-800 mb-2">Strengths</h4>
+                <ul className="font-kalam text-sm text-blue-900 space-y-1">
+                  {financialReport.lifestyleAnalysis.strengths.map((strength: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-green-600 mr-2">•</span>
+                      {strength}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-caveat text-lg font-bold text-blue-800 mb-2">Opportunities</h4>
+                <ul className="font-kalam text-sm text-blue-900 space-y-1">
+                  {financialReport.lifestyleAnalysis.opportunities.map((opportunity: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-orange-500 mr-2">•</span>
+                      {opportunity}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-caveat text-lg font-bold text-blue-800 mb-2">Recommendations</h4>
+                <ul className="font-kalam text-sm text-blue-900 space-y-1">
+                  {financialReport.lifestyleAnalysis.recommendations.map((rec: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-blue-600 mr-2">→</span>
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentPage === 'report-budget' && financialReport && (
+          <div className="space-y-4 max-h-[380px] overflow-y-auto ml-10">
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4 text-center mb-4">
+                <div className="bg-green-50 p-3 rounded">
+                  <p className="font-caveat text-lg font-bold text-green-800">Monthly Income</p>
+                  <p className="font-kalam text-xl text-green-700">${financialReport.monthlyBudget.income.toLocaleString()}</p>
+                </div>
+                <div className="bg-red-50 p-3 rounded">
+                  <p className="font-caveat text-lg font-bold text-red-800">Monthly Expenses</p>
+                  <p className="font-kalam text-xl text-red-700">${financialReport.monthlyBudget.totalExpenses.toLocaleString()}</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {Object.entries(financialReport.monthlyBudget.expenses).map(([category, data]: [string, any]) => (
+                  <div key={category} className="bg-blue-50 p-2 rounded">
+                    <div className="flex justify-between items-center">
+                      <span className="font-caveat text-base font-bold text-blue-800 capitalize">
+                        {category}
+                      </span>
+                      <span className="font-kalam text-sm text-blue-700">
+                        ${data.total.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gray-100 p-3 rounded mt-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-caveat text-lg font-bold text-gray-800">Net Available</span>
+                  <span className={`font-kalam text-lg font-bold ${
+                    financialReport.monthlyBudget.netIncome >= 0 ? 'text-green-700' : 'text-red-700'
+                  }`}>
+                    ${financialReport.monthlyBudget.netIncome.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isGeneratingReport && !financialReport && (
+          <div className="flex items-center justify-center ml-10 mt-20">
+            <div className="text-center">
+              <div className="animate-spin w-8 h-8 border-4 border-blue-300 border-t-blue-600 rounded-full mx-auto mb-4"></div>
+              <p className="font-kalam text-sm text-blue-600">Generating your financial report...</p>
+            </div>
+          </div>
+        )}
 
         {/* Current Goal Metrics */}
         <div className="absolute bottom-6 left-10 right-6">

@@ -47,6 +47,8 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
   const [showTranscript, setShowTranscript] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [isTranscoding, setIsTranscoding] = useState(false);
+  const [financialReport, setFinancialReport] = useState<any>(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -227,6 +229,12 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
         if (nextTopic === 'summary' && finalInput.toLowerCase().includes('yes')) {
           setTimeout(() => setShowSummary(true), 1000);
         }
+
+        // Check if we should generate financial report
+        const updatedProfile = conversationEngine.getUserProfile();
+        if (updatedProfile) {
+          setTimeout(() => checkAndGenerateReport(updatedProfile), 2000);
+        }
       }, 1000);
     } catch (error) {
       console.error('Error processing user input:', error);
@@ -366,6 +374,44 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
     return conversationEngine?.getUserProfile() || null;
   };
 
+  const checkAndGenerateReport = async (profile: any) => {
+    if (!profile || isGeneratingReport || financialReport) return;
+
+    // Check if all required lifestyle data is collected
+    const lifestyle = profile.lifestyle;
+    const requiredFields = ['housing', 'food', 'transport', 'fitness', 'entertainment', 'subscriptions', 'travel'];
+    const completedFields = requiredFields.filter(field => 
+      lifestyle[field] && lifestyle[field].preference && lifestyle[field].preference.trim() !== ''
+    );
+
+    // Generate report when we have at least 6 out of 7 categories (allowing for some flexibility)
+    if (completedFields.length >= 6 && profile.name && profile.age) {
+      setIsGeneratingReport(true);
+      try {
+        const response = await fetch('/api/generate-financial-report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userProfile: profile
+          }),
+        });
+
+        if (response.ok) {
+          const report = await response.json();
+          setFinancialReport(report);
+        } else {
+          console.error('Failed to generate financial report');
+        }
+      } catch (error) {
+        console.error('Error generating financial report:', error);
+      } finally {
+        setIsGeneratingReport(false);
+      }
+    }
+  };
+
   if (!conversationEngine) {
     return (
       <div className="flex flex-col justify-center items-center h-64 text-center">
@@ -415,7 +461,13 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
             }}
           />
         </div>
-        <SessionNotes notes={notes} therapist={therapist} userProfile={userProfile} />
+        <SessionNotes 
+          notes={notes} 
+          therapist={therapist} 
+          userProfile={userProfile} 
+          financialReport={financialReport}
+          isGeneratingReport={isGeneratingReport}
+        />
       </div>
     );
   }
