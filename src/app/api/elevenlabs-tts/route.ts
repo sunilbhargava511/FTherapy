@@ -7,6 +7,12 @@ const THERAPIST_VOICES: Record<string, string> = {
   'ramit-sethi': 'VR6AewLTigWG4xSOukaG', // Josh - confident male
   'nora-ephron': 'EXAVITQu4vr4xnSDxMaL', // Bella - witty female
   'anita-bhargava': 'duDBJHU6G1oq7ZdK4Kxf', // Deshna - Indian-accented female voice
+  // Backup bench therapists
+  'shakespeare': 'onwK4e9ZLuTAKqWW03F9', // Daniel - distinguished English gentleman
+  'trevor-noah': 'N2lVS1w4EtoT3dr4eOWO', // Callum - warm, articulate male with slight accent
+  'peter-lynch': 'pFZP5JQG7iQjIQuC4Bku', // Harry - authoritative American male
+  'michelle-obama': 'XB0fDUnXU5powFXDhCwa', // Charlotte - elegant, inspiring female
+  'mel-robbins': 'jBpfuIE2acCO8z3wKNLl', // Freya - energetic, motivational female
 };
 
 export async function POST(request: NextRequest) {
@@ -28,7 +34,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const voiceId = THERAPIST_VOICES[therapistId] || THERAPIST_VOICES['danielle-town'];
+    // Use default voice for custom therapists (those not in THERAPIST_VOICES)
+    const voiceId = THERAPIST_VOICES[therapistId] || 'ThT5KcBeYPX3keUQqHPh'; // Dorothy - warm, intelligent female as default
 
     // Map speaking pace (1-5) to speed (0.25-2.0)
     const speedMapping = {

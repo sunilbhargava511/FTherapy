@@ -36,6 +36,31 @@
   .voice-button-idle {
     @apply bg-blue-500 hover:bg-blue-600;
   }
+  
+  /* Custom therapist color themes */
+  .therapy-custom-blue {
+    @apply bg-blue-100 border-blue-300 text-blue-800;
+  }
+  
+  .therapy-custom-green {
+    @apply bg-green-100 border-green-300 text-green-800;
+  }
+  
+  .therapy-custom-purple {
+    @apply bg-purple-100 border-purple-300 text-purple-800;
+  }
+  
+  .therapy-custom-orange {
+    @apply bg-orange-100 border-orange-300 text-orange-800;
+  }
+  
+  .therapy-custom-red {
+    @apply bg-red-100 border-red-300 text-red-800;
+  }
+  
+  .therapy-custom-pink {
+    @apply bg-pink-100 border-pink-300 text-pink-800;
+  }
 }
 
 /* Typing animation */

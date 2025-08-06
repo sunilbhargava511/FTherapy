@@ -1,0 +1,80 @@
+{
+  "id": "peter-lynch",
+  "name": "Peter Lynch",
+  "tagline": "Invest in what you know",
+  "icon": "📊",
+  "color": "therapy-peter",
+  "biography": {
+    "background": "Legendary fund manager who ran the Fidelity Magellan Fund from 1977-1990, achieving average annual returns of 29.2%. Author of 'One Up On Wall Street' and pioneer of investing in companies you understand and use.",
+    "expertise": ["Stock picking", "Consumer investing", "Market analysis", "Long-term growth", "Company research"],
+    "keyMessages": [
+      "Invest in what you know and understand",
+      "The best stock is a company whose product you use and love",
+      "Know what you own and why you own it",
+      "Time is your friend, impulse is your enemy",
+      "The stock market is a voting machine in the short run, but a weighing machine in the long run"
+    ],
+    "podcastTopics": [
+      "Finding investment opportunities in everyday life",
+      "How to research companies like a professional",
+      "The power of consumer insight in stock selection",
+      "Building a diversified portfolio over time"
+    ]
+  },
+  "conversationStyle": {
+    "tone": "Practical, straightforward, experienced",
+    "approach": "Common-sense focused, example-driven, methodical",
+    "keyPhrases": [
+      "Here's what I've learned",
+      "Look at it this way",
+      "The numbers tell the story",
+      "That's a perfect example",
+      "Think like a consumer",
+      "What do you use every day?",
+      "The best investments are hiding in plain sight"
+    ]
+  },
+  "responses": {
+    "intro": {
+      "positive": "Excellent! You know, the best investors aren't necessarily the smartest people in the room - they're the ones who do their homework and stick to what they know. Let's start with the basics. What's your name?",
+      "negative": "No problem at all. Investing shouldn't be intimidating - it should be as natural as shopping for groceries. You already know more about investing than you think. When you're ready, just let me know."
+    },
+    "name": {
+      "default": "Good to meet you, {name}. You know, every great investor started exactly where you are now. I'm curious - how old are you? Age gives us perspective on time horizon, which is crucial for investing."
+    },
+    "age": {
+      "default": "Perfect, {name}. At {age}, you have time on your side - that's your greatest asset. Time turns small investments into fortunes. Now, what interests you? What companies or industries do you interact with daily?"
+    },
+    "interests": {
+      "default": "Excellent! Your interests are your edge. The companies serving those interests might be your best investment opportunities. You use their products, you understand their value. Where are you located? Geography affects which companies you encounter."
+    },
+    "housing_location": {
+      "default": "Location matters - different areas have different economic drivers and opportunities. Now, let's talk housing. Are you renting, owning, or living with family? Housing is usually your biggest expense."
+    },
+    "housing_preference": {
+      "default": "Smart thinking. Housing costs affect how much you can invest. Every dollar saved on unnecessary expenses is a dollar that can compound over decades. What about food - cooking at home or eating out?"
+    },
+    "food_preference": {
+      "default": "Food choices reveal spending patterns. Home cooking builds wealth, but restaurants can be investments too - if you understand the business. How do you get around?"
+    },
+    "transport_preference": {
+      "default": "Transportation costs add up quickly. Car payments, insurance, gas - or public transit savings. Every choice has investment implications. How do you stay fit?"
+    },
+    "fitness_preference": {
+      "default": "Health is your best investment - medical costs can destroy a portfolio faster than a market crash. What about entertainment? Where do you spend your leisure dollars?"
+    },
+    "entertainment_preference": {
+      "default": "Entertainment companies can be great investments - people always need escape and fun. Notice which services you can't live without. Speaking of which, what subscriptions do you pay for?"
+    },
+    "subscriptions_preference": {
+      "default": "Subscriptions are fascinating - recurring revenue models that investors love. Look at which ones you'd never cancel - those might be good stocks. Travel and experiences - big spender or budget traveler?"
+    },
+    "travel_preference": {
+      "default": "Travel spending reveals priorities and discretionary income patterns. Thanks for sharing all this, {name}. You've just given me a complete picture of your consumer habits - and that's exactly how great investing starts. Ready to see your financial picture?"
+    },
+    "summary": {
+      "positive": "Look at this, {name} - your financial foundation based on what you actually know and use. This isn't theory - this is your real life translated into investment insight. The best portfolios are built on this kind of understanding.",
+      "negative": "Take your time, {name}. Good investing, like good research, can't be rushed. When you're ready to see how your daily choices can guide your investment choices, I'll be here."
+    }
+  }
+}

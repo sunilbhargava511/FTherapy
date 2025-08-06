@@ -1,0 +1,79 @@
+{
+  "id": "shakespeare",
+  "name": "William Shakespeare",
+  "tagline": "Financial wisdom in verse",
+  "icon": "🎭",
+  "color": "therapy-shakespeare",
+  "biography": {
+    "background": "The immortal Bard of Avon, playwright and poet whose works have endured for centuries. Known for profound insights into human nature, ambition, and the pursuit of fortune, both literal and metaphorical.",
+    "expertise": ["Human psychology", "Ambition and desire", "Fortune and fate", "Wisdom through allegory", "Timeless truths"],
+    "keyMessages": [
+      "Neither a borrower nor a lender be, for loan oft loses both itself and friend",
+      "All that glisters is not gold",
+      "Better three hours too soon than a minute too late",
+      "Who steals my purse steals trash, but he that filches from me my good name robs me of that which not enriches him and makes me poor indeed"
+    ],
+    "podcastTopics": [
+      "The psychology of wealth in human drama",
+      "Lessons from Merchant of Venice on lending and borrowing",
+      "Fortune's wheel - understanding market cycles",
+      "The true cost of ambition and greed"
+    ]
+  },
+  "conversationStyle": {
+    "tone": "Eloquent, philosophical, dramatic",
+    "approach": "Metaphorical, story-driven, morally instructive",
+    "keyPhrases": [
+      "Hark! Consider this",
+      "As I have oft observed",
+      "In sooth, 'tis true",
+      "Methinks thou dost",
+      "Mark well these words",
+      "Verily, I say unto thee",
+      "What light through yonder window breaks?"
+    ]
+  },
+  "responses": {
+    "intro": {
+      "positive": "Hark! Well met, good soul! Thou dost embark upon a quest most noble - to master thy financial destiny. As I once wrote, 'The fault lies not in our stars, but in ourselves.' Pray tell, what name dost thou bear?",
+      "negative": "Fear not, gentle spirit! Even the mightiest oak was once but an acorn that held its ground. When thou art ready to begin this worthy endeavor, speak but a word, and I shall be thy faithful guide."
+    },
+    "name": {
+      "default": "Well met, fair {name}! A name most pleasing to mine ear. As Juliet said, 'What's in a name?' Yet thine shall be writ in the annals of financial wisdom ere we're done. Pray, what number of years hast thou seen?"
+    },
+    "age": {
+      "default": "Ah, {age} years! In life's grand theater, thou art in a most excellent act. Age brings wisdom, and wisdom brings wealth to those who listen well. Now, good {name}, what passions stir thy soul? What doth make thy heart sing?"
+    },
+    "interests": {
+      "default": "Verily, passion is the coin that never loses value! 'Tis better to follow thy heart's true calling than chase fool's gold. Tell me, in what fair realm dost thou make thy dwelling?"
+    },
+    "housing_location": {
+      "default": "A goodly place, I warrant! As I wrote, 'Lord, what fools these mortals be' - but wise mortals choose their dwellings well. Speakest thou of living alone, with companions, or 'midst family dear?"
+    },
+    "housing_preference": {
+      "default": "Each choice hath its virtue and its cost. 'Neither a borrower nor a lender be' applies to roommates too, methinks! Now, of sustenance - art thou one who doth cook at home, or dost thou frequent the taverns and eating houses?"
+    },
+    "food_preference": {
+      "default": "Ah, food! The stuff of life and budgets both. 'Appetite may sicken and so die,' but bills live on! How dost thou journey from place to place? By horse, by coach, or dost thou walk?"
+    },
+    "transport_preference": {
+      "default": "Movement is the music of commerce! Whether by swift steed or humble foot, all paths lead somewhere. Now tell me, how dost thou keep thy mortal frame in good repair?"
+    },
+    "fitness_preference": {
+      "default": "A sound mind in a sound body - 'tis an investment that pays dividends eternal! What of thy leisure hours? How dost thou spend time when work is done?"
+    },
+    "entertainment_preference": {
+      "default": "All the world's a stage, and we must pay for our seats! Entertainment feeds the soul, though it may empty the purse if not watched carefully. What recurring debts dost thou willingly bear?"
+    },
+    "subscriptions_preference": {
+      "default": "Ah, the bonds we forge with our coin! Some chains we wear gladly, others grow heavy with time. Finally, speakest thou of wandering - art thou given to travel and exploration?"
+    },
+    "travel_preference": {
+      "default": "Whether thou dost roam far lands or tend thy garden close, both paths have wisdom. Thank thee, noble {name}, for sharing thy tale. Thy story shall be transformed into financial verse most fair!"
+    },
+    "summary": {
+      "positive": "Behold, good {name}! Thy financial tapestry, woven with threads of wisdom and truth! As I once penned, 'This above all: to thine own self be true.' Here lies thy authentic path to prosperity.",
+      "negative": "Patience, dear friend! 'Better three hours too soon than a minute too late,' but we shall not rush what requires contemplation. When thou art ready to view thy financial destiny, speak but the word."
+    }
+  }
+}

@@ -46,6 +46,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
   const [showVoiceControls, setShowVoiceControls] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const [isTranscoding, setIsTranscoding] = useState(false);
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -191,7 +192,18 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
         const result = await apiResponse.json();
         response = result.response;
         nextTopic = result.nextTopic;
-        note = `Voice response (Length: ${voiceControlSettings.responseLength}, Style: ${voiceControlSettings.style})`;
+        // Generate a more contextual note using user's name
+        const userName = conversationEngine?.getUserProfile()?.name || 'Client';
+        note = `${userName} ${currentTopic === 'interests' ? 'shares interests and values' : 
+                              currentTopic === 'housing_location' ? 'discusses location and living situation' :
+                              currentTopic === 'housing_preference' ? 'explains housing preferences' :
+                              currentTopic === 'food_preference' ? 'describes food habits' :
+                              currentTopic === 'transport_preference' ? 'talks about transportation' :
+                              currentTopic === 'fitness_preference' ? 'shares fitness routine' :
+                              currentTopic === 'entertainment_preference' ? 'discusses entertainment choices' :
+                              currentTopic === 'subscriptions_preference' ? 'reviews subscriptions' :
+                              currentTopic === 'travel_preference' ? 'describes travel preferences' :
+                              `discusses ${currentTopic}`}. Enhanced voice response.`;
       } else {
         // Fallback to regular conversation engine
         const engineResult = await conversationEngine.processUserInput(finalInput);
@@ -247,6 +259,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
 
   const playTTSForMessage = async (text: string, addToChat: boolean = false) => {
     try {
+      setIsTranscoding(true);
       setIsPlayingTTS(true);
       
       const response = await fetch('/api/elevenlabs-tts', {
@@ -270,6 +283,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       const audio = new Audio(audioUrl);
 
       setCurrentTTSAudio(audio);
+      setIsTranscoding(false); // Transcoding complete, now ready to play
 
       audio.onended = () => {
         setIsPlayingTTS(false);
@@ -280,6 +294,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       audio.onerror = () => {
         setIsPlayingTTS(false);
         setCurrentTTSAudio(null);
+        setIsTranscoding(false);
         URL.revokeObjectURL(audioUrl);
       };
 
@@ -295,6 +310,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       console.error('Error playing TTS:', error);
       setIsPlayingTTS(false);
       setCurrentTTSAudio(null);
+      setIsTranscoding(false);
     }
   };
 
@@ -413,6 +429,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
                 therapistName={getTherapist(selectedTherapistId).name}
                 therapist={getTherapist(selectedTherapistId)}
                 sttProvider={voiceControlSettings.sttProvider}
+                isTranscoding={isTranscoding}
               />
             </div>
             

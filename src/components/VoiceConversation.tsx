@@ -15,6 +15,7 @@ interface VoiceConversationProps {
   therapistName: string;
   therapist: TherapistPersonality;
   sttProvider: 'elevenlabs' | 'browser';
+  isTranscoding?: boolean;
 }
 
 export default function VoiceConversation({ 
@@ -27,7 +28,8 @@ export default function VoiceConversation({
   hasStarted,
   therapistName,
   therapist,
-  sttProvider
+  sttProvider,
+  isTranscoding = false
 }: VoiceConversationProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -37,6 +39,7 @@ export default function VoiceConversation({
   const [currentSTTMethod, setCurrentSTTMethod] = useState<'elevenlabs' | 'browser' | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const [voiceStatus, setVoiceStatus] = useState<'idle' | 'listening' | 'transcribing' | 'thinking' | 'transcoding'>('idle');
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -214,6 +217,7 @@ export default function VoiceConversation({
           setAudioChunks(chunks);
           setCurrentSTTMethod('elevenlabs');
           setIsRecording(true);
+          setVoiceStatus('listening');
           
           // Start recording (collect data only when stopped)
           recorder.start();
@@ -234,6 +238,7 @@ export default function VoiceConversation({
           recognitionRef.current.start();
           setCurrentSTTMethod('browser');
           setIsRecording(true);
+          setVoiceStatus('listening');
         }
       }
     } catch (error) {
@@ -245,6 +250,7 @@ export default function VoiceConversation({
 
   const stopRecording = useCallback(async () => {
     setIsRecording(false);
+    setVoiceStatus('transcribing');
     
     if (currentSTTMethod === 'elevenlabs' && mediaRecorder) {
       // Handle ElevenLabs STT
@@ -271,18 +277,22 @@ export default function VoiceConversation({
               
               // Clean up the text if enabled
               if (enableTextCleanup) {
+                setVoiceStatus('thinking');
                 finalTranscript = await cleanupText(finalTranscript);
               }
 
               // Send to parent component
+              setVoiceStatus('idle');
               onVoiceInput(finalTranscript);
             } else {
               console.warn('Empty transcript received');
               setError('No speech detected. Please try again.');
+              setVoiceStatus('idle');
             }
           } catch (error) {
             console.error('ElevenLabs transcription failed, falling back to browser STT:', error);
             setError('ElevenLabs STT failed. Please try browser STT instead.');
+            setVoiceStatus('idle');
             
             // Clear error after a few seconds
             setTimeout(() => setError(null), 3000);
@@ -313,12 +323,16 @@ export default function VoiceConversation({
         
         // Clean up the text if enabled
         if (enableTextCleanup) {
+          setVoiceStatus('thinking');
           finalTranscript = await cleanupText(finalTranscript);
         }
 
         // Send to parent component
+        setVoiceStatus('idle');
         onVoiceInput(finalTranscript);
         setTranscript('');
+      } else {
+        setVoiceStatus('idle');
       }
     }
     
@@ -431,20 +445,30 @@ export default function VoiceConversation({
 
         {/* Status Pills */}
         <div className="flex flex-col items-center gap-3">
-          {isProcessing ? (
+          {isProcessing && !isPlayingTTS ? (
             <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium animate-pulse">
               <Loader2 className="w-4 h-4 animate-spin" />
               {therapistName} is thinking...
             </div>
-          ) : isCleaningText ? (
+          ) : voiceStatus === 'listening' ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              Listening...
+            </div>
+          ) : voiceStatus === 'transcribing' ? (
             <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium animate-pulse">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Transcribing...
+            </div>
+          ) : voiceStatus === 'thinking' ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium animate-pulse">
               <Loader2 className="w-4 h-4 animate-spin" />
               Processing speech...
             </div>
-          ) : isRecording ? (
-            <div className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-              Recording...
+          ) : isTranscoding ? (
+            <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-medium animate-pulse">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Transcoding voice...
             </div>
           ) : isPlayingTTS ? (
             <div className="flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
@@ -481,11 +505,17 @@ export default function VoiceConversation({
         <div className="text-xs text-gray-500 text-center max-w-xs">
           {!hasStarted
             ? `Tap the button to start your session with ${therapistName}`
-            : isRecording 
+            : voiceStatus === 'listening'
               ? "Speak clearly, tap again when done"
-              : isPlayingTTS
-                ? "Tap to interrupt and respond"
-                : "Tap to speak your response"
+              : voiceStatus === 'transcribing'
+                ? "Converting your speech to text..."
+              : voiceStatus === 'thinking'
+                ? "Processing and cleaning up your message..."
+              : isTranscoding
+                ? "Generating voice response..."
+                : isPlayingTTS
+                  ? "Tap to interrupt and respond"
+                  : "Tap to speak your response"
           }
         </div>
       </div>

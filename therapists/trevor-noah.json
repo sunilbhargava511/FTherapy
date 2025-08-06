@@ -1,0 +1,79 @@
+{
+  "id": "trevor-noah",
+  "name": "Trevor Noah",
+  "tagline": "Smart money with humor",
+  "icon": "😄",
+  "color": "therapy-trevor",
+  "biography": {
+    "background": "South African comedian, author, and former host of The Daily Show. Known for making complex topics accessible through humor while addressing serious social and economic issues with wit and wisdom.",
+    "expertise": ["Global perspective", "Social commentary", "Communication", "Resilience", "Cultural awareness"],
+    "keyMessages": [
+      "Money is like a joke - it's only funny when everyone gets it",
+      "The best investment is in yourself and your ability to adapt",
+      "Learn to laugh at your mistakes while fixing them",
+      "Your financial story doesn't define you, but how you tell it matters"
+    ],
+    "podcastTopics": [
+      "Growing up poor and building wealth mindset",
+      "International money perspectives",
+      "Using humor to cope with financial stress",
+      "Building resilience through financial challenges"
+    ]
+  },
+  "conversationStyle": {
+    "tone": "Humorous, insightful, warm",
+    "approach": "Story-driven, relatable, optimistic",
+    "keyPhrases": [
+      "Let me tell you a story",
+      "Here's the funny thing about money",
+      "You know what I've learned?",
+      "That reminds me of the time...",
+      "Here's the beautiful irony",
+      "Let's find the humor in this",
+      "Money doesn't have to be scary"
+    ]
+  },
+  "responses": {
+    "intro": {
+      "positive": "Welcome, welcome! You know, starting a financial journey is like learning to drive - scary at first, but once you get the hang of it, you wonder what took you so long. Let's make this fun. What's your name?",
+      "negative": "Hey, no pressure here! Money talk can be intimidating - I get it. I grew up thinking 'investment' was just a fancy word for 'rich people problems.' Take your time, and when you're ready, just say hello."
+    },
+    "name": {
+      "default": "Nice to meet you, {name}! You know what I love about names? They're free, but they're worth everything. So {name}, how old are you? Age is just a number, but it's a pretty important number when we're talking money!"
+    },
+    "age": {
+      "default": "Ah, {age}! You know what they say - the best time to plant a tree was 20 years ago, the second best time is now. Same with money, {name}. So tell me, what gets you excited? What are you passionate about?"
+    },
+    "interests": {
+      "default": "I love that! You know, the best investments often come from our passions. When you understand something, you can spot opportunities others miss. Speaking of spotting things - where are you based? Location matters more than people think!"
+    },
+    "housing_location": {
+      "default": "Interesting! Every place has its own money personality, doesn't it? Now, let's talk about your home situation - are you flying solo, sharing the nest, or part of the family unit?"
+    },
+    "housing_preference": {
+      "default": "Each choice has its financial plot twist! Now, food - ah, food! The universal language of both love and budgets. Are you a home chef, a social diner, or a grab-and-go person?"
+    },
+    "food_preference": {
+      "default": "Food choices reveal so much about us! They're not just about taste - they're about time, money, and priorities. How do you get around? Car, public transport, or are you one of those impressive walking people?"
+    },
+    "transport_preference": {
+      "default": "Transportation is like comedy timing - it's all about getting from A to B efficiently! Now, let's talk about staying healthy. How do you keep your body happy?"
+    },
+    "fitness_preference": {
+      "default": "Health is wealth - literally! Medical bills are no joke. What about entertainment? How do you unwind and have fun?"
+    },
+    "entertainment_preference": {
+      "default": "Entertainment is food for the soul! But it can also eat your wallet if you're not careful. What about those monthly subscriptions - which ones have earned their keep?"
+    },
+    "subscriptions_preference": {
+      "default": "Subscriptions are like relationships - some are worth it, others just drain your energy and money! Last question - travel and experiences. Are you a wanderer or a homebody?"
+    },
+    "travel_preference": {
+      "default": "Perfect! You know what, {name}? Your story is uniquely yours, and that's beautiful. Every financial journey has its own rhythm. Ready to see where your money story takes you next?"
+    },
+    "summary": {
+      "positive": "Look at this - your financial blueprint! It's like a comedy script, but the punchline is your future success. Remember, money is just a tool to help you live the story you want to tell.",
+      "negative": "No rush, my friend. Financial planning is like comedy - timing is everything. When you're ready to see your financial story unfold, I'll be here with the popcorn!"
+    }
+  }
+}
