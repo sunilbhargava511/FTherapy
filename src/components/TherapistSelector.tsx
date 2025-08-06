@@ -105,17 +105,6 @@ export default function TherapistSelector({ therapists, selectedId, onSelect, on
           </div>
         ))}
         
-        {/* Add New Therapist Button */}
-        {onAddTherapist && (
-          <button
-            onClick={onAddTherapist}
-            className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors w-full max-w-[140px] bg-gray-50 hover:bg-gray-100"
-            title="Add new therapist"
-          >
-            <Plus className="w-6 h-6 text-gray-400 mb-2" />
-            <p className="text-xs text-gray-500 text-center">Add New</p>
-          </button>
-        )}
       </div>
 
       {/* Archived Therapists Section */}
