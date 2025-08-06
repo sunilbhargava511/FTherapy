@@ -10,7 +10,7 @@ const THERAPIST_VOICES: Record<string, string> = {
   // Backup bench therapists
   'shakespeare': 'onwK4e9ZLuTAKqWW03F9', // Daniel - distinguished English gentleman
   'trevor-noah': 'N2lVS1w4EtoT3dr4eOWO', // Callum - warm, articulate male with slight accent
-  'peter-lynch': 'pFZP5JQG7iQjIQuC4Bku', // Harry - authoritative American male
+  'peter-lynch': 'douDhHvfoViWmZth0cUX', // Updated male voice for Peter Lynch
   'michelle-obama': 'XB0fDUnXU5powFXDhCwa', // Charlotte - elegant, inspiring female
   'mel-robbins': 'jBpfuIE2acCO8z3wKNLl', // Freya - energetic, motivational female
 };
