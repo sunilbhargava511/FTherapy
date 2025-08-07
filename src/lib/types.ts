@@ -82,7 +82,7 @@ export interface TherapistPersonality {
     keyPhrases: string[];
   };
   responses: {
-    [topic in ConversationTopic]: ResponsePattern;
+    [topic in ConversationTopic]?: ResponsePattern;
   };
 }
 

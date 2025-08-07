@@ -66,38 +66,135 @@ async function generateReportWithClaude(profile: UserProfile): Promise<any> {
         max_tokens: 4096,
         messages: [{
           role: 'user',
-          content: `Based on this user profile, generate a comprehensive financial report with two sections:
+          content: `Generate a comprehensive financial report based on this user's lifestyle information.
 
 User Profile:
 ${JSON.stringify(profile, null, 2)}
 
-Please generate:
-1. A lifestyle analysis (personality insights, spending patterns, recommendations)
-2. A detailed monthly budget table with categories and amounts
+## Your Task:
+Create both a qualitative lifestyle analysis and quantitative expense breakdown.
+
+## Part 1: QUALITATIVE LIFESTYLE ANALYSIS
+Provide a narrative description that:
+- Summarizes their current lifestyle choices
+- Identifies their financial personality type
+- Highlights spending patterns and priorities
+- Offers personalized recommendations
+- Creates a shared understanding of their desired lifestyle
+
+## Part 2: QUANTITATIVE EXPENSE BREAKDOWN
+Based on their qualitative lifestyle information, estimate realistic monthly expenses using publicly available data for their location. DO NOT use any numbers they provided - instead research typical costs for their lifestyle choices and location. Include ALL relevant categories:
+
+### Core Categories:
+- **Housing**: Rent/mortgage, utilities, insurance, maintenance, property taxes
+- **Transportation**: Car payments, insurance, gas, maintenance, public transit, rideshare
+- **Food & Dining**: Groceries, restaurants, delivery, coffee shops
+- **Healthcare**: Insurance premiums, medications, co-pays, dental, vision
+- **Insurance**: Life, disability, long-term care
+- **Debt & Loans**: Credit cards, student loans, personal loans
+
+### Lifestyle Categories:
+- **Family & Children**: Childcare, education, activities, support
+- **Entertainment**: Subscriptions, events, hobbies, gym memberships
+- **Personal Care**: Clothing, grooming, beauty
+- **Travel & Vacations**: Monthly allocation for trips
+- **Savings & Investments**: Emergency fund, retirement, goals
+- **Miscellaneous**: Gifts, donations, professional development
 
 Return the response in this JSON format:
 {
   "lifestyleAnalysis": {
-    "summary": "Brief overview",
-    "personality": "Financial personality type",
-    "strengths": ["strength1", "strength2"],
-    "opportunities": ["opportunity1", "opportunity2"],
-    "recommendations": ["recommendation1", "recommendation2"]
+    "summary": "Comprehensive overview of their lifestyle",
+    "personality": "Financial personality type with explanation",
+    "currentSituation": "Detailed description of current lifestyle",
+    "strengths": ["strength1", "strength2", "strength3"],
+    "opportunities": ["opportunity1", "opportunity2", "opportunity3"],
+    "recommendations": ["specific recommendation 1", "specific recommendation 2", "specific recommendation 3"],
+    "lifestyleAlignment": "How their spending aligns with stated values and goals"
   },
   "monthlyBudget": {
     "income": 0,
     "expenses": {
-      "housing": { "rent": 0, "utilities": 0, "total": 0 },
-      "food": { "groceries": 0, "dining": 0, "total": 0 },
-      "transport": { "items": {}, "total": 0 },
-      "fitness": { "items": {}, "total": 0 },
-      "entertainment": { "items": {}, "total": 0 },
-      "subscriptions": { "items": {}, "total": 0 },
-      "travel": { "monthly": 0, "total": 0 },
-      "savings": { "emergency": 0, "retirement": 0, "goals": 0, "total": 0 }
+      "housing": { 
+        "rent_mortgage": 0, 
+        "utilities": 0, 
+        "insurance": 0,
+        "maintenance": 0,
+        "property_tax": 0,
+        "total": 0 
+      },
+      "transportation": { 
+        "car_payment": 0,
+        "insurance": 0,
+        "gas": 0,
+        "maintenance": 0,
+        "public_transit": 0,
+        "rideshare": 0,
+        "total": 0 
+      },
+      "food_dining": { 
+        "groceries": 0, 
+        "restaurants": 0,
+        "delivery": 0,
+        "coffee": 0,
+        "total": 0 
+      },
+      "healthcare": {
+        "insurance": 0,
+        "medications": 0,
+        "copays": 0,
+        "dental_vision": 0,
+        "total": 0
+      },
+      "insurance": {
+        "life": 0,
+        "disability": 0,
+        "long_term_care": 0,
+        "total": 0
+      },
+      "debt_loans": {
+        "credit_cards": 0,
+        "student_loans": 0,
+        "personal_loans": 0,
+        "total": 0
+      },
+      "family_children": {
+        "childcare": 0,
+        "education": 0,
+        "activities": 0,
+        "support": 0,
+        "total": 0
+      },
+      "lifestyle_entertainment": {
+        "gym": 0,
+        "subscriptions": 0,
+        "events": 0,
+        "hobbies": 0,
+        "personal_care": 0,
+        "clothing": 0,
+        "total": 0
+      },
+      "travel": { 
+        "monthly_allocation": 0,
+        "total": 0 
+      },
+      "savings_investments": { 
+        "emergency_fund": 0, 
+        "retirement": 0, 
+        "other_goals": 0, 
+        "total": 0 
+      },
+      "miscellaneous": {
+        "gifts": 0,
+        "donations": 0,
+        "professional_dev": 0,
+        "other": 0,
+        "total": 0
+      }
     },
     "totalExpenses": 0,
-    "netIncome": 0
+    "netIncome": 0,
+    "savingsRate": "X%"
   }
 }`
         }]

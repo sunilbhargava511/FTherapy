@@ -1,83 +1,79 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTherapist } from '@/lib/therapist-loader';
+import { generateTherapistResponse } from '@/lib/claude-api';
 import type { VoiceControlSettings } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
+  let currentTopic = 'intro'; // Default value
+  let therapistId = 'unknown';
+  
   try {
+    const body = await request.json();
+    therapistId = body.therapistId;
     const { 
-      therapistId, 
       userInput, 
-      conversationContext, 
-      currentTopic,
+      conversationContext,
       voiceSettings 
-    } = await request.json();
+    } = body;
+    currentTopic = body.currentTopic || 'intro';
 
     const therapist = getTherapist(therapistId);
     
-    // Build style modifiers based on voice control settings
-    const styleModifiers = buildStyleModifiers(voiceSettings);
-    
-    const systemPrompt = `You are ${therapist.name}, a financial therapy coach. 
-    
-Background: ${therapist.biography.background}
-
-Your conversation style: ${therapist.conversationStyle.tone} and ${therapist.conversationStyle.approach}
-
-Key phrases you use: ${therapist.conversationStyle.keyPhrases.join(', ')}
-
-IMPORTANT STYLE MODIFIERS:
-${styleModifiers}
-
-Current conversation context:
-${conversationContext}
-
-Current topic: ${currentTopic}
-
-The user just said: "${userInput}"
-
-Respond as ${therapist.name} would, following the style modifiers above. Keep the response natural and conversational while maintaining your coaching expertise.
-
-Your response should be just the text you would say - no meta commentary.`;
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY!,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-sonnet-20240229',
-        max_tokens: 300,
-        messages: [
-          {
-            role: 'user',
-            content: systemPrompt
-          }
-        ]
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error('Claude API request failed');
+    // Check if Claude API is configured
+    if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === 'your_api_key_here') {
+      console.error('[API_KEY_MISSING_VOICE]', new Date().toISOString(), {
+        therapistId,
+        currentTopic
+      });
+      return NextResponse.json(
+        { 
+          error: 'Claude API key not configured',
+          failureType: 'API_KEY_MISSING',
+          timestamp: new Date().toISOString()
+        },
+        { status: 503 }
+      );
     }
-
-    const result = await response.json();
-    const therapistResponse = result.content[0].text;
     
-    // Determine next topic based on response
-    const nextTopic = determineNextTopic(currentTopic, userInput);
+    // Use the existing generateTherapistResponse function which has the proper prompt
+    const result = await generateTherapistResponse(
+      therapist,
+      userInput,
+      conversationContext || '',
+      currentTopic
+    );
+    
+    // TODO: In the future, we can modify the response based on voiceSettings
+    // For now, just return the standard response
     
     return NextResponse.json({
-      response: therapistResponse,
-      nextTopic: nextTopic
+      ...result,
+      source: "claude_voice"
     });
     
   } catch (error) {
-    console.error('Voice response API error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const failureType = errorMessage.includes('rate limit') ? 'RATE_LIMIT' : 
+                       errorMessage.includes('timeout') ? 'TIMEOUT' :
+                       errorMessage.includes('network') ? 'NETWORK_ERROR' : 
+                       'API_ERROR';
+    
+    console.error('[API_FAILURE_VOICE]', new Date().toISOString(), {
+      therapistId,
+      currentTopic,
+      errorMessage,
+      failureType,
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    
     return NextResponse.json(
-      { error: 'Failed to generate response' },
-      { status: 500 }
+      { 
+        error: 'Failed to generate therapist response',
+        failureType,
+        errorMessage,
+        timestamp: new Date().toISOString()
+      },
+      { status: 503 }
     );
   }
 }

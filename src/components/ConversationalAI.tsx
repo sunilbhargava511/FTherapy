@@ -74,16 +74,11 @@ export default function ConversationalAI({ therapistId, onMessage, onStatusChang
           setStatus('Connected - Ready to talk!');
           onStatusChange?.('Connected - Ready to talk!');
           
-          // Send the therapist's initial greeting to chat history
-          try {
-            const therapist = getTherapist(therapistId);
-            const initialMessage = therapist.responses.intro.positive;
-            if (typeof initialMessage === 'string') {
-              onMessage?.(initialMessage, 'agent');
-            }
-          } catch (error) {
-            console.error('Error getting therapist initial message:', error);
-          }
+          // Initial greeting will come from Claude API when conversation starts
+          console.log('[ELEVENLABS_CONNECTED]', new Date().toISOString(), {
+            therapistId,
+            note: 'Waiting for Claude API to generate initial greeting'
+          });
         },
         onDisconnect: () => {
           console.log('Disconnected from ElevenLabs');

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Send, User, Wand2, Settings, MessageSquare, Phone, ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
+import { Send, User, Settings, MessageSquare, Phone, ChevronDown, ChevronUp, MessageCircle, Menu, X, TestTube, Mic, Volume2 } from 'lucide-react';
 import { ConversationMessage, TherapistNote, ConversationTopic, VoiceControlSettings } from '@/lib/types';
 import { getTherapist } from '@/lib/therapist-loader';
 import { ConversationEngine } from '@/lib/conversation-engine';
@@ -27,7 +27,6 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
   const [currentTopic, setCurrentTopic] = useState<ConversationTopic>('intro');
   const [showSummary, setShowSummary] = useState(false);
   const [conversationEngine, setConversationEngine] = useState<ConversationEngine | null>(null);
-  const [enableTextCleanup, setEnableTextCleanup] = useState(true);
   const [isCleaningText, setIsCleaningText] = useState(false);
   const [useElevenLabs, setUseElevenLabs] = useState(true);
   // Always use voice mode now
@@ -49,8 +48,13 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
   const [isTranscoding, setIsTranscoding] = useState(false);
   const [financialReport, setFinancialReport] = useState<any>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+  const [isTestingVoice, setIsTestingVoice] = useState(false);
+  const [testVoiceStatus, setTestVoiceStatus] = useState<'idle' | 'speaking' | 'listening' | 'processing'>('idle');
+  const [testTranscript, setTestTranscript] = useState<string>('');
   
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Initialize conversation engine when therapist changes
@@ -71,13 +75,15 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       setVoiceSessionStarted(false);
       
       // Add initial message
-      const initialMessage: ConversationMessage = {
-        id: '1',
-        speaker: 'therapist',
-        text: engine.getInitialMessage(),
-        timestamp: new Date()
-      };
-      setMessages([initialMessage]);
+      engine.getInitialMessage().then((text) => {
+        const initialMessage: ConversationMessage = {
+          id: '1',
+          speaker: 'therapist',
+          text: text,
+          timestamp: new Date()
+        };
+        setMessages([initialMessage]);
+      });
     } catch (error) {
       console.error('Error loading therapist:', error);
       setEngineError(error instanceof Error ? error.message : 'Failed to load therapist');
@@ -96,6 +102,18 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       setUnreadMessages(0);
     }
   }, [showTranscript, messages]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdownMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Cleanup TTS audio on unmount
   useEffect(() => {
@@ -127,46 +145,14 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
     setNotes(prev => [...prev, { time: timestamp, note, topic: currentTopic }]);
   };
 
-  const cleanupText = async (rawText: string): Promise<string> => {
-    if (!enableTextCleanup) {
-      return rawText;
-    }
-
-    try {
-      setIsCleaningText(true);
-      const response = await fetch('/api/cleanup-text', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: rawText }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to cleanup text');
-      }
-
-      const { cleanedText } = await response.json();
-      return cleanedText || rawText;
-    } catch (error) {
-      console.error('Error cleaning up text:', error);
-      return rawText; // Fallback to original text
-    } finally {
-      setIsCleaningText(false);
-    }
-  };
 
   const handleUserInput = async (input: string, isVoiceInput: boolean = false) => {
     if (!input.trim() || !conversationEngine) return;
 
-    let finalInput = input;
+    const finalInput = input;
     
-    // If this is voice input, clean it up first
-    if (isVoiceInput && enableTextCleanup) {
-      finalInput = await cleanupText(input);
-    }
-
-    // Add user message (showing the cleaned up version)
+    // Skip text cleanup - use raw input directly
+    // Add user message
     addMessage('user', finalInput);
 
     // Show typing indicator
@@ -207,11 +193,26 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
                               currentTopic === 'travel_preference' ? 'describes travel preferences' :
                               `discusses ${currentTopic}`}. Enhanced voice response.`;
       } else {
-        // Fallback to regular conversation engine
-        const engineResult = await conversationEngine.processUserInput(finalInput);
-        response = engineResult.response;
-        nextTopic = engineResult.nextTopic;
-        note = engineResult.note;
+        // API failed - log the failure and show error to user
+        const errorData = await apiResponse.json();
+        console.error('[CHAT_API_FAILURE]', new Date().toISOString(), errorData);
+        
+        // Log to failure tracking endpoint
+        await fetch('/api/log-failure', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            failureType: errorData.failureType || 'UNKNOWN',
+            therapistId: selectedTherapistId,
+            currentTopic,
+            errorMessage: errorData.errorMessage || 'API request failed'
+          })
+        });
+        
+        // Show error message to user
+        response = "I apologize, but I'm having trouble connecting right now. Please try again in a moment.";
+        nextTopic = currentTopic; // Stay on same topic
+        note = `API Failure: ${errorData.failureType || 'Unknown error'}`;
       }
       
       // Add note
@@ -361,7 +362,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
       setVoiceSessionStarted(true);
       
       // Get initial greeting
-      const initialMessage = conversationEngine.getInitialMessage();
+      const initialMessage = await conversationEngine.getInitialMessage();
       
       // Play TTS and add to chat when audio starts playing
       await playTTSForMessage(initialMessage, true);
@@ -437,6 +438,48 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
     );
   }
 
+  // Voice test functionality
+  const handleVoiceTest = async () => {
+    if (isTestingVoice) return;
+    
+    setIsTestingVoice(true);
+    setTestVoiceStatus('speaking');
+    setTestTranscript('');
+    
+    try {
+      // Test TTS first
+      const testMessage = "Hello! This is a voice test. Please say something after the beep so I can test speech recognition.";
+      await playTTSForMessage(testMessage, false);
+      
+      // Brief pause then start listening
+      setTimeout(() => {
+        setTestVoiceStatus('listening');
+        console.log('Voice test: Now listening for speech...');
+      }, 500);
+      
+    } catch (error) {
+      console.error('Voice test failed:', error);
+      setTestVoiceStatus('idle');
+      setIsTestingVoice(false);
+      setTestTranscript('Voice test failed');
+    }
+  };
+
+  // Handler for test voice input
+  const handleTestVoiceInput = (transcript: string) => {
+    if (isTestingVoice && testVoiceStatus === 'listening') {
+      setTestVoiceStatus('processing');
+      setTestTranscript(transcript);
+      
+      setTimeout(() => {
+        setTestVoiceStatus('idle');
+        setIsTestingVoice(false);
+        // Play back what was heard
+        playTTSForMessage(`I heard you say: ${transcript}`, false);
+      }, 1000);
+    }
+  };
+
   const therapist = getTherapist(selectedTherapistId);
   const userProfile = getUserProfile();
 
@@ -450,12 +493,14 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
             onStartNew={() => {
               setShowSummary(false);
               conversationEngine.reset();
-              setMessages([{
-                id: Date.now().toString(),
-                speaker: 'therapist',
-                text: conversationEngine.getInitialMessage(),
-                timestamp: new Date()
-              }]);
+              conversationEngine.getInitialMessage().then((text) => {
+                setMessages([{
+                  id: Date.now().toString(),
+                  speaker: 'therapist',
+                  text: text,
+                  timestamp: new Date()
+                }]);
+              });
               setNotes([]);
               setCurrentTopic('intro');
             }}
@@ -476,7 +521,122 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
     <div className="flex gap-6">
       {/* Main Chat Area */}
       <div className="flex-1 max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-6">
+        <div className="bg-white rounded-2xl shadow-xl p-6 relative">
+
+          {/* Header with Status Indicators and Dropdown Menu */}
+          <div className="absolute top-4 right-4 flex items-center gap-3">
+            {/* AI Status Indicator */}
+            <div className="flex items-center gap-1">
+              <div className={`w-2 h-2 rounded-full ${engineError ? 'bg-red-500' : 'bg-green-500'}`}></div>
+              <span className="text-xs text-gray-500">AI</span>
+            </div>
+            
+            {/* Voice Status Indicator */}
+            <div className="flex items-center gap-1">
+              <div className={`w-2 h-2 rounded-full ${
+                testVoiceStatus === 'speaking' ? 'bg-blue-500' :
+                testVoiceStatus === 'listening' ? 'bg-yellow-500' :
+                testVoiceStatus === 'processing' ? 'bg-purple-500' :
+                'bg-green-500'
+              }`}></div>
+              <span className="text-xs text-gray-500">Voice</span>
+            </div>
+
+            {/* Dropdown Menu */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowDropdownMenu(!showDropdownMenu)}
+                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Menu"
+              >
+                <Menu className="w-5 h-5 text-gray-600" />
+              </button>
+
+              {/* Dropdown Content */}
+              {showDropdownMenu && (
+                <div className="absolute right-0 top-8 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  {/* Voice Test */}
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <h3 className="text-sm font-medium text-gray-900 mb-2">Voice Test</h3>
+                    <button
+                      onClick={handleVoiceTest}
+                      disabled={isTestingVoice}
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                        isTestingVoice 
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                      }`}
+                    >
+                      <TestTube className="w-4 h-4" />
+                      {isTestingVoice ? (
+                        <>
+                          <span>
+                            {testVoiceStatus === 'speaking' && 'Speaking...'}
+                            {testVoiceStatus === 'listening' && 'Listening...'}
+                            {testVoiceStatus === 'processing' && 'Processing...'}
+                          </span>
+                          <div className="ml-auto flex items-center gap-1">
+                            {testVoiceStatus === 'speaking' && <Volume2 className="w-3 h-3" />}
+                            {testVoiceStatus === 'listening' && <Mic className="w-3 h-3" />}
+                            {testVoiceStatus === 'processing' && <div className="w-3 h-3 border border-blue-400 border-t-transparent rounded-full animate-spin" />}
+                          </div>
+                        </>
+                      ) : (
+                        'Test Voice System'
+                      )}
+                    </button>
+                    
+                    {/* Show transcript when available */}
+                    {testTranscript && (
+                      <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
+                        <div className="font-medium text-gray-700 mb-1">You said:</div>
+                        <div className="text-gray-600 italic">"{testTranscript}"</div>
+                      </div>
+                    )}
+                    
+                    {/* Voice recording interface for test mode */}
+                    {isTestingVoice && testVoiceStatus === 'listening' && (
+                      <div className="mt-2">
+                        <VoiceConversation 
+                          onVoiceInput={handleTestVoiceInput}
+                          isProcessing={false}
+                          isPlayingTTS={false}
+                          onInterruptTTS={() => {}}
+                          onStartSession={() => {}}
+                          hasStarted={true}
+                          therapistName="Test"
+                          therapist={getTherapist(selectedTherapistId)}
+                          sttProvider={voiceControlSettings.sttProvider}
+                          isTranscoding={false}
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Voice Settings */}
+                  <div className="px-4 py-2">
+                    <h3 className="text-sm font-medium text-gray-900 mb-2">Voice Settings</h3>
+                    <VoiceSettings
+                      useElevenLabs={useElevenLabs}
+                      onToggleElevenLabs={setUseElevenLabs}
+                    />
+                    
+                    {/* Voice Controls Toggle */}
+                    <button
+                      onClick={() => {
+                        setShowVoiceControls(!showVoiceControls);
+                        setShowDropdownMenu(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-2 mt-2 rounded-md text-sm bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Advanced Voice Controls
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* User Profile Info */}
           {userProfile && (userProfile.name || userProfile.age || userProfile.location) && (
@@ -492,16 +652,7 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
 
           {/* Voice Interface with Transcript Below */}
           <div className="space-y-4">
-            {/* Voice Controls Toggle */}
-            <button
-              onClick={() => setShowVoiceControls(!showVoiceControls)}
-              className="w-full flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors py-2"
-            >
-              <Settings className="w-4 h-4" />
-              <span>Voice Settings</span>
-            </button>
-            
-            {/* Voice Controls */}
+            {/* Voice Controls - Only show when expanded from dropdown */}
             {showVoiceControls && (
               <VoiceControls 
                 settings={voiceControlSettings}
@@ -518,7 +669,6 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
                 isProcessing={isTyping}
                 isPlayingTTS={isPlayingTTS}
                 onInterruptTTS={interruptTTS}
-                enableTextCleanup={enableTextCleanup}
                 onStartSession={startVoiceSession}
                 hasStarted={voiceSessionStarted}
                 therapistName={getTherapist(selectedTherapistId).name}
@@ -605,28 +755,8 @@ export default function ChatInterface({ selectedTherapistId }: ChatInterfaceProp
                       </button>
                     </form>
                     
-                    {/* Voice Settings */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setEnableTextCleanup(!enableTextCleanup)}
-                          className={`flex items-center gap-2 px-2 py-1 text-xs rounded-full transition-colors ${
-                            enableTextCleanup 
-                              ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                          }`}
-                          title="Toggle voice input cleanup"
-                        >
-                          <Wand2 className="w-3 h-3" />
-                          Voice Cleanup: {enableTextCleanup ? 'On' : 'Off'}
-                        </button>
-                        
-                        <VoiceSettings
-                          useElevenLabs={useElevenLabs}
-                          onToggleElevenLabs={setUseElevenLabs}
-                        />
-                      </div>
-                      
+                    {/* Voice Chat Indicator */}
+                    <div className="flex items-center justify-center">
                       <div className="text-xs text-gray-500">
                         🤖 AI-Powered Voice Chat
                       </div>

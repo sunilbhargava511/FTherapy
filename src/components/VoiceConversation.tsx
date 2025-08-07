@@ -9,7 +9,6 @@ interface VoiceConversationProps {
   isProcessing: boolean;
   isPlayingTTS: boolean;
   onInterruptTTS: () => void;
-  enableTextCleanup: boolean;
   onStartSession: () => void;
   hasStarted: boolean;
   therapistName: string;
@@ -23,7 +22,6 @@ export default function VoiceConversation({
   isProcessing, 
   isPlayingTTS,
   onInterruptTTS,
-  enableTextCleanup,
   onStartSession,
   hasStarted,
   therapistName,
@@ -35,10 +33,10 @@ export default function VoiceConversation({
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
-  const [isCleaningText, setIsCleaningText] = useState(false);
   const [currentSTTMethod, setCurrentSTTMethod] = useState<'elevenlabs' | 'browser' | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const audioChunksRef = useRef<Blob[]>([]);
   const [voiceStatus, setVoiceStatus] = useState<'idle' | 'listening' | 'transcribing' | 'thinking' | 'transcoding'>('idle');
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -129,34 +127,6 @@ export default function VoiceConversation({
     }
   }, []);
 
-  const cleanupText = useCallback(async (rawText: string): Promise<string> => {
-    if (!enableTextCleanup) {
-      return rawText;
-    }
-
-    try {
-      setIsCleaningText(true);
-      const response = await fetch('/api/cleanup-text', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: rawText }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to cleanup text');
-      }
-
-      const { cleanedText } = await response.json();
-      return cleanedText || rawText;
-    } catch (error) {
-      console.error('Error cleaning up text:', error);
-      return rawText; // Fallback to original text
-    } finally {
-      setIsCleaningText(false);
-    }
-  }, [enableTextCleanup]);
 
   const startRecording = useCallback(async () => {
     try {
@@ -194,12 +164,13 @@ export default function VoiceConversation({
             ? new MediaRecorder(stream, { mimeType })
             : new MediaRecorder(stream);
           
-          const chunks: Blob[] = [];
+          audioChunksRef.current = [];
           
           recorder.ondataavailable = (event) => {
             console.log('Audio data available:', event.data.size, 'bytes, type:', event.data.type);
             if (event.data.size > 0) {
-              chunks.push(event.data);
+              audioChunksRef.current.push(event.data);
+              setAudioChunks([...audioChunksRef.current]);
             }
           };
           
@@ -214,13 +185,13 @@ export default function VoiceConversation({
           
           // Store references
           setMediaRecorder(recorder);
-          setAudioChunks(chunks);
+          setAudioChunks([]);
           setCurrentSTTMethod('elevenlabs');
           setIsRecording(true);
           setVoiceStatus('listening');
           
-          // Start recording (collect data only when stopped)
-          recorder.start();
+          // Start recording with timeslice to collect data every 100ms
+          recorder.start(100);
           console.log('Started ElevenLabs recording with format:', mimeType);
         } catch (error) {
           console.error('Failed to create MediaRecorder:', error);
@@ -255,32 +226,26 @@ export default function VoiceConversation({
     if (currentSTTMethod === 'elevenlabs' && mediaRecorder) {
       // Handle ElevenLabs STT
       try {
-        const chunks = audioChunks; // Capture chunks in closure
-        
         mediaRecorder.onstop = async () => {
-          console.log('MediaRecorder stopped, chunks:', chunks.length);
+          console.log('MediaRecorder stopped, processing chunks:', audioChunksRef.current.length);
           
-          if (chunks.length === 0) {
+          if (audioChunksRef.current.length === 0) {
             console.error('No audio data recorded');
             setError('No audio recorded. Please try again.');
+            setVoiceStatus('idle');
             return;
           }
           
-          const audioBlob = new Blob(chunks, { type: 'audio/webm' });
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
           console.log('Created audio blob:', audioBlob.size, 'bytes');
           
           try {
             const transcript = await transcribeWithElevenLabs(audioBlob);
             
             if (transcript.trim()) {
-              let finalTranscript = transcript.trim();
+              const finalTranscript = transcript.trim();
               
-              // Clean up the text if enabled
-              if (enableTextCleanup) {
-                setVoiceStatus('thinking');
-                finalTranscript = await cleanupText(finalTranscript);
-              }
-
+              // Skip text cleanup - send raw transcript directly
               // Send to parent component
               setVoiceStatus('idle');
               onVoiceInput(finalTranscript);
@@ -301,6 +266,7 @@ export default function VoiceConversation({
           // Cleanup
           setMediaRecorder(null);
           setAudioChunks([]);
+          audioChunksRef.current = [];
         };
         
         mediaRecorder.stop();
@@ -310,6 +276,7 @@ export default function VoiceConversation({
         setError('Recording failed. Please try again.');
         setMediaRecorder(null);
         setAudioChunks([]);
+        audioChunksRef.current = [];
       }
     } else {
       // Handle browser STT
@@ -319,14 +286,9 @@ export default function VoiceConversation({
       
       // Process the transcript if we have one from browser STT
       if (transcript.trim()) {
-        let finalTranscript = transcript.trim();
+        const finalTranscript = transcript.trim();
         
-        // Clean up the text if enabled
-        if (enableTextCleanup) {
-          setVoiceStatus('thinking');
-          finalTranscript = await cleanupText(finalTranscript);
-        }
-
+        // Skip text cleanup - send raw transcript directly
         // Send to parent component
         setVoiceStatus('idle');
         onVoiceInput(finalTranscript);
@@ -342,7 +304,7 @@ export default function VoiceConversation({
     }
     
     setCurrentSTTMethod(null);
-  }, [currentSTTMethod, mediaRecorder, audioChunks, transcript, enableTextCleanup, onVoiceInput, cleanupText, transcribeWithElevenLabs]);
+  }, [currentSTTMethod, mediaRecorder, audioChunks, transcript, onVoiceInput, transcribeWithElevenLabs]);
 
   const handleButtonPress = useCallback(() => {
     if (!hasStarted) {
@@ -406,7 +368,7 @@ export default function VoiceConversation({
           {/* Main Button */}
           <button
             onClick={handleButtonPress}
-            disabled={isProcessing || isCleaningText}
+            disabled={isProcessing}
             className={`relative flex items-center justify-center w-32 h-32 rounded-full font-medium transition-all transform hover:scale-110 ${
               !hasStarted
                 ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white'
@@ -415,7 +377,7 @@ export default function VoiceConversation({
                   : isPlayingTTS
                     ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white'
                     : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white'
-            } ${(isProcessing || isCleaningText) ? 'opacity-75 cursor-not-allowed' : ''} shadow-2xl`}
+            } ${isProcessing ? 'opacity-75 cursor-not-allowed' : ''} shadow-2xl`}
             style={{
               boxShadow: isRecording 
                 ? '0 0 40px rgba(239, 68, 68, 0.5)' 

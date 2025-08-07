@@ -26,13 +26,18 @@ export async function POST(request: NextRequest) {
     
     // Check if Claude API is configured
     if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === 'your_api_key_here') {
-      // Fallback to original static responses
-      return NextResponse.json({
-        response: "I appreciate you sharing that with me. Could you tell me a bit more?",
-        nextTopic: currentTopic,
-        note: "Fallback response - API not configured",
-        source: "fallback"
+      console.error('[API_KEY_MISSING]', new Date().toISOString(), {
+        therapistId,
+        currentTopic
       });
+      return NextResponse.json(
+        { 
+          error: 'Claude API key not configured',
+          failureType: 'API_KEY_MISSING',
+          timestamp: new Date().toISOString()
+        },
+        { status: 503 }
+      );
     }
 
     // Generate dynamic response using Claude
@@ -48,14 +53,28 @@ export async function POST(request: NextRequest) {
       source: "claude"
     });
   } catch (error) {
-    console.error('Error generating therapist response:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const failureType = errorMessage.includes('rate limit') ? 'RATE_LIMIT' : 
+                       errorMessage.includes('timeout') ? 'TIMEOUT' :
+                       errorMessage.includes('network') ? 'NETWORK_ERROR' : 
+                       'API_ERROR';
     
-    // Fallback response
-    return NextResponse.json({
-      response: "Thank you for sharing. I'd love to hear more about that.",
-      nextTopic: currentTopic,
-      note: "Error fallback response",
-      source: "error_fallback"
+    console.error('[API_FAILURE]', new Date().toISOString(), {
+      therapistId: 'unknown',
+      currentTopic,
+      errorMessage,
+      failureType,
+      stack: error instanceof Error ? error.stack : undefined
     });
+    
+    return NextResponse.json(
+      { 
+        error: 'Failed to generate therapist response',
+        failureType,
+        errorMessage,
+        timestamp: new Date().toISOString()
+      },
+      { status: 503 }
+    );
   }
 }

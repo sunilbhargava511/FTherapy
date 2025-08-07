@@ -57,83 +57,21 @@ export class ConversationEngine {
       console.error('Failed to get AI response, falling back to static:', error);
     }
     
-    // Fallback to original static logic
-    const response = this.generateResponse(input);
-    const nextTopic = this.getNextTopic(input);
-    const note = this.generateNote(input);
-    
-    this.currentTopic = nextTopic;
-    
-    return { response, nextTopic, note };
+    // No fallback - throw error to track API failures
+    const errorMsg = 'Claude API failed - no fallback available';
+    console.error('[API_FAILURE]', new Date().toISOString(), {
+      therapistId: this.therapist.id,
+      currentTopic: this.currentTopic,
+      error: errorMsg
+    });
+    throw new Error(errorMsg);
   }
 
-  private generateResponse(input: string): string {
-    const responsePattern = this.therapist.responses[this.currentTopic];
-    
-    if (!responsePattern) {
-      return "I'm not sure how to respond to that. Could you tell me more?";
-    }
-
-    // Determine if input is positive, negative, or neutral
-    const isPositive = this.isPositiveResponse(input);
-    const isNegative = this.isNegativeResponse(input);
-
-    let response: string | ((input: string) => string) | undefined;
-
-    if (isPositive && responsePattern.positive) {
-      response = responsePattern.positive;
-    } else if (isNegative && responsePattern.negative) {
-      response = responsePattern.negative;
-    } else if (responsePattern.default) {
-      response = responsePattern.default;
-    } else {
-      response = "Thank you for sharing that. Could you tell me more?";
-    }
-
-    // Handle function responses
-    if (typeof response === 'function') {
-      return response(input);
-    }
-
-    // Handle template strings
-    return this.replaceTemplateVariables(response, input);
-  }
-
-  private replaceTemplateVariables(template: string, input: string): string {
-    let result = template;
-    
-    // Replace {name}
-    if (this.userProfile.name) {
-      result = result.replace(/{name}/g, this.userProfile.name);
-    } else if (this.currentTopic === 'name') {
-      const nameMatch = input.match(/(?:my name is |i'm |i am |call me )([a-zA-Z]+)/i) || [null, input.trim()];
-      result = result.replace(/{name}/g, nameMatch[1] || input);
-    }
-    
-    // Replace {age}
-    if (this.userProfile.age) {
-      result = result.replace(/{age}/g, this.userProfile.age);
-    } else if (this.currentTopic === 'age') {
-      const ageMatch = input.match(/(\d+)/);
-      result = result.replace(/{age}/g, ageMatch?.[1] || input);
-    }
-    
-    return result;
-  }
-
-  private isPositiveResponse(input: string): boolean {
-    const positiveWords = ['yes', 'sure', 'okay', 'ready', 'start', 'begin', 'go', 'show', 'absolutely'];
-    return positiveWords.some(word => input.toLowerCase().includes(word));
-  }
-
-  private isNegativeResponse(input: string): boolean {
-    const negativeWords = ['no', 'not', 'don\'t', 'can\'t', 'won\'t', 'maybe later', 'not sure'];
-    return negativeWords.some(word => input.toLowerCase().includes(word));
-  }
 
   private getNextTopic(input: string): ConversationTopic {
+    // Simple topic flow without checking for positive/negative responses
     const topicFlow: Record<ConversationTopic, ConversationTopic> = {
-      intro: this.isPositiveResponse(input) ? 'name' : 'intro',
+      intro: 'name',
       name: 'age',
       age: 'interests',
       interests: 'housing_location',
@@ -201,7 +139,7 @@ export class ConversationEngine {
 
   private generateNote(input: string): string {
     const noteTemplates: Record<ConversationTopic, string> = {
-      intro: this.isPositiveResponse(input) ? '✓ Client ready to begin' : '- Client hesitant, providing encouragement',
+      intro: '✓ Session started',
       name: `Name: ${this.userProfile.name || input.trim()}`,
       age: `Age: ${this.userProfile.age || 'pending'}`,
       interests: `Interests/Values: ${input.substring(0, 50)}...`,
@@ -213,7 +151,7 @@ export class ConversationEngine {
       entertainment_preference: `Entertainment: ${input}`,
       subscriptions_preference: `Subscriptions: ${input}`,
       travel_preference: `Travel: ${input}`,
-      summary: this.isPositiveResponse(input) ? '✓ Showing financial summary' : 'Client not ready for summary yet'
+      summary: '✓ Financial summary requested'
     };
 
     return noteTemplates[this.currentTopic] || `${this.currentTopic}: ${input.substring(0, 30)}...`;
@@ -245,15 +183,35 @@ export class ConversationEngine {
     return context.join('\n');
   }
 
-  getInitialMessage(): string {
-    const responsePattern = this.therapist.responses.intro;
-    const message = responsePattern.positive || responsePattern.default || "Hello! I'm excited to work with you on your financial journey. Are you ready to begin?";
-    
-    if (typeof message === 'function') {
-      return message('');
+  async getInitialMessage(): Promise<string> {
+    // Try to generate dynamic intro using Claude
+    try {
+      const response = await fetch('/api/therapist-response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          therapistId: this.therapist.id,
+          userInput: '[SYSTEM: Generate opening message]',
+          conversationContext: '',
+          currentTopic: 'intro'
+        })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        return result.response;
+      }
+    } catch (error) {
+      const errorMsg = 'Failed to generate initial message - Claude API unavailable';
+      console.error('[API_FAILURE_INTRO]', new Date().toISOString(), {
+        therapistId: this.therapist.id,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      throw new Error(errorMsg);
     }
     
-    return message;
+    // Should never reach here - throw error if no response received
+    throw new Error('No initial message generated');
   }
 
   reset(): void {

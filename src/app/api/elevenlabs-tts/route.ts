@@ -6,7 +6,7 @@ const THERAPIST_VOICES: Record<string, string> = {
   'aja-evans': 'oWAxZDx7w5VEj9dCyTzz', // Grace - nurturing female  
   'ramit-sethi': 'VR6AewLTigWG4xSOukaG', // Josh - confident male
   'nora-ephron': 'EXAVITQu4vr4xnSDxMaL', // Bella - witty female
-  'anita-bhargava': 'duDBJHU6G1oq7ZdK4Kxf', // Deshna - Indian-accented female voice
+  'anita-bhargava': 'mLO3zRzNWGT6HtmIOcOQ', // Updated voice for Anita
   // Backup bench therapists
   'shakespeare': 'onwK4e9ZLuTAKqWW03F9', // Daniel - distinguished English gentleman
   'trevor-noah': 'N2lVS1w4EtoT3dr4eOWO', // Callum - warm, articulate male with slight accent
