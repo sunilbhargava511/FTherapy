@@ -77,7 +77,7 @@ export async function generateTherapistResponse(
   userInput: string,
   conversationContext: string,
   currentTopic: string
-): Promise<{ response: string; nextTopic: string; note: string }> {
+): Promise<{ response: string; nextTopic: string; note: string; profileUpdate?: any }> {
   const systemPrompt = `You are ${therapistPersonality.name}, ${therapistPersonality.tagline}. 
 
 ## YOUR BACKGROUND:
@@ -118,7 +118,7 @@ Otherwise, explain: "The goal of today's session is to develop a shared understa
 Ask for name and age in a single question: "To get started, could you please tell me your name and age?"
 
 ### Phase 3: Lifestyle Overview (after getting name/age)
-Ask an open-ended question: "Now, I'd like you to describe your current lifestyle and any changes you're hoping to make. Think about things like where you live, how you spend your time, your hobbies, travel habits, dining preferences, and what a typical week looks like for you."
+Ask a focused open-ended question with MAXIMUM 3 areas: "Now, I'd like you to describe your current lifestyle and any changes you're hoping to make. Let's start with three key areas: where you live, how you spend your free time, and your daily routine."
 
 ### Phase 4: Follow-up Questions
 Generate QUALITATIVE follow-up questions to understand their lifestyle choices. DO NOT ask for numbers, budgets, or cost estimates. Instead, gather descriptive information that allows for web-based cost estimation:
@@ -130,6 +130,8 @@ IMPORTANT RULES:
 - DO ask about preferences, habits, and lifestyle choices
 - DO ask about frequency and types of activities
 - DO gather location and quality preferences
+- LIMIT TO MAXIMUM 3 QUESTIONS OR TOPICS per response to avoid overwhelming the user
+- Keep questions focused and specific rather than broad or complex
 
 Focus on these lifestyle areas with QUALITATIVE questions only:
 - Housing: Type of home, neighborhood preferences, amenities desired
@@ -164,6 +166,15 @@ BAD QUESTIONS:
 ## CONTEXT SO FAR:
 ${conversationContext}
 
+## PROGRESS TRACKING:
+Based on the progress data in the context, you can see which lifestyle areas have been completed (✓) and which still need attention (○). Use this information to:
+- Guide the conversation toward incomplete areas
+- Acknowledge completed areas briefly  
+- Suggest moving to the next uncovered topic when appropriate
+- Consider suggesting report generation when most/all areas are complete (6+ out of 8 completed)
+
+Current progress from context: Look for the "progress" field in the conversation context above to see completion status of basics, housing, food, transport, fitness, entertainment, subscriptions, and travel.
+
 ## USER INPUT:
 "${userInput}"
 
@@ -174,12 +185,30 @@ Based on the conversation flow and what information you still need to gather, ge
 4. MUST maintain ${therapistPersonality.name}'s authentic voice, using your signature phrases and approach
 5. Stay true to your personality - don't sound generic!
 
-Respond in JSON format:
+You MUST respond with ONLY a valid JSON object (no markdown, no extra text) in this exact format:
 {
   "response": "Your response as the therapist",
-  "nextTopic": "current phase or specific category being explored",
-  "note": "key lifestyle details gathered for expense calculation"
-}`;
+  "nextTopic": "current phase or specific category being explored", 
+  "note": "key lifestyle details gathered for expense calculation",
+  "profileUpdate": {
+    "name": "client's name if mentioned, null otherwise",
+    "age": "client's age if mentioned, null otherwise", 
+    "location": "client's location if mentioned, null otherwise",
+    "lifestyle": {
+      "housing": { "preference": "housing preference if discussed", "details": "housing details if discussed" },
+      "food": { "preference": "food preference if discussed", "details": "food details if discussed" },
+      "transport": { "preference": "transport preference if discussed", "details": "transport details if discussed" },
+      "fitness": { "preference": "fitness preference if discussed", "details": "fitness details if discussed" },
+      "entertainment": { "preference": "entertainment preference if discussed", "details": "entertainment details if discussed" },
+      "subscriptions": { "preference": "subscriptions preference if discussed", "details": "subscriptions details if discussed" },
+      "travel": { "preference": "travel preference if discussed", "details": "travel details if discussed" }
+    }
+  }
+}
+
+IMPORTANT: Only include profileUpdate fields that were actually mentioned or discussed in this conversation turn. Leave fields as null or empty strings if not discussed. The profileUpdate will be merged with existing data.
+
+CRITICAL: Return ONLY the JSON object, nothing else. No markdown code blocks, no explanations.`;
 
   try {
     const response = await callClaude(
@@ -189,12 +218,23 @@ Respond in JSON format:
     );
     
     // Parse the JSON response
-    const parsed = JSON.parse(response.content);
-    return {
-      response: parsed.response,
-      nextTopic: parsed.nextTopic,
-      note: parsed.note
-    };
+    try {
+      const parsed = JSON.parse(response.content);
+      return {
+        response: parsed.response,
+        nextTopic: parsed.nextTopic,
+        note: parsed.note,
+        profileUpdate: parsed.profileUpdate
+      };
+    } catch (parseError) {
+      // If parsing fails, return a simple response
+      return {
+        response: response.content,
+        nextTopic: currentTopic,
+        note: "Direct response without JSON structure",
+        profileUpdate: null
+      };
+    }
   } catch (error) {
     console.error('Error generating therapist response:', error);
     
@@ -202,7 +242,84 @@ Respond in JSON format:
     return {
       response: "Thank you for sharing that. Could you tell me more about that?",
       nextTopic: currentTopic,
-      note: "Fallback response used due to API error"
+      note: "Fallback response used due to API error",
+      profileUpdate: null
     };
+  }
+}
+
+export async function generateTherapistReport(
+  messages: any[],
+  context: any,
+  reportType: 'qualitative' | 'quantitative'
+): Promise<string> {
+  const systemPrompt = `You are ${context.therapistName}, a financial therapist generating a ${reportType} report for a client session.
+
+## SESSION CONTEXT:
+- Therapist: ${context.therapistName}
+- Style: ${context.therapistStyle}
+- Session Duration: ${context.sessionDuration} minutes
+- Messages Exchanged: ${context.conversationLength}
+
+## CLIENT PROFILE:
+${JSON.stringify(context.userProfile, null, 2)}
+
+## FINANCIAL DATA:
+${JSON.stringify(context.financialData, null, 2)}
+
+## CONVERSATION SUMMARY:
+${messages.map(m => `${m.speaker}: ${m.text}`).join('\n')}
+
+Generate a comprehensive ${reportType} report that includes:
+
+${reportType === 'qualitative' ? `
+**Summary**: 2-3 sentence overview of the session and key findings
+
+**Key Insights**: 4-6 bullet points about the client's financial mindset, behaviors, and situation
+- Focus on psychological aspects, patterns, and attitudes toward money
+- Identify strengths and challenges
+- Note emotional responses to financial topics
+
+**Recommendations**: 3-5 specific, actionable recommendations in ${context.therapistName}'s voice
+- Use ${context.therapistName}'s signature approach and language
+- Make recommendations specific to the client's situation
+- Include both immediate actions and longer-term strategies
+
+**Action Items**: 3-5 specific next steps the client should take
+- Make them concrete and measurable
+- Prioritize by importance and feasibility
+- Include timeframes where appropriate
+` : `
+**Monthly Budget Analysis**:
+- Income: $${context.financialData.income?.monthly || 0}
+- Expenses breakdown by category
+- Surplus/deficit calculation
+- Savings rate percentage
+
+**Savings Opportunities**:
+- Identify 3-4 areas where spending could be optimized
+- Calculate potential monthly savings for each
+- Provide specific suggestions for each category
+
+**Financial Projections**:
+- 3-month savings goal
+- 6-month financial position  
+- 1-year wealth building projection
+`}
+
+Format the response as clear, well-structured text with appropriate headings and bullet points.
+Keep the tone consistent with ${context.therapistName}'s personality.`;
+
+  try {
+    const response = await callClaude(
+      [{ role: 'user', content: 'Generate the report based on the provided context.' }],
+      systemPrompt,
+      1500
+    );
+    
+    return response.content;
+  } catch (error) {
+    console.error('Error generating therapist report:', error);
+    throw new Error(`Failed to generate ${reportType} report`);
   }
 }

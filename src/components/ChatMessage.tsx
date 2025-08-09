@@ -77,7 +77,7 @@ export default function ChatMessage({ message, therapistId, useElevenLabs = true
       </div>
       <div className="mt-1 px-2">
         <span className="text-xs text-gray-500">
-          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
       </div>
     </div>

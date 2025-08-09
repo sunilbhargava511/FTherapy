@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FileText, Target, Brain, ChevronRight } from 'lucide-react';
 import { TherapistNote, TherapistPersonality, UserProfile } from '@/lib/types';
+import { getLifestyleProgress } from '@/lib/progress-utils';
 
 interface SessionNotesProps {
   notes: TherapistNote[];
@@ -42,41 +43,7 @@ export default function SessionNotes({ notes, therapist, userProfile, financialR
   
   const userName = getUserName();
   
-  // Track which lifestyle areas have been covered
-  const getLifestyleProgress = () => {
-    const defaultProgress = {
-      housing: '○',
-      food: '○',
-      transport: '○',
-      fitness: '○',
-      entertainment: '○',
-      subscriptions: '○',
-      travel: '○',
-      basics: '○',
-      completed: 0,
-      total: 8
-    };
-    
-    if (!userProfile) return defaultProgress;
-    
-    const progress = {
-      housing: userProfile.lifestyle?.housing?.preference ? '✓' : '○',
-      food: userProfile.lifestyle?.food?.preference ? '✓' : '○',
-      transport: userProfile.lifestyle?.transport?.preference ? '✓' : '○',
-      fitness: userProfile.lifestyle?.fitness?.preference ? '✓' : '○',
-      entertainment: userProfile.lifestyle?.entertainment?.preference ? '✓' : '○',
-      subscriptions: userProfile.lifestyle?.subscriptions?.preference ? '✓' : '○',
-      travel: userProfile.lifestyle?.travel?.preference ? '✓' : '○',
-      basics: (userProfile.name && userProfile.age && userProfile.location) ? '✓' : '○'
-    };
-    
-    const completed = Object.values(progress).filter(v => v === '✓').length;
-    const total = Object.keys(progress).length;
-    
-    return { ...progress, completed, total };
-  };
-  
-  const progress = getLifestyleProgress();
+  const progress = getLifestyleProgress(userProfile);
   
   // Determine current target based on latest note topic
   const getCurrentTarget = () => {

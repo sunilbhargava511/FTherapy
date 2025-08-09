@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import ChatInterface from '@/components/ChatInterface';
+import { useState, useEffect } from 'react';
+import ChatInterfaceV2 from '@/components/ChatInterfaceV2';
 import TherapistSelector from '@/components/TherapistSelector';
 import AddTherapistModal from '@/components/AddTherapistModal';
 import { TherapistStyle } from '@/lib/types';
@@ -45,13 +45,20 @@ const THERAPIST_STYLES: TherapistStyle[] = [
 ];
 
 export default function Home() {
-  const [selectedTherapist, setSelectedTherapist] = useState<string>('danielle-town');
+  const [selectedTherapist, setSelectedTherapist] = useState<string>('anita-bhargava');
   const [activeTherapists, setActiveTherapists] = useState(THERAPIST_STYLES);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  // Debug selected therapist changes
+  useEffect(() => {
+    console.log('🏠 Home component selectedTherapist changed to:', selectedTherapist);
+  }, [selectedTherapist]);
+
   const handleStartSession = (therapistId: string) => {
     // Launch session directly with any therapist (active or backup)
+    console.log('🚀 handleStartSession called with therapistId:', therapistId);
     setSelectedTherapist(therapistId);
+    console.log('🚀 selectedTherapist state should now be:', therapistId);
   };
 
   const handleDeleteTherapist = (therapistId: string) => {
@@ -128,7 +135,7 @@ export default function Home() {
             onAddTherapist={handleAddTherapist}
           />
 
-          <ChatInterface selectedTherapistId={selectedTherapist} />
+          <ChatInterfaceV2 selectedTherapistId={selectedTherapist} />
           
           {/* Add Therapist Modal */}
           <AddTherapistModal
