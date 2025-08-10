@@ -4,7 +4,7 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import { Phone, PhoneOff, Download, MessageCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useConversation } from '@elevenlabs/react';
 import { ConversationEngine } from '@/lib/conversation-engine';
-import type { TherapistPersonality, UserProfile } from '@/lib/types';
+import type { TherapistPersonality, UserProfile, ConversationTopic } from '@/lib/types';
 import type { QualitativeReport, QuantitativeReport } from '@/core/notebook/types';
 
 // Voice mapping for each therapist (same as TTS)
@@ -25,18 +25,24 @@ const THERAPIST_VOICES: Record<string, string> = {
 interface ConversationModeProps {
   therapistId: string;
   therapist: TherapistPersonality;
+  currentProfile?: UserProfile;
+  currentTopic?: ConversationTopic;
   onMessage?: (message: string, speaker: 'user' | 'agent') => void;
   onNoteGenerated?: (note: string) => void;
   onProfileUpdate?: (profileData: Partial<UserProfile>) => void;
+  onTopicUpdate?: (topic: ConversationTopic) => void;
   onReportGenerated?: (report: any) => void;
 }
 
 export default function ConversationMode({ 
   therapistId, 
-  therapist, 
+  therapist,
+  currentProfile,
+  currentTopic,
   onMessage,
   onNoteGenerated,
   onProfileUpdate,
+  onTopicUpdate,
   onReportGenerated 
 }: ConversationModeProps) {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -52,7 +58,6 @@ export default function ConversationMode({
   const lastActivityRef = useRef<Date>(new Date());
   const keepAliveIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [conversationEngine, setConversationEngine] = useState<ConversationEngine | null>(null);
-  const [currentTopic, setCurrentTopic] = useState<string>('intro');
 
   // Set up Server-Sent Events for report notifications
   useEffect(() => {
@@ -98,16 +103,27 @@ export default function ConversationMode({
     }
   }, [sessionId]); // onReportGenerated intentionally omitted to prevent SSE reconnections
 
-  // Initialize ConversationEngine
+  // Initialize ConversationEngine with notebook data
   useEffect(() => {
     const engine = new ConversationEngine(therapist);
+    
+    // Sync initial state from notebook if available
+    if (currentProfile) {
+      engine.setUserProfile(currentProfile);
+      console.log('📊 Synced profile from notebook:', currentProfile);
+    }
+    if (currentTopic) {
+      engine.setCurrentTopic(currentTopic);
+      console.log('📍 Synced topic from notebook:', currentTopic);
+    }
+    
     setConversationEngine(engine);
-    console.log('📚 ConversationEngine initialized for:', therapist.name);
+    console.log('📚 ConversationEngine initialized with notebook data for:', therapist.name);
     
     return () => {
       console.log('🔄 ConversationMode component will unmount');
     };
-  }, [therapist]);
+  }, [therapist, currentProfile, currentTopic]);
 
   // Session duration tracking
   useEffect(() => {
@@ -174,7 +190,18 @@ export default function ConversationMode({
         if (result.profileUpdate && onProfileUpdate) {
           console.log('👤 Updating profile from Claude response:', result.profileUpdate);
           onProfileUpdate(result.profileUpdate);
+          // Also update conversationEngine's internal profile
+          conversationEngine?.setUserProfile(result.profileUpdate);
         }
+
+        // Update topic if provided
+        if (result.nextTopic && onTopicUpdate) {
+          console.log('📍 Updating topic from Claude response:', result.nextTopic);
+          onTopicUpdate(result.nextTopic);
+          // Also update conversationEngine's internal topic
+          conversationEngine?.setCurrentTopic(result.nextTopic);
+        }
+        
       } else {
         console.warn('⚠️ Failed to generate therapist notes:', response.status);
       }
@@ -351,7 +378,21 @@ export default function ConversationMode({
               }
             });
 
+            // Sync the profile update with the notebook system
+            const updatedProfile = conversationEngine.getUserProfile();
+            if (updatedProfile && onProfileUpdate) {
+              console.log('📊 Syncing profile to notebook:', updatedProfile);
+              onProfileUpdate(updatedProfile);
+            }
+
+            // Sync topic update if it changed
+            if (oldTopic !== newTopic && onTopicUpdate) {
+              console.log('📍 Syncing topic to notebook:', newTopic);
+              onTopicUpdate(newTopic);
+            }
+
             // Generate therapist notes using Claude API for voice conversations
+            // This may provide additional updates that will be handled separately
             generateTherapistNotesForVoice(messageText, newTopic);
             
             // Check for report generation
@@ -787,7 +828,8 @@ export default function ConversationMode({
               <div className="w-full max-w-sm bg-purple-50/80 backdrop-blur-sm p-3 rounded-xl border border-purple-200/50 shadow-sm">
                 <p className="text-xs text-purple-600 font-medium mb-2">Building Your Financial Profile</p>
                 {(() => {
-                  const profile = conversationEngine.getUserProfile();
+                  // Use notebook profile if available, otherwise fall back to engine's internal state
+                  const profile = currentProfile || conversationEngine.getUserProfile();
                   const hasName = profile?.name;
                   const hasAge = profile?.age;
                   const lifestyle = profile?.lifestyle || {};

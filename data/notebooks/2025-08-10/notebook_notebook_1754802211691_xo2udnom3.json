@@ -1,0 +1,102 @@
+{
+  "id": "notebook_1754802211691_xo2udnom3",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-10T05:03:31.691Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-10T05:03:31.828Z"
+    },
+    {
+      "id": "1754802227780",
+      "speaker": "therapist",
+      "text": "Hello! I'm Anita Bhargava, a strategic financial planner and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a path toward sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle - both current and desired - to develop a clear picture of what financial success means to you. This foundation will be invaluable for our future planning discussions. Let's start with the basics - could you please tell me your name and age?",
+      "timestamp": "2025-08-10T05:03:47.780Z"
+    },
+    {
+      "id": "1754802264991",
+      "speaker": "user",
+      "text": "My name is Anika Bhatnagar and I'm 22 years old.",
+      "timestamp": "2025-08-10T05:04:24.991Z"
+    },
+    {
+      "id": "1754802267349",
+      "speaker": "therapist",
+      "text": "Wonderful to meet you, Anika! At 22, you're at an exciting point where strategic financial decisions can create incredible long-term impact. Let's explore your financial journey together. I'd love to understand more about your current lifestyle. Could you tell me about three key aspects: where you're currently living, what you do professionally or are studying, and how you typically spend your free time?",
+      "timestamp": "2025-08-10T05:04:27.349Z"
+    },
+    {
+      "id": "1754802518347",
+      "speaker": "therapist",
+      "text": "Welcome! I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help you create a pathway to sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle - both current and desired - to develop a clear picture of what financial success means to you. This foundation will be invaluable for our future discussions about wealth building strategies. Let's start with the basics - could you please tell me your name and age?",
+      "timestamp": "2025-08-10T05:08:38.347Z"
+    },
+    {
+      "id": "1754802556097",
+      "speaker": "user",
+      "text": "...",
+      "timestamp": "2025-08-10T05:09:16.097Z"
+    },
+    {
+      "id": "1754802559023",
+      "speaker": "therapist",
+      "text": "Welcome! I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help you create a pathway to sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle - both current and desired - to develop a clear picture of what financial success means to you. This foundation will be invaluable for our future discussions about wealth building strategies. Let's start with the basics - could you please tell me your name and age?",
+      "timestamp": "2025-08-10T05:09:19.023Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "10:04 PM",
+      "note": "Client is 22 years old, gathering initial lifestyle information",
+      "topic": "intro"
+    },
+    {
+      "time": "10:09 PM",
+      "note": "Opening introduction, requesting basic information",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "intro",
+  "userProfile": {
+    "name": null,
+    "age": null,
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": "",
+        "details": ""
+      },
+      "food": {
+        "preference": "",
+        "details": ""
+      },
+      "transport": {
+        "preference": "",
+        "details": ""
+      },
+      "fitness": {
+        "preference": "",
+        "details": ""
+      },
+      "entertainment": {
+        "preference": "",
+        "details": ""
+      },
+      "subscriptions": {
+        "preference": "",
+        "details": ""
+      },
+      "travel": {
+        "preference": "",
+        "details": ""
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-10T05:03:31.691Z",
+  "updatedAt": "2025-08-10T05:09:20.855Z",
+  "duration": 6
+}

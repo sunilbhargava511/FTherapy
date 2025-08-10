@@ -82,6 +82,8 @@ export class ConversationEngine {
   }
 
   updateUserProfile(input: string): void {
+    const oldTopic = this.currentTopic;
+    
     switch (this.currentTopic) {
       case 'name':
         const nameMatch = input.match(/(?:my name is |i'm |i am |call me )([a-zA-Z]+)/i) || [null, input.trim()];
@@ -127,6 +129,10 @@ export class ConversationEngine {
         this.userProfile.lifestyle!.travel!.preference = input;
         break;
     }
+    
+    // Advance to next topic after updating profile
+    this.currentTopic = this.getNextTopic(input);
+    console.log(`📍 Topic advanced: ${oldTopic} → ${this.currentTopic}`);
   }
 
   private generateNote(input: string): string {
@@ -155,6 +161,14 @@ export class ConversationEngine {
 
   getUserProfile(): UserProfile {
     return { ...this.userProfile };
+  }
+
+  setCurrentTopic(topic: ConversationTopic): void {
+    this.currentTopic = topic;
+  }
+
+  setUserProfile(profile: Partial<UserProfile>): void {
+    this.userProfile = { ...this.userProfile, ...profile };
   }
 
   public buildConversationContext(): string {

@@ -1,0 +1,106 @@
+{
+  "id": "notebook_1754803371382_mmgfh2b2f",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-10T05:22:51.382Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-10T05:22:51.509Z"
+    },
+    {
+      "id": "1754803384007",
+      "speaker": "therapist",
+      "text": "Hello, I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a path toward sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - not just numbers, but what truly matters to you. This foundation will help us develop strategies that reflect both your current needs and future dreams. Let's start by getting to know each other - could you please share your name and age?",
+      "timestamp": "2025-08-10T05:23:04.007Z"
+    },
+    {
+      "id": "1754803424808",
+      "speaker": "user",
+      "text": "My name is Anika Bhatnagar. My age is 22.",
+      "timestamp": "2025-08-10T05:23:44.808Z"
+    },
+    {
+      "id": "1754803427702",
+      "speaker": "therapist",
+      "text": "Wonderful to meet you, Anika! At 22, you're at an exciting point where strategic financial decisions can create powerful long-term impact. Let's explore your financial journey together. I'd love to understand more about your current lifestyle and aspirations. Could you tell me about three key areas: where you're currently living and what type of housing arrangement you have, what you do professionally or are studying, and how you typically like to spend your free time?",
+      "timestamp": "2025-08-10T05:23:47.702Z"
+    },
+    {
+      "id": "1754803478853",
+      "speaker": "user",
+      "text": "I'm currently living at home and with my parents in the San Francisco Bay Area. I have just graduated two months ago from college with a computer science degree and I'm looking for jobs.",
+      "timestamp": "2025-08-10T05:24:38.853Z"
+    },
+    {
+      "id": "1754803482074",
+      "speaker": "therapist",
+      "text": "Thank you for sharing that, Anika. Living in the Bay Area with its vibrant tech ecosystem certainly opens up exciting opportunities for a computer science graduate. Let's explore your financial journey together as you prepare for this important career transition. I'd love to understand more about your lifestyle preferences. Could you tell me about your typical daily routine - how do you usually get around the Bay Area, and what activities or hobbies do you enjoy in your free time? This will help us create a strategic plan that aligns with both your immediate needs and future aspirations.",
+      "timestamp": "2025-08-10T05:24:42.074Z"
+    },
+    {
+      "id": "1754803522019",
+      "speaker": "user",
+      "text": "The...",
+      "timestamp": "2025-08-10T05:25:22.019Z"
+    },
+    {
+      "id": "1754803523863",
+      "speaker": "therapist",
+      "text": "I notice you started to share something but got cut off. As we build your strategic financial foundation, I'd love to hear more about your daily routines and aspirations. Do you typically use public transit in the Bay Area, or do you have other transportation preferences? Also, what kinds of activities help you recharge and stay motivated during your job search?",
+      "timestamp": "2025-08-10T05:25:23.863Z"
+    },
+    {
+      "id": "1754803543799",
+      "speaker": "user",
+      "text": "I have my own car.",
+      "timestamp": "2025-08-10T05:25:43.799Z"
+    },
+    {
+      "id": "1754803546154",
+      "speaker": "therapist",
+      "text": "Having your own car in the Bay Area certainly provides flexibility as you navigate your career journey. Let's explore your financial journey together. Could you tell me about your typical day - do you enjoy meeting friends for coffee or meals, pursue any hobbies, or have regular activities that are important to you? Also, as a recent graduate, are you looking to move to your own place eventually, or planning to stay with family while building your career foundation?",
+      "timestamp": "2025-08-10T05:25:46.154Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "10:23 PM",
+      "note": "Client is early career age (22), focusing on establishing baseline lifestyle understanding",
+      "topic": "intro"
+    },
+    {
+      "time": "10:24 PM",
+      "note": "Recent CS grad, living with parents in Bay Area, job hunting phase",
+      "topic": "intro"
+    },
+    {
+      "time": "10:25 PM",
+      "note": "22-year-old recent graduate currently living with parents in Bay Area, gathering information about daily routine and housing aspirations",
+      "topic": "intro"
+    },
+    {
+      "time": "10:25 PM",
+      "note": "Client owns personal vehicle, gathering usage patterns",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "transport",
+  "userProfile": {
+    "lifestyle": {
+      "transport": {
+        "preference": "Owns personal vehicle",
+        "details": "Has own car, usage patterns pending"
+      }
+    },
+    "name": null,
+    "age": null,
+    "location": null
+  },
+  "status": "active",
+  "createdAt": "2025-08-10T05:22:51.382Z",
+  "updatedAt": "2025-08-10T05:25:47.669Z",
+  "duration": 3
+}

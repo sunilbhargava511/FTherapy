@@ -438,6 +438,8 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
               <ConversationMode
                 therapistId={selectedTherapistId}
                 therapist={therapist}
+                currentProfile={getUserProfile()}
+                currentTopic={getCurrentTopic()}
                 onMessage={(message, speaker) => {
                   // Map ConversationMode speaker types to addMessage types
                   const mappedSpeaker = speaker === 'agent' ? 'therapist' : speaker;
@@ -448,6 +450,9 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
                 }}
                 onProfileUpdate={(profileData) => {
                   updateNotebookProfile(profileData);
+                }}
+                onTopicUpdate={(topic) => {
+                  updateNotebookTopic(topic);
                 }}
                 onReportGenerated={(report) => {
                   setFinancialReport(report);
