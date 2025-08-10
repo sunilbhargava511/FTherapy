@@ -1,4 +1,5 @@
 import { ConversationTopic, TherapistPersonality, UserProfile } from './types';
+import { therapistAPI, APIError } from './api-client';
 
 export class ConversationEngine {
   private therapist: TherapistPersonality;
@@ -30,28 +31,22 @@ export class ConversationEngine {
     try {
       const conversationContext = this.buildConversationContext();
       
-      const response = await fetch('/api/therapist-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          therapistId: this.therapist.id,
-          userInput: input,
-          conversationContext,
-          currentTopic: this.currentTopic
-        })
+      const result = await therapistAPI.generateResponse({
+        therapistId: this.therapist.id,
+        userInput: input,
+        conversationContext,
+        currentTopic: this.currentTopic
       });
       
-      if (response.ok) {
-        const result = await response.json();
-        this.currentTopic = result.nextTopic as ConversationTopic;
-        return {
-          response: result.response,
-          nextTopic: result.nextTopic,
-          note: result.note
-        };
-      }
+      const data = result.data as any;
+      this.currentTopic = data.nextTopic as ConversationTopic;
+      return {
+        response: data.response,
+        nextTopic: data.nextTopic,
+        note: data.note
+      };
     } catch (error) {
-      console.error('Failed to get AI response, falling back to static:', error);
+      console.error('Failed to get AI response:', error instanceof APIError ? `${error.status}: ${error.message}` : error);
     }
     
     // No fallback - throw error to track API failures
@@ -185,32 +180,22 @@ export class ConversationEngine {
   async getInitialMessage(): Promise<string> {
     // Try to generate dynamic intro using Claude
     try {
-      const response = await fetch('/api/therapist-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          therapistId: this.therapist.id,
-          userInput: '[SYSTEM: Generate opening message]',
-          conversationContext: '',
-          currentTopic: 'intro'
-        })
+      const result = await therapistAPI.generateResponse({
+        therapistId: this.therapist.id,
+        userInput: '[SYSTEM: Generate opening message]',
+        conversationContext: '',
+        currentTopic: 'intro'
       });
       
-      if (response.ok) {
-        const result = await response.json();
-        return result.response;
-      }
+      return (result.data as any).response;
     } catch (error) {
       const errorMsg = 'Failed to generate initial message - Claude API unavailable';
       console.error('[API_FAILURE_INTRO]', new Date().toISOString(), {
         therapistId: this.therapist.id,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof APIError ? error.message : 'Unknown error'
       });
       throw new Error(errorMsg);
     }
-    
-    // Should never reach here - throw error if no response received
-    throw new Error('No initial message generated');
   }
 
   reset(): void {

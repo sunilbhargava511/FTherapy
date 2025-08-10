@@ -6,6 +6,7 @@ import {
   SessionNotebookData 
 } from '../notebook/types';
 import { DataExtractor } from '../extraction/DataExtractor';
+import { reportAPI, APIError } from '@/lib/api-client';
 
 export class ReportGenerator {
   private extractor: DataExtractor;
@@ -51,21 +52,12 @@ export class ReportGenerator {
   ): Promise<QualitativeReport> {
     try {
       // Call server-side API for report generation
-      const response = await fetch('/api/notebooks/generate-qualitative-report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          notebookData: notebook.getData(),
-          financialData: financialData
-        })
+      const response = await reportAPI.generateQualitativeReport({
+        messages: notebook.getData().messages,
+        userProfile: financialData
       });
 
-      if (response.ok) {
-        const report = await response.json();
-        return report;
-      } else {
-        throw new Error('Failed to generate qualitative report via API');
-      }
+      return response.data as QualitativeReport;
     } catch (error) {
       console.error('Failed to generate qualitative report:', error);
       // Return fallback report

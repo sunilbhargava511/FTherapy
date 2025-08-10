@@ -2,6 +2,7 @@ import { SessionNotebook } from './SessionNotebook';
 import { SessionNotebookData } from './types';
 import { IStorage } from '@/services/storage/IStorage';
 import { ConversationMessage, TherapistNote, ConversationTopic } from '@/lib/types';
+import { notebookAPI, APIError } from '@/lib/api-client';
 
 export class NotebookManager {
   private currentNotebook: SessionNotebook | null = null;
@@ -139,11 +140,8 @@ export class NotebookManager {
       }
 
       // Try API
-      const response = await fetch(`/api/notebooks/${notebookId}`);
-      if (response.ok) {
-        const data = await response.json();
-        return SessionNotebook.fromJSON(data);
-      }
+      const response = await notebookAPI.getById(notebookId);
+      return SessionNotebook.fromJSON(response.data as SessionNotebookData);
 
       return null;
     } catch (error) {
@@ -272,16 +270,9 @@ export class NotebookManager {
   private async saveViaAPI(): Promise<void> {
     if (!this.currentNotebook) return;
 
-    const response = await fetch('/api/notebooks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'save',
-        notebook: this.currentNotebook.toJSON()
-      })
-    });
+    const response = await notebookAPI.save(this.currentNotebook.toJSON());
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error('Failed to save notebook via API');
     }
   }

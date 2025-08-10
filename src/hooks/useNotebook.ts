@@ -6,6 +6,7 @@ import { SessionNotebook } from '@/core/notebook/SessionNotebook';
 import { LocalFileStorage } from '@/services/storage/LocalFileStorage';
 import { ConversationMessage, TherapistNote, ConversationTopic, UserProfile } from '@/lib/types';
 import { QualitativeReport, QuantitativeReport } from '@/core/notebook/types';
+import { notebookAPI, APIError } from '@/lib/api-client';
 
 interface UseNotebookState {
   notebook: SessionNotebook | null;
@@ -242,24 +243,12 @@ export function useNotebook(
     
     try {
       // Call the API endpoint to generate reports
-      const response = await fetch('/api/notebooks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'generateReports',
-          notebookId: state.notebook.getId()
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate reports');
-      }
-
-      const result = await response.json();
+      const result = await notebookAPI.generateReports(state.notebook.getId());
       
       // Update notebook with reports
-      state.notebook.attachQualitativeReport(result.reports.qualitative);
-      state.notebook.attachQuantitativeReport(result.reports.quantitative);
+      const reports = result.data as any;
+      state.notebook.attachQualitativeReport(reports.reports.qualitative);
+      state.notebook.attachQuantitativeReport(reports.reports.quantitative);
       
       setState(prev => ({
         ...prev,
@@ -271,7 +260,7 @@ export function useNotebook(
       // Auto-save after generating reports
       await saveNotebook();
       
-      return result.reports;
+      return reports.reports;
     } catch (error) {
       console.error('Failed to generate reports:', error);
       setState(prev => ({

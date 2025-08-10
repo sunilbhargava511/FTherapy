@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import { elevenLabsAPI, APIError } from '@/lib/api-client';
 
 export const useElevenLabsTTS = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,6 +30,7 @@ export const useElevenLabsTTS = () => {
         URL.revokeObjectURL(audioUrlRef.current);
       }
 
+      // Use the centralized API client but handle blob response manually
       const response = await fetch('/api/elevenlabs-tts', {
         method: 'POST',
         headers: {

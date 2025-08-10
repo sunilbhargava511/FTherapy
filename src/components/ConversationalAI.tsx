@@ -4,6 +4,7 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, Phone, PhoneOff, Loader2, AlertCircle } from 'lucide-react';
 import { Conversation } from '@elevenlabs/client';
 import { getTherapist } from '@/lib/therapist-loader';
+import { elevenLabsAPI, APIError } from '@/lib/api-client';
 
 interface ConversationalAIProps {
   therapistId: string;
@@ -48,19 +49,16 @@ export default function ConversationalAI({ therapistId, onMessage, onStatusChang
       }
 
       // Get signed URL from our API
-      const response = await fetch('/api/elevenlabs-signed-url', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await elevenLabsAPI.getSignedUrl({ 
+        agentId: process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID! 
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to get authorization');
+      
+      const responseData = response.data as { signedUrl?: string; error?: string };
+      if (!responseData.signedUrl) {
+        throw new Error(responseData.error || 'Failed to get authorization');
       }
 
-      const { signedUrl } = await response.json();
+      const { signedUrl } = responseData;
       setStatus('Connecting to AI therapist...');
       onStatusChange?.('Connecting to AI therapist...');
 
