@@ -1,0 +1,97 @@
+{
+  "id": "notebook_1754786676614_9s95ga3th",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-10T00:44:36.614Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-10T00:44:36.765Z"
+    },
+    {
+      "id": "1754786688060",
+      "speaker": "agent",
+      "text": "Hi there! I'm Anita Bhargava, a strategic financial planner and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a personalized roadmap for your wealth-building goals. Today, we'll focus on understanding your lifestyle aspirations and preferences - because true wealth building starts with clarity about what success means to you. This foundation will help us develop strategies that align with both your values and ambitions. To get started, could you please tell me your name and age?",
+      "timestamp": "2025-08-10T00:44:48.060Z"
+    },
+    {
+      "id": "1754786720874",
+      "speaker": "user",
+      "text": "My name is Anika Bhatnagar. My age is 23.",
+      "timestamp": "2025-08-10T00:45:20.874Z"
+    },
+    {
+      "id": "1754786725639",
+      "speaker": "agent",
+      "text": "My name is Anika Bhatnagar. My age is 23.",
+      "timestamp": "2025-08-10T00:45:25.639Z"
+    },
+    {
+      "id": "1754786728981",
+      "speaker": "agent",
+      "text": "Wonderful to meet you, Anika! At 23, you're at such an exciting point in your journey where strategic financial decisions can create incredible long-term impact. Let's explore your financial journey together and define success on your own terms. I'd love to understand more about your current lifestyle and aspirations. Could you tell me about three key areas of your life: where you currently live and what type of housing arrangement you have, how you typically spend your free time, and what your usual work or daily routine looks like?",
+      "timestamp": "2025-08-10T00:45:28.981Z"
+    },
+    {
+      "id": "1754786758162",
+      "speaker": "user",
+      "text": "I live at home",
+      "timestamp": "2025-08-10T00:45:58.162Z"
+    },
+    {
+      "id": "1754786763013",
+      "speaker": "therapist",
+      "text": "Thank you for sharing that. Let's explore your financial journey together. When you say you live at home, I'd like to understand more about your living situation to help create a strategic plan that aligns with your goals. Could you tell me a bit more about:\n\n1. Are you living with family members, and what type of home is it (apartment, house)?\n2. What area or neighborhood do you live in?\n3. What aspects of your current living situation do you most value?",
+      "timestamp": "2025-08-10T00:46:03.013Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "05:46 PM",
+      "note": "Initial housing information - lives at home, details pending",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "housing",
+  "userProfile": {
+    "name": null,
+    "age": null,
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": "lives at home",
+        "details": "further details needed"
+      },
+      "food": {
+        "preference": "",
+        "details": ""
+      },
+      "transport": {
+        "preference": "",
+        "details": ""
+      },
+      "fitness": {
+        "preference": "",
+        "details": ""
+      },
+      "entertainment": {
+        "preference": "",
+        "details": ""
+      },
+      "subscriptions": {
+        "preference": "",
+        "details": ""
+      },
+      "travel": {
+        "preference": "",
+        "details": ""
+      }
+    }
+  },
+  "status": "completed",
+  "createdAt": "2025-08-10T00:44:36.614Z",
+  "updatedAt": "2025-08-10T00:49:50.679Z",
+  "duration": 1
+}

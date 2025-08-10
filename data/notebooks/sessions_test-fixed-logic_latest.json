@@ -1,0 +1,17 @@
+{
+  "therapistId": "nora-ephron",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an AI therapist"
+    },
+    {
+      "role": "user",
+      "content": "I live in a small apartment and spend most evenings watching Netflix"
+    }
+  ],
+  "variables": {
+    "current_topic": "travel_preference"
+  },
+  "lastUpdated": "2025-08-09T23:24:52.733Z"
+}

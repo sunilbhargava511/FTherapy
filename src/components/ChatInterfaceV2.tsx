@@ -78,6 +78,15 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
   const notes = getNotes();
   const currentTopic = getCurrentTopic();
   const userProfile = getUserProfile();
+  
+  // Debug logging for message updates
+  useEffect(() => {
+    console.log('📝 ChatInterfaceV2 messages updated:', {
+      messageCount: messages.length,
+      lastMessage: messages[messages.length - 1]?.text?.substring(0, 50) + '...',
+      showTranscript: showTranscript
+    });
+  }, [messages, showTranscript]);
 
   // Initialize session when therapist changes
   useEffect(() => {
@@ -134,12 +143,33 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
   }, [currentTTSAudio]);
 
   const addMessage = (speaker: 'user' | 'therapist', text: string) => {
+    // Prevent duplicate messages - check if same text was added recently (within 10 seconds)
+    if (messages && messages.length > 0) {
+      const recentMessages = messages.filter(msg => {
+        const msgTime = new Date(msg.timestamp);
+        const now = new Date();
+        return (now.getTime() - msgTime.getTime()) < 10000; // Within 10 seconds
+      });
+      
+      // Check for exact text match in recent messages
+      const isDuplicate = recentMessages.some(msg => 
+        msg.text === text && msg.speaker === speaker
+      );
+      
+      if (isDuplicate) {
+        console.log('🚫 Preventing duplicate message:', { speaker, text: text.substring(0, 50) + '...' });
+        return;
+      }
+    }
+
     const newMessage: ConversationMessage = {
       id: Date.now().toString(),
       speaker,
       text,
       timestamp: new Date()
     };
+    
+    console.log('✅ Adding message to notebook:', { speaker, text: text.substring(0, 50) + '...' });
     
     // Add to notebook system
     addNotebookMessage(newMessage);
@@ -304,6 +334,34 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
           </div>
           
           <div className="flex items-center space-x-2">
+            {/* Voice Mode Toggle */}
+            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setVoiceMode('conversation')}
+                className={`px-2 py-1 text-xs rounded transition-colors ${
+                  voiceMode === 'conversation' 
+                    ? 'bg-white shadow text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                title="Natural conversation mode"
+              >
+                <Mic size={12} className="inline mr-1" />
+                Natural
+              </button>
+              <button
+                onClick={() => setVoiceMode('manual')}
+                className={`px-2 py-1 text-xs rounded transition-colors ${
+                  voiceMode === 'manual' 
+                    ? 'bg-white shadow text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                title="Push-to-talk mode"
+              >
+                <Phone size={12} className="inline mr-1" />
+                Push-to-talk
+              </button>
+            </div>
+
             {/* Notebook status indicator */}
             <div className="flex items-center space-x-2 text-xs text-gray-500">
               <div className={`w-2 h-2 rounded-full ${notebook?.hasChanges() ? 'bg-yellow-400' : 'bg-green-400'}`}></div>
@@ -375,24 +433,45 @@ export default function ChatInterfaceV2({ selectedTherapistId }: ChatInterfaceV2
         <div className="flex-1 flex flex-col">
           {/* Voice Conversation Component */}
           <div className="flex-1 p-4">
-            <VoiceConversation
-              onVoiceInput={handleUserInput}
-              isProcessing={isTyping}
-              isPlayingTTS={isPlayingTTS}
-              onInterruptTTS={() => {
-                if (currentTTSAudio) {
-                  currentTTSAudio.pause();
-                  currentTTSAudio.currentTime = 0;
-                  setIsPlayingTTS(false);
-                }
-              }}
-              onStartSession={() => setVoiceSessionStarted(true)}
-              hasStarted={voiceSessionStarted}
-              therapistName={therapist.name}
-              therapist={therapist}
-              sttProvider={voiceControlSettings.sttProvider}
-              isTranscoding={isTranscoding}
-            />
+            {voiceMode === 'conversation' ? (
+              <ConversationMode
+                therapistId={selectedTherapistId}
+                therapist={therapist}
+                onMessage={(message, speaker) => {
+                  // Map ConversationMode speaker types to addMessage types
+                  const mappedSpeaker = speaker === 'agent' ? 'therapist' : speaker;
+                  addMessage(mappedSpeaker, message);
+                }}
+                onNoteGenerated={(note) => {
+                  addNote(note);
+                }}
+                onProfileUpdate={(profileData) => {
+                  updateNotebookProfile(profileData);
+                }}
+                onReportGenerated={(report) => {
+                  setFinancialReport(report);
+                }}
+              />
+            ) : (
+              <VoiceConversation
+                onVoiceInput={handleUserInput}
+                isProcessing={isTyping}
+                isPlayingTTS={isPlayingTTS}
+                onInterruptTTS={() => {
+                  if (currentTTSAudio) {
+                    currentTTSAudio.pause();
+                    currentTTSAudio.currentTime = 0;
+                    setIsPlayingTTS(false);
+                  }
+                }}
+                onStartSession={() => setVoiceSessionStarted(true)}
+                hasStarted={voiceSessionStarted}
+                therapistName={therapist.name}
+                therapist={therapist}
+                sttProvider={voiceControlSettings.sttProvider}
+                isTranscoding={isTranscoding}
+              />
+            )}
           </div>
 
           {/* Live Transcript - Below therapist panel */}

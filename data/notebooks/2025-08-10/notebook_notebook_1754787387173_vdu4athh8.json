@@ -1,0 +1,69 @@
+{
+  "id": "notebook_1754787387173_vdu4athh8",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-10T00:56:27.173Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-10T00:56:27.297Z"
+    },
+    {
+      "id": "1754787398394",
+      "speaker": "therapist",
+      "text": "Welcome! I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a personalized roadmap for your wealth-building goals. Today, we'll focus on understanding your lifestyle aspirations and preferences - because true financial success starts with clarity about how you want to live. I believe your unique perspective is an asset in building wealth, so let's define success on your own terms. To get started, could you please tell me your name and age?",
+      "timestamp": "2025-08-10T00:56:38.394Z"
+    },
+    {
+      "id": "1754787418327",
+      "speaker": "therapist",
+      "text": "Hello! I'm Anita Bhargava, strategic financial planner and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a pathway to sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - not just numbers, but what truly matters to you. This foundation will help us develop strategies that reflect both your current needs and future dreams. Let's start by getting to know each other - could you please tell me your name and age?",
+      "timestamp": "2025-08-10T00:56:58.327Z"
+    },
+    {
+      "id": "1754787454107",
+      "speaker": "user",
+      "text": "I'm Anika Bhatnagar and I'm 23 years old.",
+      "timestamp": "2025-08-10T00:57:34.107Z"
+    },
+    {
+      "id": "1754787458033",
+      "speaker": "therapist",
+      "text": "I'm Anika Bhatnagar and I'm 23 years old.",
+      "timestamp": "2025-08-10T00:57:38.033Z"
+    },
+    {
+      "id": "1754787460414",
+      "speaker": "therapist",
+      "text": "Wonderful to meet you, Anika! At 23, you're at such an exciting point to begin building strategic wealth for your future. Let's explore your financial journey together. To understand your lifestyle better, could you tell me about three key areas of your life? First, where do you currently live and what type of housing arrangement do you have? Second, what does your typical workday look like? And finally, how do you prefer to spend your free time?",
+      "timestamp": "2025-08-10T00:57:40.414Z"
+    },
+    {
+      "id": "1754788110116",
+      "speaker": "therapist",
+      "text": "Welcome! I'm Anita Bhargava, co-founder of Bharosa Club and your strategic financial partner. I'm here to help you create a clear path toward building sustainable wealth that aligns with your values and aspirations. Today, we'll explore your lifestyle preferences and goals to develop a comprehensive understanding of what financial success means to you. Let's explore your financial journey together - could you start by sharing your name and age?",
+      "timestamp": "2025-08-10T01:08:30.116Z"
+    },
+    {
+      "id": "1754788144316",
+      "speaker": "user",
+      "text": "Yeah, my name is Anika Bhatnagar and my age is 23.",
+      "timestamp": "2025-08-10T01:09:04.316Z"
+    },
+    {
+      "id": "1754788147046",
+      "speaker": "therapist",
+      "text": "Wonderful to meet you, Anika! At 23, you're at an exciting stage where strategic financial decisions can create powerful long-term impact. Let's explore your financial journey together. I'd love to understand more about your current lifestyle and aspirations. Could you tell me about three key aspects: where you're currently living and what type of housing arrangement you have, what your typical workday looks like, and how you prefer to spend your free time?",
+      "timestamp": "2025-08-10T01:09:07.046Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-10T00:56:27.173Z",
+  "updatedAt": "2025-08-10T01:09:07.047Z",
+  "duration": 13
+}

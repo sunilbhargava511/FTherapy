@@ -1,0 +1,17 @@
+{
+  "therapistId": "anita-bhargava",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an AI therapist"
+    },
+    {
+      "role": "user",
+      "content": "Hi, my name is John and I am 30 years old"
+    }
+  ],
+  "variables": {
+    "current_topic": "intro"
+  },
+  "lastUpdated": "2025-08-09T23:11:11.987Z"
+}

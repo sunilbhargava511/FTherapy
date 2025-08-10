@@ -1,0 +1,73 @@
+{
+  "id": "notebook_1754758156775_szom39okt",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T16:49:16.775Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T16:49:16.825Z"
+    },
+    {
+      "id": "1754758580396",
+      "speaker": "user",
+      "text": "Hello? Hello?",
+      "timestamp": "2025-08-09T16:56:20.396Z"
+    },
+    {
+      "id": "1754758585099",
+      "speaker": "therapist",
+      "text": "Namaste! I'm Anita Bhargava, and I'm delighted to connect with you today. As a financial strategist and co-founder of Bharosa Club, I'm here to help you explore your financial journey and create a strategy that aligns with your unique lifestyle and aspirations. Let's start by getting to know each other better - could you please tell me your name and age?",
+      "timestamp": "2025-08-09T16:56:25.099Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "09:56 AM",
+      "note": "Initial greeting, awaiting basic client information",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "intro",
+  "userProfile": {
+    "name": null,
+    "age": null,
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": "",
+        "details": ""
+      },
+      "food": {
+        "preference": "",
+        "details": ""
+      },
+      "transport": {
+        "preference": "",
+        "details": ""
+      },
+      "fitness": {
+        "preference": "",
+        "details": ""
+      },
+      "entertainment": {
+        "preference": "",
+        "details": ""
+      },
+      "subscriptions": {
+        "preference": "",
+        "details": ""
+      },
+      "travel": {
+        "preference": "",
+        "details": ""
+      }
+    }
+  },
+  "status": "completed",
+  "createdAt": "2025-08-09T16:49:16.775Z",
+  "updatedAt": "2025-08-09T16:58:58.392Z",
+  "duration": 7
+}

@@ -1,0 +1,33 @@
+{
+  "id": "notebook_1754760906377_zhgi0a9cv",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T17:35:06.377Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T17:35:06.876Z"
+    },
+    {
+      "id": "1754760918595",
+      "speaker": "agent",
+      "text": "Hello! I'm Anita Bhargava, strategic financial planner and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a path toward sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle - both current and desired - to develop a clear picture of what financial success means to you. This foundation will be invaluable for our future discussions about building strategic wealth. Let's start with the basics - could you tell me your name and age?",
+      "timestamp": "2025-08-09T17:35:18.595Z"
+    },
+    {
+      "id": "1754760983692",
+      "speaker": "agent",
+      "text": "Hello! I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a roadmap that aligns with both your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - not just numbers, but what truly matters to you. This foundation will help us develop strategies that support the life you want to build. Let's define success on your own terms. To begin, could you please tell me your name and age?",
+      "timestamp": "2025-08-09T17:36:23.692Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T17:35:06.377Z",
+  "updatedAt": "2025-08-09T17:36:23.692Z",
+  "duration": 1
+}

@@ -1,0 +1,39 @@
+{
+  "id": "notebook_1754781132034_1cosofvi7",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T23:12:12.034Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T23:12:12.152Z"
+    },
+    {
+      "id": "1754781149053",
+      "speaker": "agent",
+      "text": "Hello! I'm Anita Bhargava, strategic financial planner and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help you create a path to sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - not just numbers, but what truly matters to you. This foundation will help us develop strategies that reflect both your current needs and future dreams. Let's start by getting to know each other - could you please tell me your name and age?",
+      "timestamp": "2025-08-09T23:12:29.053Z"
+    },
+    {
+      "id": "1754781187841",
+      "speaker": "agent",
+      "text": "I am Anika Bhatnagar, 22 years old.",
+      "timestamp": "2025-08-09T23:13:07.841Z"
+    },
+    {
+      "id": "1754781190268",
+      "speaker": "agent",
+      "text": "Wonderful to meet you, Anika! At 22, you're at such an exciting point to begin building your financial foundation strategically. Let's explore your financial journey together and create a plan that aligns with your unique perspective. I'd love to understand more about your current lifestyle. Could you tell me about where you're living now and what a typical day looks like for you? Also, what activities or interests do you spend most of your time pursuing?",
+      "timestamp": "2025-08-09T23:13:10.268Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T23:12:12.034Z",
+  "updatedAt": "2025-08-09T23:13:10.268Z",
+  "duration": 1
+}

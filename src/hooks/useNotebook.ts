@@ -14,6 +14,7 @@ interface UseNotebookState {
   hasReports: boolean;
   error: string | null;
   lastSaved: Date | null;
+  lastUpdated?: number; // Track when notebook was last updated to force re-renders
 }
 
 interface UseNotebookActions {
@@ -187,10 +188,11 @@ export function useNotebook(
 
     state.notebook.addMessage(message);
     
-    // Trigger re-render
+    // Trigger re-render by creating new object reference
     setState(prev => ({
       ...prev,
-      notebook: state.notebook // Force update
+      notebook: Object.assign(Object.create(Object.getPrototypeOf(state.notebook)), state.notebook),
+      lastUpdated: Date.now() // Additional change to ensure React detects update
     }));
   }, [state.notebook]);
 
@@ -199,9 +201,11 @@ export function useNotebook(
 
     state.notebook.addNote(note);
     
+    // Trigger re-render by creating new object reference
     setState(prev => ({
       ...prev,
-      notebook: state.notebook
+      notebook: Object.assign(Object.create(Object.getPrototypeOf(state.notebook)), state.notebook),
+      lastUpdated: Date.now()
     }));
   }, [state.notebook]);
 
@@ -210,9 +214,11 @@ export function useNotebook(
 
     state.notebook.updateTopic(topic);
     
+    // Trigger re-render by creating new object reference
     setState(prev => ({
       ...prev,
-      notebook: state.notebook
+      notebook: Object.assign(Object.create(Object.getPrototypeOf(state.notebook)), state.notebook),
+      lastUpdated: Date.now()
     }));
   }, [state.notebook]);
 
@@ -221,9 +227,11 @@ export function useNotebook(
 
     state.notebook.updateProfile(profileData);
     
+    // Trigger re-render by creating new object reference
     setState(prev => ({
       ...prev,
-      notebook: state.notebook
+      notebook: Object.assign(Object.create(Object.getPrototypeOf(state.notebook)), state.notebook),
+      lastUpdated: Date.now()
     }));
   }, [state.notebook]);
 
@@ -318,19 +326,19 @@ export function useNotebook(
   // Data access helpers
   const getMessages = useCallback((): ConversationMessage[] => {
     return state.notebook?.getMessages() || [];
-  }, [state.notebook]);
+  }, [state.notebook, state.lastUpdated]); // Add lastUpdated as dependency to force re-computation
 
   const getNotes = useCallback((): TherapistNote[] => {
     return state.notebook?.getNotes() || [];
-  }, [state.notebook]);
+  }, [state.notebook, state.lastUpdated]);
 
   const getCurrentTopic = useCallback((): ConversationTopic => {
     return state.notebook?.getCurrentTopic() || 'intro';
-  }, [state.notebook]);
+  }, [state.notebook, state.lastUpdated]);
 
   const getUserProfile = useCallback(() => {
     return state.notebook?.getUserProfile() || {};
-  }, [state.notebook]);
+  }, [state.notebook, state.lastUpdated]);
 
   return {
     // State

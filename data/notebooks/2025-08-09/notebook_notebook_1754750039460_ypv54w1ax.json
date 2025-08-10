@@ -1,0 +1,107 @@
+{
+  "id": "notebook_1754750039460_ypv54w1ax",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T14:33:59.460Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T14:33:59.504Z"
+    },
+    {
+      "id": "1754750062164",
+      "speaker": "user",
+      "text": "I'm Anika. I'm twenty-two years old.",
+      "timestamp": "2025-08-09T14:34:22.164Z"
+    },
+    {
+      "id": "1754750067484",
+      "speaker": "therapist",
+      "text": "Namaste Anika! What a lovely name. At 22, you're at such an exciting point in your journey where strategic decisions can create beautiful opportunities for your future. Let's explore your financial journey together and build a foundation for long-term abundance. I'd love to understand more about your current lifestyle. Could you tell me about where you're living now - are you in a city apartment, suburban home, or perhaps still with family? Also, what does a typical day look like for you in terms of work or studies, and how do you usually spend your free time?",
+      "timestamp": "2025-08-09T14:34:27.484Z"
+    },
+    {
+      "id": "1754750091640",
+      "speaker": "user",
+      "text": "I can't hear you.",
+      "timestamp": "2025-08-09T14:34:51.640Z"
+    },
+    {
+      "id": "1754750096390",
+      "speaker": "therapist",
+      "text": "Namaste Anika! Since we're communicating through text, I want to ensure you can read my messages clearly. I'm Anita Bhargava, your strategic wealth building guide. Let's explore your financial journey together! I'd love to understand your current lifestyle and aspirations. Could you tell me about three key areas of your life: where you currently live, how you typically spend your free time, and what a typical day looks like for you?",
+      "timestamp": "2025-08-09T14:34:56.390Z"
+    },
+    {
+      "id": "1754750121930",
+      "speaker": "user",
+      "text": "can we switch to voice",
+      "timestamp": "2025-08-09T14:35:21.930Z"
+    },
+    {
+      "id": "1754750127413",
+      "speaker": "therapist",
+      "text": "Namaste Anika! While I appreciate your interest in voice communication, I'm currently available through text chat only. This actually works in our favor, as it allows us to thoughtfully document your lifestyle journey and financial aspirations. Let's explore your financial journey together - could you tell me a bit about where you're currently living and what a typical day looks like for you? Your unique perspective is an asset in building wealth, and I'm here to help you define success on your own terms.",
+      "timestamp": "2025-08-09T14:35:27.413Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "07:34 AM",
+      "note": "Young professional/student age 22, gathering basic lifestyle information",
+      "topic": "intro"
+    },
+    {
+      "time": "07:34 AM",
+      "note": "Clarifying communication method and requesting initial lifestyle information",
+      "topic": "lifestyle_overview"
+    },
+    {
+      "time": "07:35 AM",
+      "note": "Client requested voice chat; redirecting to gather lifestyle information starting with housing and daily routine",
+      "topic": "lifestyle_overview"
+    }
+  ],
+  "currentTopic": "lifestyle_overview",
+  "userProfile": {
+    "name": "Anika",
+    "age": "22",
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": null,
+        "details": null
+      },
+      "food": {
+        "preference": null,
+        "details": null
+      },
+      "transport": {
+        "preference": null,
+        "details": null
+      },
+      "fitness": {
+        "preference": null,
+        "details": null
+      },
+      "entertainment": {
+        "preference": null,
+        "details": null
+      },
+      "subscriptions": {
+        "preference": null,
+        "details": null
+      },
+      "travel": {
+        "preference": null,
+        "details": null
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-09T14:33:59.460Z",
+  "updatedAt": "2025-08-09T14:35:27.413Z",
+  "duration": 1
+}

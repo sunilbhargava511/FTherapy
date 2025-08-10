@@ -1,0 +1,115 @@
+{
+  "id": "notebook_1754776151427_ouko2pe9r",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T21:49:11.427Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T21:49:11.461Z"
+    },
+    {
+      "id": "1754776163521",
+      "speaker": "agent",
+      "text": "Hello! I'm Anita Bhargava, strategic wealth advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help you create a pathway to sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle - both current and desired - which will form the foundation for our strategic planning discussions. Let's start by getting to know you better. Could you please tell me your name and age?",
+      "timestamp": "2025-08-09T21:49:23.521Z"
+    },
+    {
+      "id": "1754776334455",
+      "speaker": "user",
+      "text": "anika 23",
+      "timestamp": "2025-08-09T21:52:14.455Z"
+    },
+    {
+      "id": "1754776339763",
+      "speaker": "therapist",
+      "text": "Thank you for sharing, Anika! I'm excited to explore your financial journey together. At 23, you're at a wonderful point to start building strategic wealth for your future. Let's start by understanding your current lifestyle to create a foundation for success. Could you tell me about three key aspects of your life: where you currently live (city/type of housing), how you typically spend your days (work/study), and what activities you enjoy in your free time?",
+      "timestamp": "2025-08-09T21:52:19.763Z"
+    },
+    {
+      "id": "1754776361108",
+      "speaker": "agent",
+      "text": "Hello! I'm Anita Bhargava, strategic wealth advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a roadmap for your future success. Today, we'll focus on understanding your lifestyle aspirations and preferences - because true wealth building starts with clarity about what matters most to you. Let's define success on your own terms. To get started, could you please tell me your name and age?",
+      "timestamp": "2025-08-09T21:52:41.108Z"
+    },
+    {
+      "id": "1754776620073",
+      "speaker": "agent",
+      "text": "Hello, I'm Anita Bhargava, strategic wealth advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a pathway to sustainable wealth that aligns with your unique lifestyle and aspirations. Today, we'll focus on understanding your current lifestyle and future goals - not just the numbers, but the real experiences and choices that matter to you. This foundation will help us develop strategies that truly reflect your values and ambitions. Let's start with the basics - could you please tell me your name and age?",
+      "timestamp": "2025-08-09T21:57:00.073Z"
+    },
+    {
+      "id": "1754776656415",
+      "speaker": "agent",
+      "text": "My name is Anika and I'm 22 years old.",
+      "timestamp": "2025-08-09T21:57:36.415Z"
+    },
+    {
+      "id": "1754776656716",
+      "speaker": "agent",
+      "text": "I apologize, but I'm having trouble connecting to your selected therapist. Please try starting a new conversation.",
+      "timestamp": "2025-08-09T21:57:36.716Z"
+    },
+    {
+      "id": "1754776670016",
+      "speaker": "agent",
+      "text": "...",
+      "timestamp": "2025-08-09T21:57:50.016Z"
+    },
+    {
+      "id": "1754776670345",
+      "speaker": "agent",
+      "text": "I apologize, but I'm having trouble connecting to your selected therapist. Please try starting a new conversation.",
+      "timestamp": "2025-08-09T21:57:50.345Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "02:52 PM",
+      "note": "Client is 23 years old, name is Anika - gathering initial lifestyle information",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "lifestyle_overview",
+  "userProfile": {
+    "name": "Anika",
+    "age": "23",
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": null,
+        "details": null
+      },
+      "food": {
+        "preference": null,
+        "details": null
+      },
+      "transport": {
+        "preference": null,
+        "details": null
+      },
+      "fitness": {
+        "preference": null,
+        "details": null
+      },
+      "entertainment": {
+        "preference": null,
+        "details": null
+      },
+      "subscriptions": {
+        "preference": null,
+        "details": null
+      },
+      "travel": {
+        "preference": null,
+        "details": null
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-09T21:49:11.427Z",
+  "updatedAt": "2025-08-09T21:57:50.345Z",
+  "duration": 9
+}

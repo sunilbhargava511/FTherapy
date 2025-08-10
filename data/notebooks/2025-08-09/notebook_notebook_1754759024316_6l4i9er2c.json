@@ -1,0 +1,27 @@
+{
+  "id": "notebook_1754759024316_6l4i9er2c",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T17:03:44.316Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T17:03:44.380Z"
+    },
+    {
+      "id": "1754759045602",
+      "speaker": "agent",
+      "text": "Namaste! I'm Anita Bhargava, and I'm delighted to begin this financial journey with you. As a strategic wealth advisor with roots in Delhi and experience in New York's financial world, I bring a unique East-meets-West perspective to building sustainable wealth. Today, we'll explore your lifestyle aspirations and create a foundation for your financial success - because true wealth building starts with understanding your complete picture. Let's define success on your own terms. To begin, could you please share your name and age with me?",
+      "timestamp": "2025-08-09T17:04:05.602Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T17:03:44.316Z",
+  "updatedAt": "2025-08-09T17:04:05.602Z",
+  "duration": 0
+}

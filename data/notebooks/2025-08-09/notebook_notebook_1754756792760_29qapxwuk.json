@@ -1,0 +1,21 @@
+{
+  "id": "notebook_1754756792760_29qapxwuk",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T16:26:32.760Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T16:26:32.948Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T16:26:32.760Z",
+  "updatedAt": "2025-08-09T16:26:32.948Z",
+  "duration": 0
+}

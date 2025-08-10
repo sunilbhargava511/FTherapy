@@ -1,0 +1,73 @@
+{
+  "id": "notebook_1754781224790_wl3lcy8bj",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T23:13:44.790Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T23:13:44.821Z"
+    },
+    {
+      "id": "1754781270600",
+      "speaker": "user",
+      "text": "i am anika 23",
+      "timestamp": "2025-08-09T23:14:30.600Z"
+    },
+    {
+      "id": "1754781275352",
+      "speaker": "therapist",
+      "text": "Wonderful to meet you, Anika! I'm excited to explore your financial journey together. At 23, you're at an incredible point to start building strategic wealth for your future. Let's begin by understanding your lifestyle and aspirations. Could you tell me about three key aspects of your current life: where you live, how you typically spend your days, and what activities bring you joy? Your unique perspective will help us create a plan that truly reflects your goals.",
+      "timestamp": "2025-08-09T23:14:35.352Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "04:14 PM",
+      "note": "Client is 23 years old, named Anika - gathering initial lifestyle information",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "lifestyle_overview",
+  "userProfile": {
+    "name": "Anika",
+    "age": "23",
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": null,
+        "details": null
+      },
+      "food": {
+        "preference": null,
+        "details": null
+      },
+      "transport": {
+        "preference": null,
+        "details": null
+      },
+      "fitness": {
+        "preference": null,
+        "details": null
+      },
+      "entertainment": {
+        "preference": null,
+        "details": null
+      },
+      "subscriptions": {
+        "preference": null,
+        "details": null
+      },
+      "travel": {
+        "preference": null,
+        "details": null
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-09T23:13:44.790Z",
+  "updatedAt": "2025-08-09T23:14:35.352Z",
+  "duration": 1
+}

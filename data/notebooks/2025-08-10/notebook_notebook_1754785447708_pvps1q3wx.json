@@ -1,0 +1,45 @@
+{
+  "id": "notebook_1754785447708_pvps1q3wx",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-10T00:24:07.708Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-10T00:24:07.839Z"
+    },
+    {
+      "id": "1754785460823",
+      "speaker": "agent",
+      "text": "Welcome! I'm Anita Bhargava, strategic wealth advisor and co-founder of Bharosa Club. I'm passionate about helping professionals like you build sustainable wealth through strategic planning that aligns with your unique lifestyle goals. Today, we'll explore your current lifestyle and aspirations to create a strong foundation for your financial journey. Understanding your complete financial picture is essential for building lasting wealth. Let's start by getting to know each other - could you please share your name and age?",
+      "timestamp": "2025-08-10T00:24:20.823Z"
+    },
+    {
+      "id": "1754785492578",
+      "speaker": "user",
+      "text": "My name is Anika Bhatnagar and I'm 22 years old.",
+      "timestamp": "2025-08-10T00:24:52.578Z"
+    },
+    {
+      "id": "1754785497525",
+      "speaker": "agent",
+      "text": "My name is Anika Bhatnagar and I'm 22 years old.",
+      "timestamp": "2025-08-10T00:24:57.525Z"
+    },
+    {
+      "id": "1754785500219",
+      "speaker": "agent",
+      "text": "Welcome Anika! I'm delighted to start exploring your financial journey together. At 22, you're at an exciting point where strategic planning can create incredible long-term abundance. Let's begin by understanding your current lifestyle to help define success on your own terms. Could you tell me about three key aspects of your life: where you're currently living, what you do professionally or if you're studying, and how you typically spend your free time?",
+      "timestamp": "2025-08-10T00:25:00.219Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-10T00:24:07.708Z",
+  "updatedAt": "2025-08-10T00:25:00.219Z",
+  "duration": 1
+}

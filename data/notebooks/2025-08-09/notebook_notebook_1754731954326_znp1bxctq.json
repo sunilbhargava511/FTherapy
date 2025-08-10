@@ -1,0 +1,21 @@
+{
+  "id": "notebook_1754731954326_znp1bxctq",
+  "therapistId": "nora-ephron",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T09:32:34.326Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Nora Ephron. Witty financial wisdom. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T09:32:34.337Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "completed",
+  "createdAt": "2025-08-09T09:32:34.326Z",
+  "updatedAt": "2025-08-09T09:32:38.384Z",
+  "duration": 0
+}

@@ -1,0 +1,51 @@
+{
+  "id": "notebook_1754780238816_723svx0u5",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T22:57:18.816Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T22:57:18.900Z"
+    },
+    {
+      "id": "1754780267556",
+      "speaker": "agent",
+      "text": "Welcome, I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a pathway to sustainable wealth that aligns with your unique lifestyle and aspirations. Today, we'll focus on understanding your current lifestyle and future goals - not just the numbers, but the real experiences and choices that matter to you. This foundation will help us develop strategies that truly reflect your values and ambitions. Let's start with the basics - could you tell me your name and age?",
+      "timestamp": "2025-08-09T22:57:47.556Z"
+    },
+    {
+      "id": "1754780303521",
+      "speaker": "agent",
+      "text": "Yes, I am Anika Bhatnagar.",
+      "timestamp": "2025-08-09T22:58:23.521Z"
+    },
+    {
+      "id": "1754780303836",
+      "speaker": "agent",
+      "text": "I apologize, but I'm having trouble connecting to your selected therapist. Please try starting a new conversation.",
+      "timestamp": "2025-08-09T22:58:23.836Z"
+    },
+    {
+      "id": "1754780307131",
+      "speaker": "agent",
+      "text": "And I'm 23 years old.",
+      "timestamp": "2025-08-09T22:58:27.131Z"
+    },
+    {
+      "id": "1754780307757",
+      "speaker": "agent",
+      "text": "I apologize, but I'm having trouble connecting to your selected therapist. Please try starting a new conversation.",
+      "timestamp": "2025-08-09T22:58:27.757Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T22:57:18.816Z",
+  "updatedAt": "2025-08-09T22:58:27.757Z",
+  "duration": 1
+}

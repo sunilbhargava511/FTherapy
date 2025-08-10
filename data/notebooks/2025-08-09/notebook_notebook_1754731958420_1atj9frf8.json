@@ -1,0 +1,21 @@
+{
+  "id": "notebook_1754731958420_1atj9frf8",
+  "therapistId": "ramit-sethi",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T09:32:38.420Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Ramit Sethi. Design your rich life. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T09:32:38.431Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "completed",
+  "createdAt": "2025-08-09T09:32:38.420Z",
+  "updatedAt": "2025-08-09T09:32:45.286Z",
+  "duration": 0
+}

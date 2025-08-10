@@ -1,0 +1,93 @@
+{
+  "id": "notebook_1754781951130_4v9p80dt4",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T23:25:51.130Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T23:25:51.249Z"
+    },
+    {
+      "id": "1754781963806",
+      "speaker": "agent",
+      "text": "Hello, I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a path toward sustainable wealth that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - not just numbers, but what truly matters to you. This foundation will help us develop strategies that reflect both your current needs and future ambitions. Let's start by getting to know each other - could you share your name and age with me?",
+      "timestamp": "2025-08-09T23:26:03.806Z"
+    },
+    {
+      "id": "1754781998643",
+      "speaker": "user",
+      "text": "I am Anika Bhatnagar. My age is 23.",
+      "timestamp": "2025-08-09T23:26:38.643Z"
+    },
+    {
+      "id": "1754782003863",
+      "speaker": "agent",
+      "text": "I am Anika Bhatnagar. My age is 23.",
+      "timestamp": "2025-08-09T23:26:43.863Z"
+    },
+    {
+      "id": "1754782007005",
+      "speaker": "agent",
+      "text": "Welcome Anika! I appreciate you sharing that with me. At 23, you're at an exciting point where strategic financial decisions can create incredible long-term impact. Let's explore your financial journey together. I'd love to understand more about your current lifestyle and aspirations. Could you tell me about three key areas: where you currently live and what type of housing arrangement you have, what you do professionally or what field you're in, and how you typically like to spend your free time?",
+      "timestamp": "2025-08-09T23:26:47.005Z"
+    },
+    {
+      "id": "1754782036683",
+      "speaker": "user",
+      "text": "That's a lot of questions. Could you do them one at a time?",
+      "timestamp": "2025-08-09T23:27:16.683Z"
+    },
+    {
+      "id": "1754782041582",
+      "speaker": "agent",
+      "text": "That's a lot of questions. Could you do them one at a time?",
+      "timestamp": "2025-08-09T23:27:21.582Z"
+    },
+    {
+      "id": "1754782043047",
+      "speaker": "agent",
+      "text": "You're absolutely right, Anika - let's take this step by step to build a clear picture. Strategic planning starts with understanding the fundamentals. Let's begin with where you live: could you tell me about your current living situation - are you renting, living with family, or have another arrangement?",
+      "timestamp": "2025-08-09T23:27:23.047Z"
+    },
+    {
+      "id": "1754782048695",
+      "speaker": "user",
+      "text": "How am I telling them that I'm not going...",
+      "timestamp": "2025-08-09T23:27:28.695Z"
+    },
+    {
+      "id": "1754782050697",
+      "speaker": "user",
+      "text": "How much I'm not going.",
+      "timestamp": "2025-08-09T23:27:30.697Z"
+    },
+    {
+      "id": "1754782051698",
+      "speaker": "user",
+      "text": "I'm not going.",
+      "timestamp": "2025-08-09T23:27:31.698Z"
+    },
+    {
+      "id": "1754782055828",
+      "speaker": "agent",
+      "text": "I'm not going.",
+      "timestamp": "2025-08-09T23:27:35.828Z"
+    },
+    {
+      "id": "1754782057543",
+      "speaker": "agent",
+      "text": "I understand you may be hesitant, Anika. Building a financial strategy is a personal journey, and it's perfectly fine to take it at your own pace. Would you feel more comfortable starting with just one simple aspect - perhaps telling me about what you do professionally? This helps me understand your unique perspective better.",
+      "timestamp": "2025-08-09T23:27:37.543Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T23:25:51.130Z",
+  "updatedAt": "2025-08-09T23:27:37.543Z",
+  "duration": 2
+}

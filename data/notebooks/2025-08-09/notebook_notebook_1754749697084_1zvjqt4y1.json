@@ -1,0 +1,73 @@
+{
+  "id": "notebook_1754749697084_1zvjqt4y1",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T14:28:17.084Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T14:28:17.104Z"
+    },
+    {
+      "id": "1754749710283",
+      "speaker": "user",
+      "text": "I am Anika and am 22.",
+      "timestamp": "2025-08-09T14:28:30.283Z"
+    },
+    {
+      "id": "1754749715170",
+      "speaker": "therapist",
+      "text": "Namaste Anika! I'm delighted to meet someone at such an exciting stage of life. At 22, you're at the perfect moment to start building a strong financial foundation. Let's explore your financial journey together. To understand your lifestyle better, could you tell me about three key aspects of your life: where you currently live and what type of housing arrangement you have, how you typically spend your weekdays, and what activities bring you joy in your free time?",
+      "timestamp": "2025-08-09T14:28:35.170Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "07:28 AM",
+      "note": "Young professional/recent graduate, age indicates early career stage",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "lifestyle_overview",
+  "userProfile": {
+    "name": "Anika",
+    "age": "22",
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": null,
+        "details": null
+      },
+      "food": {
+        "preference": null,
+        "details": null
+      },
+      "transport": {
+        "preference": null,
+        "details": null
+      },
+      "fitness": {
+        "preference": null,
+        "details": null
+      },
+      "entertainment": {
+        "preference": null,
+        "details": null
+      },
+      "subscriptions": {
+        "preference": null,
+        "details": null
+      },
+      "travel": {
+        "preference": null,
+        "details": null
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-09T14:28:17.084Z",
+  "updatedAt": "2025-08-09T14:28:35.171Z",
+  "duration": 0
+}

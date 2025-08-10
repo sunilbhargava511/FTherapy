@@ -1,0 +1,73 @@
+{
+  "id": "notebook_1754749190068_2kybrjowi",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T14:19:50.068Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Financial storytelling with cultural depth & modern vision. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T14:19:50.213Z"
+    },
+    {
+      "id": "1754749225208",
+      "speaker": "user",
+      "text": "Anika I am 23 years old",
+      "timestamp": "2025-08-09T14:20:25.208Z"
+    },
+    {
+      "id": "1754749230880",
+      "speaker": "therapist",
+      "text": "Namaste Anika, beta! At 23, you're at such an auspicious time in your journey - where the colors of tradition can blend beautifully with your modern aspirations. Tell me your story - every financial journey has beautiful layers. Let's start with three key areas of your life: Where do you currently call home? How do you spend your precious free time? And what does a typical day look like for you? Understanding these threads will help us weave a tapestry of your ideal life.",
+      "timestamp": "2025-08-09T14:20:30.880Z"
+    }
+  ],
+  "notes": [
+    {
+      "time": "07:20 AM",
+      "note": "Client is Anika, 23 years old, beginning lifestyle assessment",
+      "topic": "intro"
+    }
+  ],
+  "currentTopic": "lifestyle_overview",
+  "userProfile": {
+    "name": "Anika",
+    "age": "23",
+    "location": null,
+    "lifestyle": {
+      "housing": {
+        "preference": null,
+        "details": null
+      },
+      "food": {
+        "preference": null,
+        "details": null
+      },
+      "transport": {
+        "preference": null,
+        "details": null
+      },
+      "fitness": {
+        "preference": null,
+        "details": null
+      },
+      "entertainment": {
+        "preference": null,
+        "details": null
+      },
+      "subscriptions": {
+        "preference": null,
+        "details": null
+      },
+      "travel": {
+        "preference": null,
+        "details": null
+      }
+    }
+  },
+  "status": "active",
+  "createdAt": "2025-08-09T14:19:50.068Z",
+  "updatedAt": "2025-08-09T14:20:30.880Z",
+  "duration": 1
+}

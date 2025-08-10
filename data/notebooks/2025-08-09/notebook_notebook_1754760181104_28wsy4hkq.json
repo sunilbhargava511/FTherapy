@@ -1,0 +1,27 @@
+{
+  "id": "notebook_1754760181104_28wsy4hkq",
+  "therapistId": "anita-bhargava",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T17:23:01.104Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Anita Bhargava. Strategic wealth building with modern perspective. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T17:23:01.165Z"
+    },
+    {
+      "id": "1754760194638",
+      "speaker": "agent",
+      "text": "Welcome! I'm Anita Bhargava, strategic financial advisor and co-founder of Bharosa Club. I'm excited to explore your financial journey together and help create a sustainable wealth-building strategy that aligns with your values and aspirations. Today, we'll focus on understanding your lifestyle preferences and goals - this foundation will be crucial for developing a personalized financial roadmap that truly works for you. Let's define success on your own terms. To get started, could you please tell me your name and age?",
+      "timestamp": "2025-08-09T17:23:14.638Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T17:23:01.104Z",
+  "updatedAt": "2025-08-09T17:23:14.638Z",
+  "duration": 0
+}

@@ -1,0 +1,21 @@
+{
+  "id": "notebook_1754731965315_kpbzcs7mg",
+  "therapistId": "aja-evans",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T09:32:45.315Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Aja Evans. Emotional money wellness. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T09:32:45.330Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T09:32:45.315Z",
+  "updatedAt": "2025-08-09T09:32:45.330Z",
+  "duration": 0
+}

@@ -45,7 +45,12 @@ export async function POST(request: NextRequest) {
       4: 1.25, // Fast
       5: 1.5   // Very Fast
     };
-    const speed = speedMapping[speakingPace as keyof typeof speedMapping] || 1.0;
+    let speed = speedMapping[speakingPace as keyof typeof speedMapping] || 1.0;
+    
+    // Make Anita speak slower by default
+    if (therapistId === 'anita-bhargava') {
+      speed = speed * 0.75; // Reduce speed by 25%
+    }
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: 'POST',
@@ -58,9 +63,10 @@ export async function POST(request: NextRequest) {
         text,
         model_id: therapistId === 'anita-bhargava' ? 'eleven_multilingual_v2' : 'eleven_monolingual_v1',
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.5,
+          stability: therapistId === 'anita-bhargava' ? 0.8 : 0.5,
+          similarity_boost: therapistId === 'anita-bhargava' ? 0.4 : 0.5,
           speed: speed,
+          ...(therapistId === 'anita-bhargava' && { style: 0.1, use_speaker_boost: true }), // Deeper, less nasal tone for Anita
         },
       }),
     });

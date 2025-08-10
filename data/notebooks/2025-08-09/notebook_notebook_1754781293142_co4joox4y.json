@@ -1,0 +1,33 @@
+{
+  "id": "notebook_1754781293142_co4joox4y",
+  "therapistId": "nora-ephron",
+  "clientName": "Anonymous",
+  "sessionDate": "2025-08-09T23:14:53.142Z",
+  "messages": [
+    {
+      "id": "1",
+      "speaker": "therapist",
+      "text": "Hi! I'm Nora Ephron. Witty financial wisdom. I'm here to help you understand your financial lifestyle and goals. To get started, could you please tell me your name?",
+      "timestamp": "2025-08-09T23:14:53.163Z"
+    },
+    {
+      "id": "1754781308991",
+      "speaker": "agent",
+      "text": "Oh wonderful! I'm Nora Ephron, and darling, we're going to have the most delightful conversation about your life and future - you know, the kind of talk you'd have over a perfect bowl of pasta at that little Italian place in the Village. Money conversations shouldn't be like bad dinner parties where everyone's checking their phones under the table. They should be like catching up with an old friend who happens to know a thing or two about making life work. I always say that understanding your lifestyle is like writing a good script - we need to know the setting, the characters, and what makes the story uniquely yours. So, let's start with the basics - could you tell me your name and age? You know what they say: age is just a number, but it's a rather useful one for planning!",
+      "timestamp": "2025-08-09T23:15:08.991Z"
+    },
+    {
+      "id": "1754781360592",
+      "speaker": "agent",
+      "text": "My name is Anika Bhatnagar. My age is 23.",
+      "timestamp": "2025-08-09T23:16:00.592Z"
+    }
+  ],
+  "notes": [],
+  "currentTopic": "intro",
+  "userProfile": {},
+  "status": "active",
+  "createdAt": "2025-08-09T23:14:53.142Z",
+  "updatedAt": "2025-08-09T23:16:00.593Z",
+  "duration": 1
+}
