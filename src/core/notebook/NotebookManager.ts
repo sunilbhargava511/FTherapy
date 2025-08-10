@@ -8,9 +8,18 @@ export class NotebookManager {
   private storage: IStorage | null = null;
   private autoSaveInterval: NodeJS.Timeout | null = null;
   private readonly AUTO_SAVE_INTERVAL = 30000; // 30 seconds
+  private isServer: boolean;
 
   constructor(storage?: IStorage) {
     this.storage = storage || null;
+    this.isServer = typeof window === 'undefined';
+  }
+
+  /**
+   * Check if localStorage is available (browser environment)
+   */
+  private get hasLocalStorage(): boolean {
+    return !this.isServer && typeof localStorage !== 'undefined';
   }
 
   /**
@@ -38,13 +47,15 @@ export class NotebookManager {
    * Create a new notebook or restore the most recent active one
    */
   async createOrRestore(therapistId: string, clientName?: string): Promise<SessionNotebook> {
-    // Try to restore active session from localStorage first
-    const localNotebook = this.restoreFromLocalStorage();
-    if (localNotebook && localNotebook.getStatus() === 'active') {
-      console.log('Restored notebook from localStorage:', localNotebook.getId());
-      this.currentNotebook = localNotebook;
-      this.startAutoSave();
-      return localNotebook;
+    // Try to restore active session from localStorage first (browser only)
+    if (this.hasLocalStorage) {
+      const localNotebook = this.restoreFromLocalStorage();
+      if (localNotebook && localNotebook.getStatus() === 'active') {
+        console.log('Restored notebook from localStorage:', localNotebook.getId());
+        this.currentNotebook = localNotebook;
+        this.startAutoSave();
+        return localNotebook;
+      }
     }
 
     // Try to restore from server storage if available
@@ -84,8 +95,10 @@ export class NotebookManager {
     if (!this.currentNotebook) return;
 
     try {
-      // Always save to localStorage for quick recovery
-      this.saveToLocalStorage();
+      // Save to localStorage for quick recovery (browser only)
+      if (this.hasLocalStorage) {
+        this.saveToLocalStorage();
+      }
 
       // Save to server if storage is available
       if (this.storage) {
@@ -108,16 +121,18 @@ export class NotebookManager {
    */
   async load(notebookId: string): Promise<SessionNotebook | null> {
     try {
-      // Try localStorage first
-      const localData = localStorage.getItem(`notebook_${notebookId}`);
-      if (localData) {
-        const data = JSON.parse(localData) as SessionNotebookData;
-        return SessionNotebook.fromJSON(data);
+      // Try localStorage first (browser only)
+      if (this.hasLocalStorage) {
+        const localData = localStorage.getItem(`notebook_${notebookId}`);
+        if (localData) {
+          const data = JSON.parse(localData) as SessionNotebookData;
+          return SessionNotebook.fromJSON(data);
+        }
       }
 
       // Try server storage
       if (this.storage) {
-        const data = await this.storage.load(`notebook_${notebookId}`);
+        const data = await this.storage.load<SessionNotebookData>(`notebook_${notebookId}`);
         if (data) {
           return SessionNotebook.fromJSON(data);
         }
@@ -143,14 +158,16 @@ export class NotebookManager {
   async listNotebooks(): Promise<SessionNotebookData[]> {
     const notebooks: SessionNotebookData[] = [];
 
-    // Get from localStorage
-    const localKeys = Object.keys(localStorage).filter(key => key.startsWith('notebook_'));
-    for (const key of localKeys) {
-      try {
-        const data = JSON.parse(localStorage.getItem(key)!);
-        notebooks.push(data);
-      } catch (error) {
-        console.error('Failed to parse notebook from localStorage:', key);
+    // Get from localStorage (browser only)
+    if (this.hasLocalStorage) {
+      const localKeys = Object.keys(localStorage).filter(key => key.startsWith('notebook_'));
+      for (const key of localKeys) {
+        try {
+          const data = JSON.parse(localStorage.getItem(key)!);
+          notebooks.push(data);
+        } catch (error) {
+          console.error('Failed to parse notebook from localStorage:', key);
+        }
       }
     }
 
@@ -159,9 +176,9 @@ export class NotebookManager {
       const serverKeys = await this.storage.list('notebook_');
       for (const key of serverKeys) {
         try {
-          const data = await this.storage.load(key);
+          const data = await this.storage.load<SessionNotebookData>(key);
           // Avoid duplicates
-          if (!notebooks.find(n => n.id === data.id)) {
+          if (data && !notebooks.find(n => n.id === data.id)) {
             notebooks.push(data);
           }
         } catch (error) {
@@ -203,7 +220,7 @@ export class NotebookManager {
   // Private helper methods
 
   private saveToLocalStorage(): void {
-    if (!this.currentNotebook) return;
+    if (!this.currentNotebook || !this.hasLocalStorage) return;
     
     const key = `notebook_${this.currentNotebook.getId()}`;
     const data = JSON.stringify(this.currentNotebook.toJSON());
@@ -214,6 +231,8 @@ export class NotebookManager {
   }
 
   private restoreFromLocalStorage(): SessionNotebook | null {
+    if (!this.hasLocalStorage) return null;
+    
     try {
       const data = localStorage.getItem('notebook_current');
       if (data) {
@@ -240,7 +259,7 @@ export class NotebookManager {
     if (!this.storage) return null;
     
     try {
-      const data = await this.storage.load('notebook_latest');
+      const data = await this.storage.load<SessionNotebookData>('notebook_latest');
       if (data) {
         return SessionNotebook.fromJSON(data);
       }

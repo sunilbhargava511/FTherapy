@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { TherapistPersonality, UserProfile, ConversationMessage } from '@/lib/types';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -73,11 +74,11 @@ Return only the cleaned text, nothing else.`;
 }
 
 export async function generateTherapistResponse(
-  therapistPersonality: any,
+  therapistPersonality: TherapistPersonality,
   userInput: string,
   conversationContext: string,
   currentTopic: string
-): Promise<{ response: string; nextTopic: string; note: string; profileUpdate?: any }> {
+): Promise<{ response: string; nextTopic: string; note: string; profileUpdate?: Partial<UserProfile> }> {
   const systemPrompt = `You are ${therapistPersonality.name}, ${therapistPersonality.tagline}. 
 
 ## YOUR BACKGROUND:
@@ -232,7 +233,7 @@ CRITICAL: Return ONLY the JSON object, nothing else. No markdown code blocks, no
         response: response.content,
         nextTopic: currentTopic,
         note: "Direct response without JSON structure",
-        profileUpdate: null
+        profileUpdate: undefined
       };
     }
   } catch (error) {
@@ -243,14 +244,14 @@ CRITICAL: Return ONLY the JSON object, nothing else. No markdown code blocks, no
       response: "Thank you for sharing that. Could you tell me more about that?",
       nextTopic: currentTopic,
       note: "Fallback response used due to API error",
-      profileUpdate: null
+      profileUpdate: undefined
     };
   }
 }
 
 export async function generateTherapistReport(
-  messages: any[],
-  context: any,
+  messages: ConversationMessage[],
+  context: { therapistName: string; [key: string]: unknown },
   reportType: 'qualitative' | 'quantitative'
 ): Promise<string> {
   const systemPrompt = `You are ${context.therapistName}, a financial therapist generating a ${reportType} report for a client session.
@@ -291,7 +292,7 @@ ${reportType === 'qualitative' ? `
 - Include timeframes where appropriate
 ` : `
 **Monthly Budget Analysis**:
-- Income: $${context.financialData.income?.monthly || 0}
+- Income: $${(context as any).financialData?.income?.monthly || 0}
 - Expenses breakdown by category
 - Surplus/deficit calculation
 - Savings rate percentage

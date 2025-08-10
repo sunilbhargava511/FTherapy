@@ -75,13 +75,13 @@ export function calculateBudget(userProfile: UserProfile): BudgetItem[] {
   const { lifestyle, location } = userProfile;
   
   // Determine base multipliers
-  const locationMult = getLocationMultiplier(location);
-  const housingMult = getLifestyleMultiplier('housing', lifestyle.housing.preference);
-  const foodMult = getLifestyleMultiplier('food', lifestyle.food.preference);
-  const transportMult = getLifestyleMultiplier('transport', lifestyle.transport.preference);
-  const fitnessMult = getLifestyleMultiplier('fitness', lifestyle.fitness.preference);
-  const entertainmentMult = getLifestyleMultiplier('entertainment', lifestyle.entertainment.preference);
-  const travelMult = getLifestyleMultiplier('travel', lifestyle.travel.preference);
+  const locationMult = getLocationMultiplier(location || '');
+  const housingMult = getLifestyleMultiplier('housing', lifestyle?.housing?.preference || '');
+  const foodMult = getLifestyleMultiplier('food', lifestyle?.food?.preference || '');
+  const transportMult = getLifestyleMultiplier('transport', lifestyle?.transport?.preference || '');
+  const fitnessMult = getLifestyleMultiplier('fitness', lifestyle?.fitness?.preference || '');
+  const entertainmentMult = getLifestyleMultiplier('entertainment', lifestyle?.entertainment?.preference || '');
+  const travelMult = getLifestyleMultiplier('travel', lifestyle?.travel?.preference || '');
 
   // Base budget percentages
   const baseBudget = [
@@ -94,7 +94,7 @@ export function calculateBudget(userProfile: UserProfile): BudgetItem[] {
     { category: 'Fitness', baseMonthly: 100, multiplier: fitnessMult, icon: '💪' },
     { category: 'Travel', baseMonthly: 250, multiplier: travelMult, icon: '✈️' },
     { category: 'Insurance', baseMonthly: 200, multiplier: 1.0, icon: '🛡️' },
-    { category: 'Subscriptions', baseMonthly: getSubscriptionAmount(lifestyle.subscriptions.preference), multiplier: 1.0, icon: '📱' },
+    { category: 'Subscriptions', baseMonthly: getSubscriptionAmount(lifestyle?.subscriptions?.preference || ''), multiplier: 1.0, icon: '📱' },
     { category: 'Savings & Investments', baseMonthly: 750, multiplier: 1.0, icon: '💰' },
     { category: 'Emergency Fund', baseMonthly: 500, multiplier: 1.0, icon: '🏦' },
   ];
@@ -166,13 +166,13 @@ export function generateLifestyleSummary(userProfile: UserProfile): string {
   const { name, lifestyle } = userProfile;
   
   const summaryPoints = [
-    lifestyle.housing.preference && `🏠 **Living Situation:** ${lifestyle.housing.preference}`,
-    lifestyle.food.preference && `🍽️ **Eating Habits:** ${lifestyle.food.preference}`,
-    lifestyle.transport.preference && `🚗 **Transportation:** ${lifestyle.transport.preference}`,
-    lifestyle.fitness.preference && `💪 **Fitness:** ${lifestyle.fitness.preference}`,
-    lifestyle.entertainment.preference && `🎬 **Entertainment:** ${lifestyle.entertainment.preference}`,
-    lifestyle.subscriptions.preference && `📱 **Subscriptions:** ${lifestyle.subscriptions.preference}`,
-    lifestyle.travel.preference && `✈️ **Travel Style:** ${lifestyle.travel.preference}`
+    lifestyle?.housing?.preference && `🏠 **Living Situation:** ${lifestyle?.housing?.preference}`,
+    lifestyle?.food?.preference && `🍽️ **Eating Habits:** ${lifestyle?.food?.preference}`,
+    lifestyle?.transport?.preference && `🚗 **Transportation:** ${lifestyle?.transport?.preference}`,
+    lifestyle?.fitness?.preference && `💪 **Fitness:** ${lifestyle?.fitness?.preference}`,
+    lifestyle?.entertainment?.preference && `🎬 **Entertainment:** ${lifestyle?.entertainment?.preference}`,
+    lifestyle?.subscriptions?.preference && `📱 **Subscriptions:** ${lifestyle?.subscriptions?.preference}`,
+    lifestyle?.travel?.preference && `✈️ **Travel Style:** ${lifestyle?.travel?.preference}`
   ].filter(Boolean);
 
   return `## ${name}'s Lifestyle Profile\n\n${summaryPoints.join('\n\n')}`;

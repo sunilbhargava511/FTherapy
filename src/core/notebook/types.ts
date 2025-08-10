@@ -1,24 +1,4 @@
-import { ConversationMessage, TherapistNote, ConversationTopic } from '@/lib/types';
-
-export interface UserProfile {
-  name?: string;
-  age?: string;
-  location?: string;
-  occupation?: string;
-  income?: {
-    amount?: number;
-    frequency?: 'annual' | 'monthly' | 'biweekly' | 'weekly';
-  };
-  lifestyle?: {
-    housing?: { preference: string; details: string; cost?: number; };
-    food?: { preference: string; details: string; cost?: number; };
-    transport?: { preference: string; details: string; cost?: number; };
-    fitness?: { preference: string; details: string; cost?: number; };
-    entertainment?: { preference: string; details: string; cost?: number; };
-    subscriptions?: { preference: string; details: string; cost?: number; };
-    travel?: { preference: string; details: string; cost?: number; };
-  };
-}
+import { ConversationMessage, TherapistNote, ConversationTopic, UserProfile } from '@/lib/types';
 
 export interface ExtractedFinancialData {
   income: {

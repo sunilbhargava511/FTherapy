@@ -9,7 +9,7 @@ import path from 'path';
 export class ServerFileStorage implements IStorage {
   private storageDir = path.join(process.cwd(), 'data', 'notebooks');
 
-  async save(key: string, data: any): Promise<void> {
+  async save<T = unknown>(key: string, data: T): Promise<void> {
     await this.ensureStorageDir();
     
     // Create date-based subdirectory for organization
@@ -26,7 +26,7 @@ export class ServerFileStorage implements IStorage {
     await fs.writeFile(latestPath, JSON.stringify(data, null, 2), 'utf-8');
   }
 
-  async load(key: string): Promise<any | null> {
+  async load<T = unknown>(key: string): Promise<T | null> {
     try {
       // Try latest version first
       const latestPath = path.join(this.storageDir, `${key.replace(/\//g, '_')}_latest.json`);
@@ -117,7 +117,7 @@ export class ServerFileStorage implements IStorage {
       console.error(`Error listing keys with prefix ${prefix}:`, error);
     }
     
-    return [...new Set(keys)]; // Remove duplicates
+    return Array.from(new Set(keys)); // Remove duplicates
   }
 
   async exists(key: string): Promise<boolean> {

@@ -15,18 +15,23 @@ export interface ConversationMessage {
 }
 
 export interface UserProfile {
-  name: string;
-  age: string;
-  location: string;
-  lifestyle: {
-    housing: { preference: string; details: string };
-    food: { preference: string; details: string };
-    transport: { preference: string; details: string };
-    fitness: { preference: string; details: string };
-    entertainment: { preference: string; details: string };
-    subscriptions: { preference: string; details: string };
-    travel: { preference: string; details: string };
-    lifeEvents: { preference: string; details: string };
+  name?: string;
+  age?: string;
+  location?: string;
+  occupation?: string;
+  income?: {
+    amount?: number;
+    frequency?: 'annual' | 'monthly' | 'biweekly' | 'weekly';
+  };
+  lifestyle?: {
+    housing?: { preference: string; details: string; cost?: number; };
+    food?: { preference: string; details: string; cost?: number; };
+    transport?: { preference: string; details: string; cost?: number; };
+    fitness?: { preference: string; details: string; cost?: number; };
+    entertainment?: { preference: string; details: string; cost?: number; };
+    subscriptions?: { preference: string; details: string; cost?: number; };
+    travel?: { preference: string; details: string; cost?: number; };
+    lifeEvents?: { preference: string; details: string; cost?: number; };
   };
 }
 

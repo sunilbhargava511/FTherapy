@@ -9,9 +9,6 @@ export class ConversationEngine {
     this.therapist = therapist;
     this.currentTopic = 'intro';
     this.userProfile = {
-      name: '',
-      age: '',
-      location: '',
       lifestyle: {
         housing: { preference: '', details: '' },
         food: { preference: '', details: '' },
@@ -89,7 +86,7 @@ export class ConversationEngine {
     return topicFlow[this.currentTopic] || this.currentTopic;
   }
 
-  private updateUserProfile(input: string): void {
+  updateUserProfile(input: string): void {
     switch (this.currentTopic) {
       case 'name':
         const nameMatch = input.match(/(?:my name is |i'm |i am |call me )([a-zA-Z]+)/i) || [null, input.trim()];
@@ -108,31 +105,31 @@ export class ConversationEngine {
         break;
       
       case 'housing_preference':
-        this.userProfile.lifestyle.housing.preference = input;
+        this.userProfile.lifestyle!.housing!.preference = input;
         break;
       
       case 'food_preference':
-        this.userProfile.lifestyle.food.preference = input;
+        this.userProfile.lifestyle!.food!.preference = input;
         break;
       
       case 'transport_preference':
-        this.userProfile.lifestyle.transport.preference = input;
+        this.userProfile.lifestyle!.transport!.preference = input;
         break;
       
       case 'fitness_preference':
-        this.userProfile.lifestyle.fitness.preference = input;
+        this.userProfile.lifestyle!.fitness!.preference = input;
         break;
       
       case 'entertainment_preference':
-        this.userProfile.lifestyle.entertainment.preference = input;
+        this.userProfile.lifestyle!.entertainment!.preference = input;
         break;
       
       case 'subscriptions_preference':
-        this.userProfile.lifestyle.subscriptions.preference = input;
+        this.userProfile.lifestyle!.subscriptions!.preference = input;
         break;
       
       case 'travel_preference':
-        this.userProfile.lifestyle.travel.preference = input;
+        this.userProfile.lifestyle!.travel!.preference = input;
         break;
     }
   }
@@ -174,11 +171,13 @@ export class ConversationEngine {
     if (profile.location) context.push(`Location: ${profile.location}`);
     
     // Add lifestyle info that's been collected
-    Object.entries(profile.lifestyle).forEach(([key, value]) => {
-      if (value.preference) {
-        context.push(`${key}: ${value.preference}`);
-      }
-    });
+    if (profile.lifestyle) {
+      Object.entries(profile.lifestyle).forEach(([key, value]) => {
+        if (value?.preference) {
+          context.push(`${key}: ${value.preference}`);
+        }
+      });
+    }
     
     return context.join('\n');
   }
@@ -217,9 +216,6 @@ export class ConversationEngine {
   reset(): void {
     this.currentTopic = 'intro';
     this.userProfile = {
-      name: '',
-      age: '',
-      location: '',
       lifestyle: {
         housing: { preference: '', details: '' },
         food: { preference: '', details: '' },

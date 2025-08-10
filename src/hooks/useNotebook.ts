@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { NotebookManager } from '@/core/notebook/NotebookManager';
 import { SessionNotebook } from '@/core/notebook/SessionNotebook';
 import { LocalFileStorage } from '@/services/storage/LocalFileStorage';
-import { ConversationMessage, TherapistNote, ConversationTopic } from '@/lib/types';
+import { ConversationMessage, TherapistNote, ConversationTopic, UserProfile } from '@/lib/types';
 import { QualitativeReport, QuantitativeReport } from '@/core/notebook/types';
 
 interface UseNotebookState {
@@ -28,7 +28,7 @@ interface UseNotebookActions {
   addMessage: (message: ConversationMessage) => void;
   addNote: (note: TherapistNote) => void;
   updateTopic: (topic: ConversationTopic) => void;
-  updateProfile: (profileData: any) => void;
+  updateProfile: (profileData: Partial<UserProfile>) => void;
   
   // Report generation
   generateReports: () => Promise<{ qualitative: QualitativeReport; quantitative: QuantitativeReport } | null>;
@@ -222,7 +222,7 @@ export function useNotebook(
     }));
   }, [state.notebook]);
 
-  const updateProfile = useCallback((profileData: any) => {
+  const updateProfile = useCallback((profileData: Partial<UserProfile>) => {
     if (!state.notebook) return;
 
     state.notebook.updateProfile(profileData);

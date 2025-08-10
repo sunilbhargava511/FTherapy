@@ -1,5 +1,5 @@
-import { ConversationMessage } from '@/lib/types';
-import { ExtractedFinancialData, UserProfile } from '../notebook/types';
+import { ConversationMessage, UserProfile } from '@/lib/types';
+import { ExtractedFinancialData } from '../notebook/types';
 import {
   INCOME_PATTERNS,
   EXPENSE_PATTERNS,

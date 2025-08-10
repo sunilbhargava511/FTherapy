@@ -8,12 +8,12 @@ export interface IStorage {
   /**
    * Save data with a key
    */
-  save(key: string, data: any): Promise<void>;
+  save<T = unknown>(key: string, data: T): Promise<void>;
   
   /**
    * Load data by key
    */
-  load(key: string): Promise<any | null>;
+  load<T = unknown>(key: string): Promise<T | null>;
   
   /**
    * Delete data by key
@@ -33,5 +33,5 @@ export interface IStorage {
   /**
    * Save with expiration (optional for some backends)
    */
-  saveWithTTL?(key: string, data: any, ttlSeconds: number): Promise<void>;
+  saveWithTTL?<T = unknown>(key: string, data: T, ttlSeconds: number): Promise<void>;
 }

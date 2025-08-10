@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
           // Enhanced logging for debugging
           if (messages.length !== lastMessageCount) {
             console.log('📡 SSE new messages detected. SessionId:', sessionId, 'Messages:', messages.length, 'Previous:', lastMessageCount);
-            console.log('📡 SSE message details:', messages.map(m => ({ 
+            console.log('📡 SSE message details:', messages.map((m: any) => ({ 
               timestamp: m.timestamp, 
               messagePreview: m.message?.substring(0, 30) + '...' 
             })));

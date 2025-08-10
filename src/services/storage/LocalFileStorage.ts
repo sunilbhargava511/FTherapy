@@ -7,7 +7,7 @@ import { IStorage } from './IStorage';
 export class LocalFileStorage implements IStorage {
   private baseUrl = '/api/notebooks/storage';
 
-  async save(key: string, data: any): Promise<void> {
+  async save<T = unknown>(key: string, data: T): Promise<void> {
     const response = await fetch(this.baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -23,7 +23,7 @@ export class LocalFileStorage implements IStorage {
     }
   }
 
-  async load(key: string): Promise<any | null> {
+  async load<T = unknown>(key: string): Promise<T | null> {
     const response = await fetch(`${this.baseUrl}?key=${encodeURIComponent(key)}`, {
       method: 'GET'
     });

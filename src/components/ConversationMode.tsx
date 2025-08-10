@@ -4,7 +4,8 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import { Phone, PhoneOff, Download, MessageCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useConversation } from '@elevenlabs/react';
 import { ConversationEngine } from '@/lib/conversation-engine';
-import type { TherapistPersonality } from '@/lib/types';
+import type { TherapistPersonality, UserProfile } from '@/lib/types';
+import type { QualitativeReport, QuantitativeReport } from '@/core/notebook/types';
 
 // Voice mapping for each therapist (same as TTS)
 const THERAPIST_VOICES: Record<string, string> = {
@@ -26,7 +27,7 @@ interface ConversationModeProps {
   therapist: TherapistPersonality;
   onMessage?: (message: string, speaker: 'user' | 'agent') => void;
   onNoteGenerated?: (note: string) => void;
-  onProfileUpdate?: (profileData: any) => void;
+  onProfileUpdate?: (profileData: Partial<UserProfile>) => void;
   onReportGenerated?: (report: any) => void;
 }
 
@@ -56,16 +57,13 @@ export default function ConversationMode({
   // Set up Server-Sent Events for report notifications
   useEffect(() => {
     if (sessionId) {
-      console.log('Setting up SSE for session:', sessionId);
       const eventSource = new EventSource(`/api/session-events?id=${sessionId}`);
       
       eventSource.addEventListener('message', (event) => {
         try {
           const data = JSON.parse(event.data);
-          console.log('SSE event received:', data.type, data);
           
           if (data.type === 'user_message' && data.message && conversationEngine) {
-            console.log('📝 User message received via SSE (skipping - handled by ElevenLabs):', data.message.substring(0, 50) + '...');
             
             // NOTE: User messages are now properly handled by ElevenLabs callback with source attribution
             // Processing via SSE would create duplicates, so we skip this
@@ -95,7 +93,6 @@ export default function ConversationMode({
       };
       
       return () => {
-        console.log('Closing SSE connection');
         eventSource.close();
       };
     }
@@ -136,11 +133,6 @@ export default function ConversationMode({
 
   // Debug therapist props
   useEffect(() => {
-    console.log('👤 ConversationMode received props:', {
-      therapistId,
-      therapistName: therapist?.name,
-      therapistData: therapist
-    });
   }, [therapistId, therapist]);
 
   // Helper function to generate therapist notes for voice conversations
@@ -285,7 +277,7 @@ export default function ConversationMode({
         }
       }, 5000); // Check every 5 seconds
     },
-    onDisconnect: (details?: any) => {
+    onDisconnect: (details?: { reason?: string }) => {
       // Check if this is a real disconnect or component cleanup
       const isUserInitiated = details?.reason === 'user' || details?.reason === 'user_initiated';
       const isCleanup = !isConnected && !sessionId; // Already cleaned up
@@ -426,7 +418,6 @@ export default function ConversationMode({
     },
     // Add onDebug callback to prevent "onDebug is not a function" error
     onDebug: (info: unknown) => {
-      console.log('ElevenLabs Debug:', info);
     }
   } as any);
 
@@ -581,7 +572,7 @@ export default function ConversationMode({
   }, [conversation, isConnected, isConnecting, sessionId]);
 
   // Check and generate financial report when profile is complete
-  const checkAndGenerateReport = useCallback(async (profile: any) => {
+  const checkAndGenerateReport = useCallback(async (profile: UserProfile) => {
     console.log('🔍 CheckAndGenerateReport called:', {
       hasProfile: !!profile,
       hasReport: !!report,
@@ -604,16 +595,9 @@ export default function ConversationMode({
     
     const requiredFields = ['housing', 'food', 'transport', 'fitness', 'entertainment', 'subscriptions', 'travel'];
     const completedFields = requiredFields.filter(field => 
-      lifestyle[field] && lifestyle[field].preference && lifestyle[field].preference.trim() !== ''
+      (lifestyle as any)[field] && (lifestyle as any)[field].preference && (lifestyle as any)[field].preference.trim() !== ''
     );
     
-    console.log('🔍 Profile completeness check:', {
-      completedFields: completedFields.length,
-      requiredFields: requiredFields.length,
-      completedCategories: completedFields,
-      hasName: !!profile.name,
-      hasAge: !!profile.age
-    });
     
     // Generate report when we have at least 6 out of 7 categories
     if (completedFields.length >= 6 && profile.name && profile.age) {
@@ -654,7 +638,7 @@ export default function ConversationMode({
     
     const a = document.createElement('a');
     a.href = url;
-    a.download = `financial-report-${report.timestamp || Date.now()}.json`;
+    a.download = `financial-report-${('generatedAt' in report ? new Date(report.generatedAt).getTime() : Date.now())}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -808,7 +792,7 @@ export default function ConversationMode({
                   const hasAge = profile?.age;
                   const lifestyle = profile?.lifestyle || {};
                   const lifestyleCategories = ['housing', 'food', 'transport', 'fitness', 'entertainment', 'subscriptions', 'travel'];
-                  const completedCategories = lifestyleCategories.filter(cat => lifestyle[cat]?.preference);
+                  const completedCategories = lifestyleCategories.filter(cat => (lifestyle as any)[cat]?.preference);
                   
                   return (
                     <div className="space-y-1">
@@ -859,7 +843,7 @@ export default function ConversationMode({
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
               <h3 className="text-xl font-bold mb-2">Your Financial Analysis</h3>
               <p className="text-blue-100 text-sm">
-                Generated by {therapist.name} • {new Date(report.timestamp).toLocaleDateString()}
+                Generated by {therapist.name} • {new Date('generatedAt' in report ? report.generatedAt : Date.now()).toLocaleDateString()}
               </p>
             </div>
             

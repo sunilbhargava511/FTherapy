@@ -43,39 +43,39 @@ export default function FinancialSummary({ userProfile, therapist, onStartNew }:
       <div className="mb-8">
         <h4 className="text-lg font-semibold mb-4 text-gray-800">Your Lifestyle Choices</h4>
         <div className="space-y-3">
-          {userProfile.lifestyle.housing.preference && (
+          {userProfile.lifestyle?.housing?.preference && (
             <div className="bg-blue-50 p-3 rounded-lg">
-              <p><strong className="text-blue-700">🏠 Living Situation:</strong> <span className="text-gray-700">{userProfile.lifestyle.housing.preference}</span></p>
+              <p><strong className="text-blue-700">🏠 Living Situation:</strong> <span className="text-gray-700">{userProfile.lifestyle?.housing?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.food.preference && (
+          {userProfile.lifestyle?.food?.preference && (
             <div className="bg-green-50 p-3 rounded-lg">
-              <p><strong className="text-green-700">🍽️ Eating Habits:</strong> <span className="text-gray-700">{userProfile.lifestyle.food.preference}</span></p>
+              <p><strong className="text-green-700">🍽️ Eating Habits:</strong> <span className="text-gray-700">{userProfile.lifestyle?.food?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.transport.preference && (
+          {userProfile.lifestyle?.transport?.preference && (
             <div className="bg-purple-50 p-3 rounded-lg">
-              <p><strong className="text-purple-700">🚗 Getting Around:</strong> <span className="text-gray-700">{userProfile.lifestyle.transport.preference}</span></p>
+              <p><strong className="text-purple-700">🚗 Getting Around:</strong> <span className="text-gray-700">{userProfile.lifestyle?.transport?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.fitness.preference && (
+          {userProfile.lifestyle?.fitness?.preference && (
             <div className="bg-red-50 p-3 rounded-lg">
-              <p><strong className="text-red-700">💪 Staying Active:</strong> <span className="text-gray-700">{userProfile.lifestyle.fitness.preference}</span></p>
+              <p><strong className="text-red-700">💪 Staying Active:</strong> <span className="text-gray-700">{userProfile.lifestyle?.fitness?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.entertainment.preference && (
+          {userProfile.lifestyle?.entertainment?.preference && (
             <div className="bg-yellow-50 p-3 rounded-lg">
-              <p><strong className="text-yellow-700">🎬 Having Fun:</strong> <span className="text-gray-700">{userProfile.lifestyle.entertainment.preference}</span></p>
+              <p><strong className="text-yellow-700">🎬 Having Fun:</strong> <span className="text-gray-700">{userProfile.lifestyle?.entertainment?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.subscriptions.preference && (
+          {userProfile.lifestyle?.subscriptions?.preference && (
             <div className="bg-indigo-50 p-3 rounded-lg">
-              <p><strong className="text-indigo-700">📱 Subscriptions:</strong> <span className="text-gray-700">{userProfile.lifestyle.subscriptions.preference}</span></p>
+              <p><strong className="text-indigo-700">📱 Subscriptions:</strong> <span className="text-gray-700">{userProfile.lifestyle?.subscriptions?.preference}</span></p>
             </div>
           )}
-          {userProfile.lifestyle.travel.preference && (
+          {userProfile.lifestyle?.travel?.preference && (
             <div className="bg-pink-50 p-3 rounded-lg">
-              <p><strong className="text-pink-700">✈️ Travel Style:</strong> <span className="text-gray-700">{userProfile.lifestyle.travel.preference}</span></p>
+              <p><strong className="text-pink-700">✈️ Travel Style:</strong> <span className="text-gray-700">{userProfile.lifestyle?.travel?.preference}</span></p>
             </div>
           )}
         </div>

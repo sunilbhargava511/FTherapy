@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, User, Settings, MessageSquare, Phone, ChevronDown, ChevronUp, MessageCircle, Menu, X, TestTube, Mic, Volume2 } from 'lucide-react';
 import { ConversationMessage, TherapistNote, ConversationTopic, VoiceControlSettings } from '@/lib/types';
+import { QualitativeReport, QuantitativeReport } from '@/core/notebook/types';
 import { getTherapist } from '@/lib/therapist-loader';
 import { useNotebook } from '@/hooks/useNotebook';
 import { getLifestyleProgress } from '@/lib/progress-utils';

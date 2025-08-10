@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SessionNotebook } from '@/core/notebook/SessionNotebook';
 import { NotebookManager } from '@/core/notebook/NotebookManager';
 import { SessionNotebookData } from '@/core/notebook/types';
+import { ServerFileStorage } from '@/services/storage/ServerFileStorage';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'create': {
         const { therapistId, clientName } = params;
-        const manager = new NotebookManager();
+        const manager = new NotebookManager(new ServerFileStorage());
         const notebook = await manager.createOrRestore(therapistId, clientName);
         
         return NextResponse.json({
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
 
       case 'generateReports': {
         const { notebookId } = params;
-        const manager = new NotebookManager();
+        const manager = new NotebookManager(new ServerFileStorage());
         const notebook = await manager.load(notebookId);
         
         if (!notebook) {
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
 
       case 'complete': {
         const { notebookId } = params;
-        const manager = new NotebookManager();
+        const manager = new NotebookManager(new ServerFileStorage());
         const notebook = await manager.load(notebookId);
         
         if (!notebook) {
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
     
     if (!notebookId) {
       // List all notebooks
-      const manager = new NotebookManager();
+      const manager = new NotebookManager(new ServerFileStorage());
       const notebooks = await manager.listNotebooks();
       
       return NextResponse.json({
@@ -107,7 +108,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get specific notebook
-    const manager = new NotebookManager();
+    const manager = new NotebookManager(new ServerFileStorage());
     const notebook = await manager.load(notebookId);
     
     if (!notebook) {

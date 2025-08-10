@@ -1,7 +1,6 @@
-import { ConversationMessage, TherapistNote, ConversationTopic } from '@/lib/types';
+import { ConversationMessage, TherapistNote, ConversationTopic, UserProfile } from '@/lib/types';
 import { 
   SessionNotebookData, 
-  UserProfile, 
   ExtractedFinancialData,
   QualitativeReport,
   QuantitativeReport 

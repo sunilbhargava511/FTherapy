@@ -227,19 +227,19 @@ function generateLocalReport(profile: UserProfile) {
   };
 
   // Housing calculation
-  const housingPref = profile.lifestyle.housing.preference || 'With Roommates';
+  const housingPref = profile.lifestyle?.housing?.preference || 'With Roommates';
   const housingData = EXPENSE_CATEGORIES.housing[housingPref as keyof typeof EXPENSE_CATEGORIES.housing] || EXPENSE_CATEGORIES.housing['With Roommates'];
   expenses.housing.items = housingData;
   expenses.housing.total = Object.values(housingData).reduce((sum: number, val: any) => sum + val, 0);
 
   // Food calculation
-  const foodPref = profile.lifestyle.food.preference || 'Balanced Approach';
+  const foodPref = profile.lifestyle?.food?.preference || 'Balanced Approach';
   const foodData = EXPENSE_CATEGORIES.food[foodPref as keyof typeof EXPENSE_CATEGORIES.food] || EXPENSE_CATEGORIES.food['Balanced Approach'];
   expenses.food.items = foodData;
   expenses.food.total = Object.values(foodData).reduce((sum: number, val: any) => sum + val, 0);
 
   // Transport calculation
-  const transportPref = profile.lifestyle.transport.preference || 'Public Transit';
+  const transportPref = profile.lifestyle?.transport?.preference || 'Public Transit';
   const transportData = EXPENSE_CATEGORIES.transport[transportPref as keyof typeof EXPENSE_CATEGORIES.transport] || EXPENSE_CATEGORIES.transport['Public Transit'];
   expenses.transport.items = transportData;
   expenses.transport.total = Object.values(transportData).reduce((sum: number, val: any) => sum + val, 0);
@@ -283,7 +283,7 @@ function generateLocalReport(profile: UserProfile) {
 }
 
 function estimateIncome(profile: UserProfile): number {
-  const age = parseInt(profile.age) || 30;
+  const age = parseInt(profile.age || '30') || 30;
   const baseIncome = 50000;
   const ageMultiplier = Math.min(2, 1 + (age - 22) * 0.05);
   const locationMultiplier = profile.location?.toLowerCase().includes('city') ? 1.3 : 1;
@@ -295,9 +295,9 @@ function determineFinancialPersonality(profile: UserProfile): string {
   const preferences = profile.lifestyle;
   let score = 0;
   
-  if (preferences.housing.preference?.includes('Own')) score += 2;
-  if (preferences.food.preference?.includes('Meal Prep')) score += 2;
-  if (preferences.transport.preference?.includes('Bike')) score += 2;
+  if (preferences?.housing?.preference?.includes('Own')) score += 2;
+  if (preferences?.food?.preference?.includes('Meal Prep')) score += 2;
+  if (preferences?.transport?.preference?.includes('Bike')) score += 2;
   
   if (score >= 4) return "The Conscious Saver";
   if (score >= 2) return "The Balanced Spender";

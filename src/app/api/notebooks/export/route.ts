@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NotebookManager } from '@/core/notebook/NotebookManager';
+import { ServerFileStorage } from '@/services/storage/ServerFileStorage';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const manager = new NotebookManager();
+    const manager = new NotebookManager(new ServerFileStorage());
     const notebook = await manager.load(notebookId);
 
     if (!notebook) {
