@@ -1,0 +1,33 @@
+{
+  "name": "elevenlabs-reusable-kit",
+  "version": "1.0.0",
+  "description": "A comprehensive toolkit for integrating ElevenLabs Conversational AI into React/Next.js applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "elevenlabs",
+    "conversational-ai",
+    "react",
+    "nextjs",
+    "typescript",
+    "voice",
+    "webrtc",
+    "ai",
+    "conversation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "@elevenlabs/client": "^0.4.4",
+    "@elevenlabs/react": "^0.4.5",
+    "react": "^18.0.0",
+    "next": "^14.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0"
+  }
+}
