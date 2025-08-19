@@ -154,12 +154,16 @@ export class SessionManager {
   async cleanup(olderThanMinutes: number = 60): Promise<void> {
     const cutoff = new Date(Date.now() - olderThanMinutes * 60 * 1000);
     
-    for (const [sessionId, session] of this.sessionRegistry) {
-      const lastActivity = new Date(session.lastActivity || session.registeredAt);
-      if (lastActivity < cutoff) {
-        this.sessionRegistry.delete(sessionId);
-        await this.storage.delete(`sessions/${sessionId}`);
-        await this.storage.delete(`messages/${sessionId}`);
+    const sessionIds = Array.from(this.sessionRegistry.keys());
+    for (const sessionId of sessionIds) {
+      const session = this.sessionRegistry.get(sessionId);
+      if (session) {
+        const lastActivity = new Date(session.lastActivity || session.registeredAt);
+        if (lastActivity < cutoff) {
+          this.sessionRegistry.delete(sessionId);
+          await this.storage.delete(`sessions/${sessionId}`);
+          await this.storage.delete(`messages/${sessionId}`);
+        }
       }
     }
   }
