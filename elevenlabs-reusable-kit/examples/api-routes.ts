@@ -3,7 +3,7 @@
  */
 
 // File: app/api/elevenlabs-signed-url/route.ts
-import { createSignedUrlRouteFromEnv } from '../../api/signed-url-route';
+import { createSignedUrlRouteFromEnv } from '../api/signed-url-route';
 export const { POST } = createSignedUrlRouteFromEnv();
 
 // File: app/api/elevenlabs-webhook/route.ts
@@ -11,8 +11,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { 
   createWebhookHandler, 
   ResponseGenerator 
-} from '../../api/webhook-handler';
-import { createSessionManager } from '../../lib/session-manager';
+} from '../api/webhook-handler';
+import { createSessionManager } from '../lib/session-manager';
 
 // Create session manager
 const sessionManager = createSessionManager('file', './data/sessions');
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 // File: app/api/register-session/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { createSessionManager } from '../../lib/session-manager';
+import { createSessionManager } from '../lib/session-manager';
 
 const sessionManager = createSessionManager('file');
 
